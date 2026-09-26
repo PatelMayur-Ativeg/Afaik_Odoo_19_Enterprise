@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_expense_po_req_form" model="ir.actions.report">
+            <field name="name">Expense Purchase Request Form</field>
+            <field name="model">purchase.request</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">purchase_request.template_expense_po_req_form</field>
+            <field name="report_file">purchase_request.template_expense_po_req_form</field>
+            <field name="binding_model_id" ref="model_purchase_request"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_po_office_supply_req_form" model="ir.actions.report">
+            <field name="name">Office Supply Request Form</field>
+            <field name="model">purchase.request</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">purchase_request.template_office_supply_req_form</field>
+            <field name="report_file">purchase_request.template_office_supply_req_form</field>
+            <field name="binding_model_id" ref="model_purchase_request"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_canvas_sheet_report_form" model="ir.actions.report">
+            <field name="name">Canvas Sheet Form</field>
+            <field name="model">purchase.request</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">purchase_request.template_canvas_sheet_report_form</field>
+            <field name="report_file">purchase_request.template_canvas_sheet_report_form</field>
+            <field name="binding_model_id" ref="model_purchase_request"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

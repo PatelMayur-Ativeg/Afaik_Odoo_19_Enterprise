@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_aafaq_import_alias_list" model="ir.ui.view">
+        <field name="name">aafaq.import.alias.list</field>
+        <field name="model">aafaq.import.alias</field>
+        <field name="arch" type="xml">
+            <list string="Import Email Aliases">
+                <field name="name"/>
+                <field name="record_type"/>
+                <field name="alias_name"/>
+                <field name="alias_domain_id" optional="show"/>
+                <field name="alias_email"/>
+                <field name="company_id"/>
+                <field name="journal_id" optional="hide"/>
+                <field name="alias_contact" optional="hide"/>
+                <field name="alias_status" widget="badge"
+                       decoration-success="alias_status == 'valid'"
+                       decoration-warning="alias_status == 'not_tested'"
+                       decoration-danger="alias_status == 'invalid'"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_aafaq_import_alias_form" model="ir.ui.view">
+        <field name="name">aafaq.import.alias.form</field>
+        <field name="model">aafaq.import.alias</field>
+        <field name="arch" type="xml">
+            <form string="Import Email Alias">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_queues" type="object"
+                                class="oe_stat_button" icon="fa-list">
+                            <field name="queue_count" widget="statinfo" string="Queues"/>
+                        </button>
+                        <button name="action_view_held_mails" type="object"
+                                class="oe_stat_button" icon="fa-pause"
+                                invisible="record_type not in ('journal_entries', 'adj_entries')">
+                            <field name="held_mail_count" widget="statinfo" string="Held Emails"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="record_type"/>
+                            <field name="company_id"/>
+                            <field name="journal_id" invisible="record_type not in ('journal_entries', 'adj_entries')"
+                                   required="record_type in ('journal_entries', 'adj_entries')"/>
+                            <field name="user_id"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group string="Email Alias">
+                            <field name="alias_id" invisible="1"/>
+                            <label for="alias_name" string="Email Alias"/>
+                            <div class="d-inline-flex">
+                                <field name="alias_name" placeholder="aafaq-customers"/>@
+                                <field name="alias_domain_id" placeholder="e.g. company.com"
+                                       options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                            <field name="alias_email" widget="email"/>
+                            <field name="suggested_alias_name" invisible="1"/>
+                            <field name="alias_contact"/>
+                            <field name="alias_status" widget="badge"
+                                   decoration-success="alias_status == 'valid'"
+                                   decoration-warning="alias_status == 'not_tested'"
+                                   decoration-danger="alias_status == 'invalid'"/>
+                            <field name="alias_defaults" groups="base.group_no_one"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info" role="alert"
+                         invisible="record_type in ('journal_entries', 'adj_entries')">
+                        Send an Excel (.xlsx / .xls) or CSV file to this alias.
+                        Odoo creates an Import Queue of the selected record type, processes the file,
+                        and logs errors on the queue chatter and Import Logs.
+                        Catch-all / incoming mail must be configured on the company alias domain.
+                    </div>
+                    <div class="alert alert-info" role="alert"
+                         invisible="record_type not in ('journal_entries', 'adj_entries')">
+                        Send an Excel (.xlsx / .xls) or CSV file to this alias.
+                        Incoming mail is held until 23:00 (or until you run Process Held Emails),
+                        then an Import Queue is created and processed.
+                        Catch-all / incoming mail must be configured on the company alias domain.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_aafaq_import_alias" model="ir.actions.act_window">
+        <field name="name">Import Email Aliases</field>
+        <field name="res_model">aafaq.import.alias</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create an email alias per import type</p>
+            <p>
+                Example: <code>aafaq-chart-of-accounts@your-domain</code> creates a Chart of Accounts
+                import queue immediately from the attached Excel/CSV.
+                Journal and Adjustment aliases are held until end-of-day processing.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_aafaq_import_alias"
+              name="Email Aliases"
+              parent="menu_aafaq_import_root"
+              action="action_aafaq_import_alias"
+              sequence="25"/>
+</odoo>

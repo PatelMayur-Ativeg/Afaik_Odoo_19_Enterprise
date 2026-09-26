@@ -1,0 +1,80 @@
+<odoo>
+    <record id="account_rejection_reason_wizard_view_form" model="ir.ui.view">
+        <field name="name">account.reject.reason.wizard.view.form</field>
+        <field name="model">account.reject.reason.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                    </group>
+                    <footer>
+                        <button class="oe_highlight" string="Confirm" type="object" name="action_reject_order" />
+                        <button special="cancel" string="Cancel" />
+                    </footer>
+                </sheet>
+            </form>
+
+        </field>
+    </record>
+
+    <record id="account_rejection_reason_action" model="ir.actions.act_window">
+        <field name="name">Reason</field>
+        <field name="res_model">account.reject.reason.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+<record id="payment_rejection_reason_wizard_view_form" model="ir.ui.view">
+<field name="name">payment.reject.reason.wizard.view.form</field>
+<field name="model">payment.reject.reason.wizard</field>
+<field name="arch" type="xml">
+<form>
+<sheet>
+<group>
+<field name="name"/>
+</group>
+<footer>
+<button class="oe_highlight" string="Confirm" type="object" name="action_reject_order"/>
+<button special="cancel" string="Cancel"/>
+</footer>
+</sheet>
+</form>
+</field>
+</record>
+<record id="payment_rejection_reason_action" model="ir.actions.act_window">
+<field name="name">Reason</field>
+<field name="res_model">payment.reject.reason.wizard</field>
+<field name="type">ir.actions.act_window</field>
+<field name="view_mode">form</field>
+<field name="target">new</field>
+</record>
+
+
+<record id="batch_payment_rejection_reason_wizard_view_form" model="ir.ui.view">
+<field name="name">batch.payment.reject.reason.wizard.view.form</field>
+<field name="model">batch.payment.reject.reason.wizard</field>
+<field name="arch" type="xml">
+<form>
+<sheet>
+<group>
+<field name="name"/>
+</group>
+<footer>
+<button class="oe_highlight" string="Confirm" type="object" name="action_reject_order"/>
+<button special="cancel" string="Cancel"/>
+</footer>
+</sheet>
+</form>
+</field>
+</record>
+<record id="batch_payment_rejection_reason_action" model="ir.actions.act_window">
+<field name="name">Reason</field>
+<field name="res_model">batch.payment.reject.reason.wizard</field>
+<field name="type">ir.actions.act_window</field>
+<field name="view_mode">form</field>
+<field name="target">new</field>
+</record>
+
+</odoo>

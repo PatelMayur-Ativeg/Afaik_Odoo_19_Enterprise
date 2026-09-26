@@ -1,0 +1,56 @@
+<odoo>
+     <!-- <record id="sale.action_orders" model="ir.actions.act_window">
+            <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel', 'snapshot'))]
+            </field>
+    </record> -->
+
+    <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+            <field name="domain">[('state', '!=', 'snapshot')]
+            </field>
+    </record>
+    <record id="view_quotation_tree_purhcase_rfq" model="ir.ui.view">
+        <field name="name">view.rfq.inherit.list</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="version" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_form_inherit_branch" model="ir.ui.view">
+        <field name="name">view.rfq.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="attributes">
+                <attribute name="invisible">state in ['snapshot']</attribute>
+            </xpath>
+
+            <xpath expr="//header" position="after">
+                <header invisible="state not in ['snapshot']">
+                    <field name="state" widget="statusbar"  statusbar_colors="{'KEY_IS_STATE':'VALUE_IS_COLOR'}"/>
+                </header>
+            </xpath>
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="version" />
+                <field name="quotation_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button type="object"
+                        class="oe_stat_button"
+                        icon="fa-copy"
+                        name="action_view_versions"
+                        string="Versions"
+                        invisible="('version_ids_count','=',0)">
+                    <field name="version_ids_count" nolabel="1"/>
+                </button>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                    <button name="take_snap" confirm="Are You Sure?" string="Snapshot" class="oe_highlight" type="object"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_aafaq_import_wizard,aafaq.import.wizard,model_aafaq_import_wizard,base.group_user,1,1,1,1
+access_aafaq_import_queue,aafaq.import.queue,model_aafaq_import_queue,base.group_user,1,1,1,1
+access_aafaq_import_log_user,aafaq.import.log user,model_aafaq_import_log,base.group_user,1,0,0,0
+access_aafaq_import_log_manager,aafaq.import.log manager,model_aafaq_import_log,base.group_system,1,1,1,1
+access_aafaq_import_alias_user,aafaq.import.alias user,model_aafaq_import_alias,base.group_user,1,1,1,1
+access_aafaq_import_held_mail,aafaq.import.held.mail,model_aafaq_import_held_mail,base.group_user,1,1,1,1
+access_aafaq_map_attachment,access_aafaq_map_attachment,aafaq_importer.model_aafaq_map_attachment,base.group_user,1,1,1,1
+access_product_mapping,access_product_mapping,aafaq_importer.model_product_mapping,base.group_user,1,1,1,1
+access_currency_account_mapping_user,currency.account.mapping.user,model_currency_account_mapping,base.group_user,1,1,1,1

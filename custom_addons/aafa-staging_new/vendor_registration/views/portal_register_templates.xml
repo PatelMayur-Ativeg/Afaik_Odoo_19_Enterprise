@@ -1,0 +1,2061 @@
+<odoo>
+	<template id="vendor_registration" name="Vendor Registration">
+		<t t-call="portal.portal_layout">
+			<!-- <form action="/vendor/registration/submit" method="post" enctype="multipart/form-data"
+                      style="font-family: Times New Roman, Times, serif;"> -->
+			<form id="vendorRegistrattionForm" onsubmit="return ajaxpost()" enctype="multipart/form-data"
+                      style="font-family: Times New Roman, Times, serif;">
+                                      <!-- container -->
+				<table width="60%" height="50px" border="0px" cellpadding="0px"
+                           cellspacing="1px"
+                           align="center">
+					<tr style="padding-top:12px;">
+						<td>
+							<span style="font-family: Times New Roman, Times, serif;
+                                    color:#229954;font-weight: bold;font-size:35pt;align:center;">
+								<center>
+                                        Vendor Registration Form
+                                    </center>
+							</span>
+						</td>
+					</tr>
+				</table>
+                
+				<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+				<div class="row">
+					<div class="col-lg-12">
+						<div t-if="error_message" class="alert alert-danger" role="alert">
+							<t t-foreach="error_message" t-as="err">
+								<t t-esc="err"/>
+								<br/>
+							</t>
+						</div>
+					</div>
+					<t t-if="message">
+						<div class="alert alert-success" role="alert">
+							<t style="padding-left:20px;" t-esc="message"/>
+						</div>
+					</t>
+					<div class="clearfix"/>
+					<input type="hidden" name="redirect" t-att-value="redirect"/>
+				</div>
+                <div style="background-color: white;">
+                <div id="company_info" class="wrap" style="display: block;padding: 0.3rem 1rem 0.001rem 1rem;">
+                <div class="row">
+                    <div class="col-md-12">
+                    <button type="submit" class="btn btn-success float-left mb32 ">
+                                Save
+                                <span class="fa fa-check"/>
+                    </button>
+                </div>
+                </div>
+					<div class="row">
+						<div class="form-group  text-left col-lg-4">
+							<label class="label-color" for="company_name">Company Name
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="text" class="form-control company_name" name="company_name" id="company_name"/>
+							<p id="comp_name_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<!-- <div class="form-group  text-left col-lg-4"><label class="label-color" for="company_name_arabic">Company Name (Arabic)<span style="color:#bd6d6d;">*</span></label><input type="text"  class="form-control company_name_arabic" name="company_name_arabic"/></div> -->
+						<div class="form-group  text-left col-lg-4">
+							<label class="label-color" for="company_email">Email
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="email"  class="form-control company_email" name="company_email" id="company_email"/>
+							<p id="email_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group  text-left col-lg-4">
+							<label class="label-color" for="license_number">Company Website</label>
+							<input type="text"  name="company_website" id="company_website" class="form-control company_website"/>
+							<!-- <p id="comp_web_msg" style="color:#bd6d6d;"></p> -->
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group  text-left col-lg-4">
+							<label class="label-color" for="license_number">License No
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="text"  name="license_number" id="license_number" class="form-control license_number"/>
+							<p id="license_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group  text-left col-lg-4">
+							<label class="label-color" for="license_issue_date">Issue Date
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="date"  name="license_issue_date" id="license_issue_date" class="form-control license_issue_date"/>
+							<p id="lic_issue_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group  text-left col-lg-4">
+							<label class="label-color" for="license_expiry_date">Expiry Date
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="date"  name="license_expiry_date" id="license_expiry_date" class="form-control license_expiry_date"/>
+							<p id="lic_exp_msg" style="color:#bd6d6d;"></p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group  text-left col-lg-4">
+							<label class="label-color" for="last_name" >Country of Incorporation
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<br/>
+							<select name="country_of_incorporation"  id="country_id" t-attf-class="form-control country_of_incorporation">
+								<option data-display="Select" ></option>
+								<t t-foreach="countries or []" t-as="country">
+									<option t-att-value="country.id">
+										<t t-esc="country.name" />
+									</option>
+								</t>
+							</select>
+							<p id="country_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group  text-left col-lg-4"  >
+							<label class="label-color" for="phone_number">Phone/Mobile
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="tel" id="phone"  class="form-control phone_number" name="phone_number" placeholder="+971"/>
+							<p id="phone_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group  text-left col-lg-4" >
+							<label class="label-color" for="address_in_country">Company Address
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="text"  class="form-control address_in_country" name="address_in_country" id="address_in_country"/>
+							<p id="addr_msg" style="color:#bd6d6d;"></p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-gorup text-left col-lg-4" >
+							<label class="label-color" for="city">City 
+								<span style="color:#da3434;">*</span>
+							</label>
+							<input type="text"  class="form-control city" name="city" id="city"/>
+							<p id="city_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group  text-left col-lg-4">
+							<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+							<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+							<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+							<link rel="stylesheet"
+                                      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"/>
+							<link rel="stylesheet"
+                                      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"/>
+							<label class="label-color" for="company_activities" >Company Activity 
+                                </label>
+							<select name="company_activities" data-live-search="true"  id="company_activities" multiple="multiple"  t-attf-class="selectpicker form-control activity_values">
+								<t t-foreach="activities or []" t-as="activity">
+									<option t-att-value="activity.id">
+										<t t-esc="activity.name" />
+									</option>
+								</t>
+							</select>
+							<input type="hidden" class="form-control activity_values" name="activity_values" />
+							<p id="activity_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<!-- <select id="company_activities"  
+                                        name="company_activities" class="selectpicker form-control company_activities" ><option data-display="Select" ></option><t t-foreach="countries or []" t-as="country"><option t-att-value="country.id"><t t-esc="country.name" /></option></t> -->
+						<!-- <t t-foreach="activities or []" t-as="activity"><option t-att-value="activity.id"><t t-esc="activity.name" /></option></t> -->
+						<!-- </select> -->
+						<!-- <input type="hidden" class="form-control activity_values" name="activity_values" /><p id="activity_msg" style="color:#bd6d6d;"></p> -->
+						<!-- </div> -->
+						<div class="form-group text-left col-lg-4" >
+							<label class="label-color" for="vat">VAT 
+								<span style="color:#da3434;">*</span>
+							</label>
+							<input type="text"  class="form-control vat" name="vat" id="vat"/>
+							<p id="vat_msg" style="color:#bd6d6d;"></p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-gorup text-left col-lg-4" >
+							<label class="label-color" for="po_box">PO Box
+								<span style="color:#da3434;">*</span>
+							</label>
+							<input type="text"  class="form-control po_box" name="po_box" id="po_box"/>
+							<p id="po_msg" style="color:#bd6d6d;"></p>
+						</div>
+					</div>
+                    
+                </div>
+				<div class="card shadow d-flex justify-content-center mt-5">
+					<!-- nav options -->
+					<ul class="nav nav-pills mb-3 shadow-sm" id="pills-tab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Manager Details</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Bank Details</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Document Upload</a>
+						</li>
+					</ul>
+					<!-- content -->
+					<div class="tab-content" id="pills-tabContent p-3">
+						<!-- 1st card -->
+						<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                            <div class="form-group addinfo">
+                                <div class="row" >
+						<div class="form-group text-left col-lg-3">
+							<label class="label-color" for="first_name">First Name
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="text" class="form-control first_name" name="first_name" id="first_name"/>
+							<p id="fst_name_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group text-left col-lg-3">
+							<label class="label-color" for="last_name">Last Name
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="text" class="form-control last_name" name="last_name" id="last_name"/>
+							<p id="lst_name_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group text-left col-lg-3">
+							<label class="label-color" for="manager_email">Email
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="email" class="form-control manager_email" name="manager_email" id="manager_email"/>
+							<p id="manager_email_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group text-left col-lg-3">
+							<label class="label-color" for="manager_mobile">Mobile
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<!-- <input type="tel" id="phone" class="form-control manager_mobile" name="manager_mobile" placeholder="+971"/> -->
+							<input type="tel" class="form-control manager_mobile" name="manager_mobile" id="manager_mobile" placeholder="+971"/>
+							<p id="manager_mobile_msg" style="color:#bd6d6d;"></p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group text-left col-lg-3" >
+							<label class="label-color" for="manager_title">Job Position
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="text" class="form-control manager_title" name="manager_title" id="manager_title"/>
+							<p id="manager_title_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group text-left col-lg-3"  >
+							<!-- <label class="label-color" for="date_of_birth">Date of Birth<span style="color:#bd6d6d;">*</span></label><input type="date" class="form-control date_of_birth" name="date_of_birth"/> -->
+						</div>
+						<div class="form-group text-left col-lg-3">
+							<!-- <label class="label-color" for="country_of_birth" >Country Birth<span style="color:#bd6d6d;">*</span></label><select name="country_of_birth" class="form-control product_select list country_of_birth"><option data-display="Select" ></option><t t-foreach="countries or []" t-as="country"><option t-att-value="country.id"><t t-esc="country.name" /></option></t></select> -->
+						</div>
+						<div class="form-group text-left col-lg-3">
+							<!-- <label class="label-color" for="previous_nationality" >Previous Nationality</label><select name="previous_nationality" class="form-control product_select list previous_nationality"><option data-display="Select" ></option><t t-foreach="countries or []" t-as="country"><option t-att-value="country.id"><t t-esc="country.name" /></option></t></select> -->
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group text-left col-lg-3" >
+							<!-- <label class="label-color" for="passport_type">Passport Type</label><select name="passport_type" class="form-control product_select list passport_type"><option data-display="Select"></option><option value="business">Business</option><option value="diplomat">Diplomat</option><option value="service">Service</option><option value="student">Student</option><option value="special">Special</option></select> -->
+						</div>
+						<div class="form-group text-left col-lg-3" >
+							<!-- <label class="label-color" for="passport_number">Passport Number<span style="color:#bd6d6d;">*</span></label><input type="text" class="form-control passport_number" name="passport_number"/> -->
+						</div>
+						<div class="form-group text-left col-lg-3">
+							<!-- <label class="label-color" for="passport_issue_country">Issue Country<span style="color:#bd6d6d;">*</span></label><select name="passport_issue_country" class="form-control product_select list passport_issue_country"><option data-display="Select" ></option><t t-foreach="countries or []" t-as="country"><option t-att-value="country.id"><t t-esc="country.name" /></option></t></select> -->
+						</div>
+						<div class="form-group text-left col-lg-3" >
+							<!-- <label class="label-color" for="passport_issue_date">Issue Date<span style="color:#bd6d6d;">*</span></label><input type="date" class="form-control passport_issue_date" name="passport_issue_date"/> -->
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group text-left col-lg-4">
+							<!-- <label class="label-color" for="passport_expiry_date">Expiry Date<span style="color:#bd6d6d;">*</span></label><input type="date" class="form-control passport_expiry_date" name="passport_expiry_date"/> -->
+						</div>
+						<div class="form-group text-left col-lg-6">
+							<!-- <label class="label-color" for="manager_international_address">Address<span style="color:#bd6d6d;">*</span></label><input type="text" class="form-control manager_international_address" name="manager_international_address"/> -->
+						</div>
+					</div>
+
+							</div>
+						</div>
+						<!-- 2nd card -->
+						<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+							<div class="form-group addinfo">
+								<div class="row">
+						<div class="col-lg-12">
+							<label class="label-color" for="uae">UAE</label>
+							<input type="radio" name="is_country_radio" id="uae" value="UAE" disabled="disabled"/>
+							<label class="label-color" for="china">China</label>
+							<input type="radio" name="is_country_radio" id="china" value="China" disabled="disabled"/>
+							<label class="label-color" for="other">Other</label>
+							<input type="radio" name="is_country_radio" id="other" value="Other" disabled="disabled"/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="row">
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="bank_name">Bank Name
+										<span style="color:#bd6d6d;">*</span>
+									</label>
+									<input type="text" class="form-control bank_name" name="bank_name" id="bank_name"/>
+									<p id="bank_name_msg" style="color:#bd6d6d;"></p>
+								</div>
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="bank_account_name">Account Holder Name
+										<span style="color:#bd6d6d;">*</span>
+									</label>
+									<input type="text" class="form-control bank_account_name" name="bank_account_name" id="bank_account_name"/>
+									<p id="bank_acc_msg" style="color:#bd6d6d;"></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="iban_code">IBAN Code
+                                        
+										<span id="iban_imp" style="color:#bd6d6d;"></span>
+										<!-- <span style="color:#bd6d6d;">*</span> -->
+									</label>
+									<input type="text" class="form-control iban_code" name="iban_code" id="iban_code" placeholder="Write N/A if you don't have IBAN code"/>
+									<p id="iban_msg" style="color:#bd6d6d;"></p>
+								</div>
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="bank_address">Bank Address
+										<span style="color:#bd6d6d;">*</span>
+									</label>
+									<input type="text" name="bank_address" id="bank_address" class="form-control bank_address" placeholder="Bank Address"/>
+									<p id="bank_addr_msg" style="color:#bd6d6d;"></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="acc_number">Account Number
+										<span style="color:#bd6d6d;">*</span>
+									</label>
+									<input type="text" name="acc_number" id="acc_number" class="form-control acc_number" placeholder="Write N/A if you don't have Account number"/>
+									<p id="acc_num_msg" style="color:#bd6d6d;"></p>
+								</div>
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="swift_code">Swift Code
+										<span style="color:#bd6d6d;">*</span>
+									</label>
+									<input type="text" name="swift_code" id="swift_code" class="form-control swift_code" placeholder="Write N/A if you don't have Swfit code"/>
+									<p id="swift_code_msg" style="color:#bd6d6d;"></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="currency_id" >Supplier Currency
+										<span style="color:#bd6d6d;">*</span>
+									</label>
+									<br/>
+									<select name="currency_id"  id="currency_id" t-attf-class="form-control currency_id">
+										<option data-display="Select" ></option>
+										<t t-foreach="currencies or []" t-as="currency">
+											<option t-att-value="currency.id">
+												<t t-esc="currency.name" />
+											</option>
+										</t>
+									</select>
+									<p id="currency_msg" style="color:#bd6d6d;"></p>
+								</div>
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="bank_details_doc">Bank Details Attachment
+									</label>
+									<input type="file" name="bank_details_doc" class="form-control"
+                                           id="bank_details_doc"
+                                           accept=".jpeg,.jpg,.png,.pdf"/>
+								</div>
+							</div>
+						</div>
+					</div>
+
+							</div>
+						</div>
+						<!-- 3nd card -->
+						<div class="tab-pane fade third" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+							<div class="form">
+<div class="row">
+						<p style="color:#91999e; margin-top:16px;">
+							<span style="color:#da3434;">Note: </span>Please provide the following attachments by click on Choose file button at the below table. The required column inidcates if the attachement(s) are mandotory to proceed to next step.
+						</p>
+						<div class="table-wrap">
+							<table class="table">
+								<thead class="" style="background-color:#7c6576;color:white">
+									<tr>
+										<th>Document Name</th>
+										<th>Max Size</th>
+										<th>Allowed Extensions</th>
+										<th>Required</th>
+										<th>Comments</th>
+										<th>Upload</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Trade License Scan</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<!--                                                <label class="upload-label" id="trade_license_doc_label" for="trade_license_doc">-->
+											<!--                                                    <i class="ion-android-cloud-outline" style="font-size: 20px;padding-right: 6px;">-->
+											<!--                                                        -->
+											<!--                                                    </i>Choose file</label>-->
+											<!--                                                style="display: none;"-->
+											<input  type="file" name="trade_license_doc"  multiple="true"
+                                               data-show-upload="true" class="image-uploader" data-show-caption="true"
+                                               data-show-preview="true" id="trade_license_doc" />
+											<p id="trade_msg" style="color:#bd6d6d;"></p>
+										</td>
+									</tr>
+									<tr>
+										<td>Emirates ID Scan</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<!--                                               <label class="upload-label" id="emirates_id_doc_label" for="emirates_id_doc"><i class="ion-android-cloud-outline" style="font-size: 20px;padding-right: 6px;"></i>Choose file</label>-->
+											<input  type="file" name="emirates_id_doc" class="file" multiple="true"
+                                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                                   data-show-preview="true" id="emirates_id_doc" />
+										</td>
+									</tr>
+									<tr>
+										<td>Passport Scan - First Page</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<!--                                               <label class="upload-label" id="passport_doc_label" for="passport_doc"><i class="ion-android-cloud-outline" style="font-size: 20px;padding-right: 6px;"></i>Choose file</label>-->
+											<input  type="file" name="passport_doc" class="file" multiple="true"
+                                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                                   data-show-preview="true" id="passport_doc" />
+										</td>
+									</tr>
+									<tr>
+										<td>Visa Scan</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<!--                                               <label class=" upload-label" id="visa_doc_label" for="visa_doc"><i class="ion-android-cloud-outline" style="font-size: 20px;padding-right: 6px;"></i>Choose file</label>-->
+											<input  type="file" name="visa_doc" class="file" multiple="true"
+                                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                                   data-show-preview="true" id="visa_doc" />
+										</td>
+									</tr>
+									<tr>
+										<td>Company Portfolio</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<!--                                               <label class="upload-label" id="company_portfolio_doc_label" for="company_portfolio_doc"><i class="ion-android-cloud-outline" style="font-size: 20px;padding-right: 6px;"></i>Choose file</label>-->
+											<input  type="file" name="company_portfolio_doc"
+                                                     class="file" multiple="true"
+                                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                                   data-show-preview="true" id="company_portfolio_doc" />
+										</td>
+									</tr>
+									<tr>
+										<td>Chamber of Commerce Membership Certificate</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<!--                                               <label class="upload-label" id="chamber_commerce_doc_label" for="chamber_commerce_doc"><i class="ion-android-cloud-outline" style="font-size: 20px;padding-right: 6px;"></i>Choose file</label>-->
+											<input  type="file" name="chamber_commerce_doc"
+                                                      class="file" multiple="true"
+                                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                                   data-show-preview="true" id="chamber_commerce_doc" />
+										</td>
+									</tr>
+									<tr>
+										<td>VAT Registration Copy</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<input  type="file" name="vat_registration_copy"
+                                                      class="file" multiple="true"
+                                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                                   data-show-preview="true" id="vat_registration_copy" />
+											<p id="vat_reg_msg" style="color:#bd6d6d;"></p>
+										</td>
+									</tr>
+									<tr>
+										<td>Other Documents Copy</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<input  type="file" name="other_documents_copy"
+                                                      class="file" multiple="true"
+                                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                                   data-show-preview="true" id="other_documents_copy" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+                                <!-- <button type="submit" class="btn btn-success float-right mb32 ">
+                            Confirm
+                            
+							<span class="fa fa-long-arrow-right"/>
+						        </button> -->
+								<!-- <button class="btn btn-success">Insert</button> -->
+							</div>
+						</div>
+					</div>
+				</div>
+                </div> 
+
+				<style>
+                        /* Style the tab */
+                        .tab {
+                        overflow: hidden;
+                        border: 1px solid #ccc;
+                        background-color: #f1f1f1;
+                        }
+
+                        /* Style the buttons that are used to open the tab content */
+                        .tab button {
+                        background-color: inherit;
+                        float: left;
+                        border: none;
+                        outline: none;
+                        cursor: pointer;
+                        padding: 14px 16px;
+                        transition: 0.3s;
+                        }
+
+                        /* Change background color of buttons on hover */
+                        .tab button:hover {
+                        background-color: #ddd;
+                        }
+
+                        /* Create an active/current tablink class */
+                        .tab button.active {
+                        background-color: #ccc;
+                        }
+
+                        /* Style the tab content */
+                        .tabcontent {
+                        display: none;
+                        padding: 6px 12px;
+                        border: 1px solid #ccc;
+                        border-top: none;
+                        }
+                        body {
+                        background-color: brown;
+                        padding: 40px;
+
+                        }
+                        .content {
+                        position: relative;
+                        bottom: 0;
+                        background: white;
+                        color: #f1f1f1;
+                        width: 100%;
+                        padding: 20px;
+                        }
+                    </style>
+				<!-- <div class="tab">
+					<button class="tablinks active" disabled="disabled" name="company_info"   style="margin-left:100px;border-radius: 50%;margin-right:100px;border-radius: 50%;">
+						<i class="fa fa-2x fa-briefcase"></i>
+						<br/>Company Details
+                        
+					</button>
+					<button class="tablinks" name="manager_info" disabled="disabled" style="margin-right:100px;border-radius: 50%;">
+						<i class="fa fa-2x fa-user"></i>
+						<br/>Manager Details
+                        
+					</button>
+					<button class="tablinks" name="bank_info" disabled="disabled"  style="margin-right:100px;border-radius: 50%;">
+						<i class="fa fa-2x fa-credit-card"></i>
+						<br/>Bank Details
+                        
+					</button>
+					<button class="tablinks" name="document_info" disabled="disabled"  style="margin-right:100px;border-radius: 50%;">
+						<i class="fa fa-2x fa-paperclip"></i>
+						<br/>Documents Upload
+                        
+					</button>
+				</div>
+				<div id="company_info" class="tabcontent" style="display: block;">
+					<div class="row">
+						<div class="form-group  text-left col-lg-4">
+							<label class="label-color" for="company_name">Company Name
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="text" class="form-control company_name" name="company_name" id="company_name"/>
+							<p id="comp_name_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group  text-left col-lg-4">
+							<label class="label-color" for="company_email">Email
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="email"  class="form-control company_email" name="company_email" id="company_email"/>
+							<p id="email_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group  text-left col-lg-4">
+							<label class="label-color" for="license_number">Company Website</label>
+							<input type="text"  name="company_website" id="company_website" class="form-control company_website"/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group  text-left col-lg-4">
+							<label class="label-color" for="license_number">License No
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="text"  name="license_number" id="license_number" class="form-control license_number"/>
+							<p id="license_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group  text-left col-lg-4">
+							<label class="label-color" for="license_issue_date">Issue Date
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="date"  name="license_issue_date" id="license_issue_date" class="form-control license_issue_date"/>
+							<p id="lic_issue_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group  text-left col-lg-4">
+							<label class="label-color" for="license_expiry_date">Expiry Date
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="date"  name="license_expiry_date" id="license_expiry_date" class="form-control license_expiry_date"/>
+							<p id="lic_exp_msg" style="color:#bd6d6d;"></p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group  text-left col-lg-4">
+							<label class="label-color" for="last_name" >Country of Incorporation
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<br/>
+							<select name="country_of_incorporation"  id="country_id" t-attf-class="form-control country_of_incorporation">
+								<option data-display="Select" ></option>
+								<t t-foreach="countries or []" t-as="country">
+									<option t-att-value="country.id">
+										<t t-esc="country.name" />
+									</option>
+								</t>
+							</select>
+							<p id="country_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group  text-left col-lg-4"  >
+							<label class="label-color" for="phone_number">Phone/Mobile
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="tel" id="phone"  class="form-control phone_number" name="phone_number" placeholder="+971"/>
+							<p id="phone_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group  text-left col-lg-4" >
+							<label class="label-color" for="address_in_country">Company Address
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="text"  class="form-control address_in_country" name="address_in_country" id="address_in_country"/>
+							<p id="addr_msg" style="color:#bd6d6d;"></p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-gorup text-left col-lg-4" >
+							<label class="label-color" for="city">City 
+								<span style="color:#da3434;">*</span>
+							</label>
+							<input type="text"  class="form-control city" name="city" id="city"/>
+							<p id="city_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group  text-left col-lg-4">
+							<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+							<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+							<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+							<link rel="stylesheet"
+                                      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"/>
+							<link rel="stylesheet"
+                                      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"/>
+							<label class="label-color" for="company_activities" >Company Activity 
+                                </label>
+							<select name="company_activities" data-live-search="true"  id="company_activities" multiple="multiple"  t-attf-class="selectpicker form-control activity_values">
+								<t t-foreach="activities or []" t-as="activity">
+									<option t-att-value="activity.id">
+										<t t-esc="activity.name" />
+									</option>
+								</t>
+							</select>
+							<input type="hidden" class="form-control activity_values" name="activity_values" />
+							<p id="activity_msg" style="color:#bd6d6d;"></p>
+						</div>
+
+						<div class="form-group text-left col-lg-4" >
+							<label class="label-color" for="vat">VAT 
+								<span style="color:#da3434;">*</span>
+							</label>
+							<input type="text"  class="form-control vat" name="vat" id="vat"/>
+							<p id="vat_msg" style="color:#bd6d6d;"></p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-gorup text-left col-lg-4" >
+							<label class="label-color" for="po_box">PO Box
+								<span style="color:#da3434;">*</span>
+							</label>
+							<input type="text"  class="form-control po_box" name="po_box" id="po_box"/>
+							<p id="po_msg" style="color:#bd6d6d;"></p>
+						</div>
+					</div>
+					<div class="tab-pane active">
+						<center>
+							<button class="btn btn-danger" style="" type="submit"
+                                        onclick="openCity(event, 'manager_info');return false;" id="current_company_info"  >Next</button>
+						</center>
+					</div>
+				</div>
+				<div id="manager_info" class="tabcontent">
+					<div class="row" >
+						<div class="form-group text-left col-lg-3">
+							<label class="label-color" for="first_name">First Name
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="text" class="form-control first_name" name="first_name" id="first_name"/>
+							<p id="fst_name_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group text-left col-lg-3">
+							<label class="label-color" for="last_name">Last Name
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="text" class="form-control last_name" name="last_name" id="last_name"/>
+							<p id="lst_name_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group text-left col-lg-3">
+							<label class="label-color" for="manager_email">Email
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="email" class="form-control manager_email" name="manager_email" id="manager_email"/>
+							<p id="manager_email_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group text-left col-lg-3">
+							<label class="label-color" for="manager_mobile">Mobile
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="tel" class="form-control manager_mobile" name="manager_mobile" id="manager_mobile" placeholder="+971"/>
+							<p id="manager_mobile_msg" style="color:#bd6d6d;"></p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group text-left col-lg-3" >
+							<label class="label-color" for="manager_title">Job Position
+								<span style="color:#bd6d6d;">*</span>
+							</label>
+							<input type="text" class="form-control manager_title" name="manager_title" id="manager_title"/>
+							<p id="manager_title_msg" style="color:#bd6d6d;"></p>
+						</div>
+						<div class="form-group text-left col-lg-3"  >
+						</div>
+						<div class="form-group text-left col-lg-3">
+						</div>
+						<div class="form-group text-left col-lg-3">
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group text-left col-lg-3" >
+						</div>
+						<div class="form-group text-left col-lg-3" >
+						</div>
+						<div class="form-group text-left col-lg-3">
+						</div>
+						<div class="form-group text-left col-lg-3" >
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group text-left col-lg-4">
+						</div>
+						<div class="form-group text-left col-lg-6">
+						</div>
+					</div>
+					<div class="tab-pane" >
+						<center>
+							<button class="btn btn-danger" style=""
+                                onclick="openCity(event, 'company_info');return false;" id="current_manager_info_prev">Prev</button>
+							<button class="btn btn-danger" id="current_manager_info" onclick="openCity(event, 'bank_info');return false;" style="" >Next</button>
+							<button class="btn btn-secondary" id="current_manager_info_skip" onclick="openCity(event, 'bank_info');return false;" style="" >Skip >></button>
+						</center>
+					</div>
+					<br/>
+				</div>
+				<div id="bank_info" class="tabcontent">
+					<div class="row">
+						<div class="col-lg-12">
+							<label class="label-color" for="uae">UAE</label>
+							<input type="radio" name="is_country_radio" id="uae" value="UAE" disabled="disabled"/>
+							<label class="label-color" for="china">China</label>
+							<input type="radio" name="is_country_radio" id="china" value="China" disabled="disabled"/>
+							<label class="label-color" for="other">Other</label>
+							<input type="radio" name="is_country_radio" id="other" value="Other" disabled="disabled"/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="row">
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="bank_name">Bank Name
+										<span style="color:#bd6d6d;">*</span>
+									</label>
+									<input type="text" class="form-control bank_name" name="bank_name" id="bank_name"/>
+									<p id="bank_name_msg" style="color:#bd6d6d;"></p>
+								</div>
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="bank_account_name">Account Holder Name
+										<span style="color:#bd6d6d;">*</span>
+									</label>
+									<input type="text" class="form-control bank_account_name" name="bank_account_name" id="bank_account_name"/>
+									<p id="bank_acc_msg" style="color:#bd6d6d;"></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="iban_code">IBAN Code
+                                        
+										<span id="iban_imp" style="color:#bd6d6d;"></span>
+									</label>
+									<input type="text" class="form-control iban_code" name="iban_code" id="iban_code" placeholder="Write N/A if you don't have IBAN code"/>
+									<p id="iban_msg" style="color:#bd6d6d;"></p>
+								</div>
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="bank_address">Bank Address
+										<span style="color:#bd6d6d;">*</span>
+									</label>
+									<input type="text" name="bank_address" id="bank_address" class="form-control bank_address" placeholder="Bank Address"/>
+									<p id="bank_addr_msg" style="color:#bd6d6d;"></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="acc_number">Account Number
+										<span style="color:#bd6d6d;">*</span>
+									</label>
+									<input type="text" name="acc_number" id="acc_number" class="form-control acc_number" placeholder="Write N/A if you don't have Account number"/>
+									<p id="acc_num_msg" style="color:#bd6d6d;"></p>
+								</div>
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="swift_code">Swift Code
+										<span style="color:#bd6d6d;">*</span>
+									</label>
+									<input type="text" name="swift_code" id="swift_code" class="form-control swift_code" placeholder="Write N/A if you don't have Swfit code"/>
+									<p id="swift_code_msg" style="color:#bd6d6d;"></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group  text-left col-lg-6">
+									<label class="label-color" for="currency_id" >Supplier Currency
+										<span style="color:#bd6d6d;">*</span>
+									</label>
+									<br/>
+									<select name="currency_id"  id="currency_id" t-attf-class="form-control currency_id">
+										<option data-display="Select" ></option>
+										<t t-foreach="currencies or []" t-as="currency">
+											<option t-att-value="currency.id">
+												<t t-esc="currency.name" />
+											</option>
+										</t>
+									</select>
+									<p id="currency_msg" style="color:#bd6d6d;"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" >
+						<center>
+							<button class="btn btn-danger" style=""
+                                onclick="openCity(event, 'manager_info');return false;" id="current_bank_info">Prev</button>
+							<button class="btn btn-danger" id="current_bank_info" onclick="openCity(event, 'document_info');return false;" style="" >Next</button>
+						</center>
+					</div>
+					<br/>
+				</div>
+				<div id="document_info" class="tabcontent">
+					<div class="row">
+						<p style="color:#91999e; margin-top:16px;">
+							<span style="color:#da3434;">Note: </span>Please provide the following attachments by click on Choose file button at the below table. The required column inidcates if the attachement(s) are mandotory to proceed to next step.
+						</p>
+						<div class="table-wrap">
+							<table class="table">
+								<thead class="" style="background-color:#7c6576;color:white">
+									<tr>
+										<th>Document Name</th>
+										<th>Max Size</th>
+										<th>Allowed Extensions</th>
+										<th>Required</th>
+										<th>Comments</th>
+										<th>Upload</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Trade License Scan</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<input  type="file" name="trade_license_doc"  multiple="true"
+                                               data-show-upload="true" class="image-uploader" data-show-caption="true"
+                                               data-show-preview="true" id="trade_license_doc" />
+											<p id="trade_msg" style="color:#bd6d6d;"></p>
+										</td>
+									</tr>
+									<tr>
+										<td>Emirates ID Scan</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<input  type="file" name="emirates_id_doc" class="file" multiple="true"
+                                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                                   data-show-preview="true" id="emirates_id_doc" />
+										</td>
+									</tr>
+									<tr>
+										<td>Passport Scan - First Page</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<input  type="file" name="passport_doc" class="file" multiple="true"
+                                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                                   data-show-preview="true" id="passport_doc" />
+										</td>
+									</tr>
+									<tr>
+										<td>Visa Scan</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<input  type="file" name="visa_doc" class="file" multiple="true"
+                                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                                   data-show-preview="true" id="visa_doc" />
+										</td>
+									</tr>
+									<tr>
+										<td>Company Portfolio</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<input  type="file" name="company_portfolio_doc"
+                                                     class="file" multiple="true"
+                                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                                   data-show-preview="true" id="company_portfolio_doc" />
+										</td>
+									</tr>
+									<tr>
+										<td>Chamber of Commerce Membership Certificate</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<input  type="file" name="chamber_commerce_doc"
+                                                      class="file" multiple="true"
+                                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                                   data-show-preview="true" id="chamber_commerce_doc" />
+										</td>
+									</tr>
+									<tr>
+										<td>VAT Registration Copy</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<input  type="file" name="vat_registration_copy"
+                                                      class="file" multiple="true"
+                                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                                   data-show-preview="true" id="vat_registration_copy" />
+											<p id="vat_reg_msg" style="color:#bd6d6d;"></p>
+										</td>
+									</tr>
+									<tr>
+										<td>Other Documents Copy</td>
+										<td style="background-color:white">2 MB</td>
+										<td>jpeg,jpg,png,pdf</td>
+										<td style="background-color:white">Yes</td>
+										<td>-</td>
+										<td style="background-color:white">
+											<input  type="file" name="other_documents_copy"
+                                                      class="file" multiple="true"
+                                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                                   data-show-preview="true" id="other_documents_copy" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="tab-pane" >
+						<center>
+							<button class="btn btn-danger" style=""
+                                onclick="openCity(event, 'bank_info');return false;" id="current_document_info">Prev</button>
+						</center>
+					</div>
+					<br/>
+					<div class="clearfix">
+						<button type="submit" class="btn btn-success float-right mb32 ">
+                            Confirm
+                            
+							<span class="fa fa-long-arrow-right"/>
+						</button>
+					</div>
+				</div> -->
+				<script type="text/javascript">
+					<!-- //==========Validations based on country===== -->
+
+                        $(".country_of_incorporation").change(function()
+                        {
+                            var e = document.getElementById("country_id");
+                            var opt_text = e.options[e.selectedIndex].text;
+                            if(opt_text=="China")
+                            {
+                                $('input:radio[id=china]').prop("checked",true);
+                            }
+                            else if(opt_text=="United Arab Emirates")
+                            {
+                                $('input:radio[id=uae]').prop("checked",true);
+                            }
+                            else
+                            {
+                                $('input:radio[id=other]').prop("checked",true);
+                            }
+                        });
+                        
+					<!-- //=========EOL==== -->
+                        function check_required_fields()
+                        {
+                            var license_number = $(".license_number");
+                            var country_of_incorporation = $(".country_of_incorporation");
+                            var company_name = $(".company_name");
+                            var company_name_arabic = $(".company_name_arabic");
+                            var license_issue_date = $(".license_issue_date");
+                            var license_expiry_date = $(".license_expiry_date");
+                            var address_in_country = $(".address_in_country");
+                            var phone_number = $(".phone_number");
+                            var company_email = $(".company_email");
+                            var vat = $(".vat");
+                            var bank_name = $(".bank_name");
+                            var bank_account_name = $(".bank_account_name");
+                            var iban_code = $(".iban_code");
+                            var ifcs_code = $(".ifcs_code");
+                            var bank_address = $(".bank_address");
+                            var acc_number = $(".acc_number");
+                            var swift_code = $(".swift_code");
+                            var currency_id = $(".currency_id");
+
+                            var manager_title = $(".manager_title");
+                            var first_name = $(".first_name");
+                            var last_name = $(".last_name");
+
+                            var city = $(".city");
+                            var manager_email = $(".manager_email");
+                            var manager_mobile = $(".manager_mobile");
+                            var po_box = $(".po_box");
+                            var is_country_radio = $(".is_country_radio");
+
+                            
+                            var trade_license_doc = $("#trade_license_doc");
+                            var vat_registration_copy = $("#vat_registration_copy");
+                            var other_documents_copy = $("#other_documents_copy");
+
+                            var first_flag = true
+                            <!-- alert(first_flag) -->
+                            if (!company_name.val()) {
+                                    $(".company_name").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    first_flag = false;
+                                }
+                            if (!city.val()) {
+                                    $(".city").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    first_flag = false;
+                                }
+                            if (!po_box.val()) {
+                                $(".po_box").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                first_flag = false;
+                            }
+                            if (!company_email.val()) {
+                                $(".company_email").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                first_flag = false;
+                            }
+                            if (!vat.val()) {
+                                $(".vat").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                first_flag = false;
+                            }
+                            if (!license_number.val()) {
+                                $(".license_number").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                first_flag = false;
+                            }
+                            if (!license_issue_date.val()) {
+                                $(".license_issue_date").css(
+                                    "border",
+                                    "1px solid rgb(255 84 86 / 58%)"
+                                );
+                                first_flag = false;
+                            }
+                            if (!license_expiry_date.val()) {
+                                $(".license_expiry_date").css(
+                                    "border",
+                                    "1px solid rgb(255 84 86 / 58%)"
+                                );
+                                first_flag = false;
+
+                            }
+                            else{
+                                var today;
+                                today = new Date();
+                                someday = new Date(license_expiry_date.val());
+                                if (someday &lt; today) {
+                                    alert("The expiry date is before today's date. Please select a valid expiry date");
+                                    return false;
+                                }
+                            }
+
+                            if (!country_of_incorporation.val()) {
+                                $(".country_of_incorporation").css(
+                                    "border",
+                                    "1px solid rgb(255 84 86 / 58%)"
+                                );
+                                first_flag = false;
+                            }
+                            if (!phone_number.val()) {
+                                $(".phone_number").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                first_flag = false;
+                            }
+                            if (!address_in_country.val()) {
+                                $(".address_in_country").css(
+                                    "border",
+                                    "1px solid rgb(255 84 86 / 58%)"
+                                );
+                                first_flag = false;
+                            }
+                            if (!first_name.val()) {
+                                    $(".first_name").css("border", "1px solid rgb(255 84 86 / 58%)");
+
+                                    first_flag = false;
+
+                                } else {
+                                    $(".first_name").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!last_name.val()) {
+                                    $(".last_name").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    first_flag = false;
+
+                                } else {
+                                    $(".last_name").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!manager_email.val()) {
+                                    $(".manager_email").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    first_flag = false;
+
+                                } else {
+                                    $(".manager_email").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!manager_mobile.val()) {
+                                    $(".manager_mobile").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    first_flag = false;
+
+                                } else {
+                                    $(".manager_mobile").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!manager_title.val()) {
+                                    $(".manager_title").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    first_flag = false;
+
+                                } else {
+                                    $(".manager_title").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!bank_name.val()) {
+                                $(".bank_name").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                first_flag = false;
+
+                                } else {
+                                $(".bank_name").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!bank_account_name.val()) {
+                                $(".bank_account_name").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                first_flag = false;
+
+                                } else {
+                                $(".bank_account_name").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+
+                                var check_china = document.getElementById("china"); 
+                                if(check_china.checked == true)
+                                {
+                                    $(".iban_code").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                else
+                                {
+                                    if (!iban_code.val()) {
+                                        $(".iban_code").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                        first_flag = false;
+
+                                    }   
+
+                                    var iban_c = document.getElementById("iban_code").value;
+                                    if (iban_c ==''){
+                                        document.getElementById("iban_msg").innerHTML = "Enter IBAN (Mandatory other than China)";
+                                        document.getElementById("iban_imp").innerHTML = "*";
+                                    }else{                                
+                                        document.getElementById("iban_msg").innerHTML = "";
+                                        document.getElementById("iban_imp").innerHTML = "";
+                                    }                              
+                                }
+
+
+
+                                if (!bank_address.val()) {
+                                $(".bank_address").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                first_flag = false;
+
+                                } else {
+                                $(".bank_address").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!acc_number.val()) {
+                                $(".acc_number").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                first_flag = false;
+
+                                } else {
+                                $(".acc_number").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!swift_code.val()) {
+                                $(".swift_code").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                first_flag = false;
+
+                                } else {
+                                $(".swift_code").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!currency_id.val()) {
+                                    $(".currency_id").css(
+                                        "border",
+                                        "1px solid rgb(255 84 86 / 58%)"
+                                    );
+                                    first_flag = false;
+
+                                }
+                                var comp = document.getElementById("company_name").value;
+                            if (comp ==''){
+                                document.getElementById("comp_name_msg").innerHTML = "Enter Company Name";
+                            }else{                                
+                                document.getElementById("comp_name_msg").innerHTML = "";
+                            }
+                            
+                            var comp_email = document.getElementById("company_email").value;
+                            if (comp_email ==''){
+                                document.getElementById("email_msg").innerHTML = "Enter Email";
+                            }else{                                
+                                document.getElementById("email_msg").innerHTML = "";
+                            }
+
+                            var lic = document.getElementById("license_number").value;
+                            if (lic ==''){
+                                document.getElementById("license_msg").innerHTML = "Enter License Number";
+                            }else{                                
+                                document.getElementById("license_msg").innerHTML = "";
+                            }
+
+                            var issue = document.getElementById("license_issue_date").value;
+                            if (issue ==''){
+                                document.getElementById("lic_issue_msg").innerHTML = "Enter License Issue Date";
+                            }else{                                
+                                document.getElementById("lic_issue_msg").innerHTML = "";
+                            }
+
+                            var exp = document.getElementById("license_expiry_date").value;
+                            if (exp ==''){
+                                document.getElementById("lic_exp_msg").innerHTML = "Enter License Expiry Date";
+                            }else{                                
+                                document.getElementById("lic_exp_msg").innerHTML = "";
+                            }
+
+                            var coun = document.getElementById("country_id");
+                            var opt_text = coun.options[coun.selectedIndex].text;
+                            if (opt_text==''){
+                                document.getElementById("country_msg").innerHTML = "Enter Country";
+                            }else{                                
+                                document.getElementById("country_msg").innerHTML = "";
+                            }
+
+                            var pho = document.getElementById("phone").value;
+                            if (pho ==''){
+                                document.getElementById("phone_msg").innerHTML = "Enter Phone Numbr";
+                            }else{                                
+                                document.getElementById("phone_msg").innerHTML = "";
+                            }
+
+                            var addr = document.getElementById("address_in_country").value;
+                            if (addr ==''){
+                                document.getElementById("addr_msg").innerHTML = "Enter Company Address";
+                            }else{                                
+                                document.getElementById("addr_msg").innerHTML = "";
+                            }
+
+                            var city = document.getElementById("city").value;
+                            if (city ==''){
+                                document.getElementById("city_msg").innerHTML = "Enter City";
+                            }else{                                
+                                document.getElementById("city_msg").innerHTML = "";
+                            }
+
+                           
+                            var vat = document.getElementById("vat").value;
+                            if (vat ==''){
+                                document.getElementById("vat_msg").innerHTML = "Enter VAT";
+                            }else{                                
+                                document.getElementById("vat_msg").innerHTML = "";
+                            }
+
+                            var po = document.getElementById("po_box").value;
+                            if (po ==''){
+                                document.getElementById("po_msg").innerHTML = "Enter PO Box";
+                            }else{                                
+                                document.getElementById("po_msg").innerHTML = "";
+                            }
+
+                            var f_name = document.getElementById("first_name").value;
+                            if (f_name ==''){
+                                document.getElementById("fst_name_msg").innerHTML = "Enter First Name";
+                            }else{                                
+                                document.getElementById("fst_name_msg").innerHTML = "";
+                            }
+
+                            var lst_msg = document.getElementById("last_name").value;
+                            if (lst_msg ==''){
+                                document.getElementById("lst_name_msg").innerHTML = "Enter Last Name";
+                            }else{                                
+                                document.getElementById("lst_name_msg").innerHTML = "";
+                            }
+
+                            var mng_email = document.getElementById("manager_email").value;
+                            if (mng_email ==''){
+                                document.getElementById("manager_email_msg").innerHTML = "Enter Manager Email";
+                            }else{                                
+                                document.getElementById("manager_email_msg").innerHTML = "";
+                            }
+
+                            var mng_phone = document.getElementById("manager_mobile").value;
+                            if (mng_phone ==''){
+                                document.getElementById("manager_mobile_msg").innerHTML = "Enter Manager Phone";
+                            }else{                                
+                                document.getElementById("manager_mobile_msg").innerHTML = "";
+                            }
+
+                            var mng_title = document.getElementById("manager_title").value;
+                            if (mng_title ==''){
+                                document.getElementById("manager_title_msg").innerHTML = "Enter Job Position";
+                            }else{                                
+                                document.getElementById("manager_title_msg").innerHTML = "";
+                            }
+
+                            
+					<!-- //====Bank===Validation=====Message==== -->
+                            var bnk_name = document.getElementById("bank_name").value;
+                            if (bnk_name ==''){
+                                document.getElementById("bank_name_msg").innerHTML = "Enter Bank Name";
+                            }else{                                
+                                document.getElementById("bank_name_msg").innerHTML = "";
+                            }
+
+                            var bnk_acc = document.getElementById("bank_account_name").value;
+                            if (bnk_acc ==''){
+                                document.getElementById("bank_acc_msg").innerHTML = "Enter Account Holder Name";
+                            }else{                                
+                                document.getElementById("bank_acc_msg").innerHTML = "";
+                            }
+
+                            var bnk_addr = document.getElementById("bank_address").value;
+                            if (bnk_addr ==''){
+                                document.getElementById("bank_addr_msg").innerHTML = "Enter Bank Address";
+                            }else{                                
+                                document.getElementById("bank_addr_msg").innerHTML = "";
+                            }
+
+                            var acc_num = document.getElementById("acc_number").value;
+                            if (acc_num ==''){
+                                document.getElementById("acc_num_msg").innerHTML = "Enter Account Number";
+                            }else{                                
+                                document.getElementById("acc_num_msg").innerHTML = "";
+                            }
+
+                            var swift = document.getElementById("swift_code").value;
+                            if (swift ==''){
+                                document.getElementById("swift_code_msg").innerHTML = "Enter Swift Code";
+                            }else{                                
+                                document.getElementById("swift_code_msg").innerHTML = "";
+                            }
+
+                            var curr = document.getElementById("currency_id").value;
+                            if (curr ==''){
+                                document.getElementById("currency_msg").innerHTML = "Enter Currency";
+                            }else{                                
+                                document.getElementById("currency_msg").innerHTML = "";
+                            }
+                            return first_flag;
+
+                        }
+
+                        <!-- function check_required(name){
+                            alert("try")
+                            
+                            var license_number = $(".license_number");
+                            var country_of_incorporation = $(".country_of_incorporation");
+                            var company_name = $(".company_name");
+                            var company_name_arabic = $(".company_name_arabic");
+                            var license_issue_date = $(".license_issue_date");
+                            var license_expiry_date = $(".license_expiry_date");
+                            var address_in_country = $(".address_in_country");
+                            var phone_number = $(".phone_number");
+                            var company_email = $(".company_email");
+                            var vat = $(".vat");
+                            var bank_name = $(".bank_name");
+                            var bank_account_name = $(".bank_account_name");
+                            var iban_code = $(".iban_code");
+                            var ifcs_code = $(".ifcs_code");
+                            var bank_address = $(".bank_address");
+                            var acc_number = $(".acc_number");
+                            var swift_code = $(".swift_code");
+                            var currency_id = $(".currency_id");
+
+                            var manager_title = $(".manager_title");
+                            var first_name = $(".first_name");
+                            var last_name = $(".last_name");
+
+                            var city = $(".city");
+                            var manager_email = $(".manager_email");
+                            var manager_mobile = $(".manager_mobile");
+                            var po_box = $(".po_box");
+                            var is_country_radio = $(".is_country_radio");
+
+                            
+                            var trade_license_doc = $("#trade_license_doc");
+                            var vat_registration_copy = $("#vat_registration_copy");
+                            var other_documents_copy = $("#other_documents_copy");
+
+
+                            var first_flag = true;
+                            var second_flag = true;
+                            var third_flag = true;
+                            var fourth_flag = true;
+                            if (name=='current_company_info'){
+                                first_flag = true;
+                                if (!company_name.val()) {
+                                    $(".company_name").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    first_flag = false;
+                                }
+                                if (!city.val()) {
+                                    $(".city").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    first_flag = false;
+                                }
+                                if (!po_box.val()) {
+                                    $(".po_box").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    first_flag = false;
+                                }
+                                if (!company_email.val()) {
+                                    $(".company_email").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    first_flag = false;
+                                }
+                                if (!vat.val()) {
+                                    $(".vat").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    first_flag = false;
+                                }
+                                if (!license_number.val()) {
+                                    $(".license_number").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    first_flag = false;
+                                }
+                                if (!license_issue_date.val()) {
+                                    $(".license_issue_date").css(
+                                        "border",
+                                        "1px solid rgb(255 84 86 / 58%)"
+                                    );
+                                    first_flag = false;
+                                }
+                                if (!license_expiry_date.val()) {
+                                    $(".license_expiry_date").css(
+                                        "border",
+                                        "1px solid rgb(255 84 86 / 58%)"
+                                    );
+                                    first_flag = false;
+
+                                }
+                                else{
+                                    var today;
+                                    today = new Date();
+                                    someday = new Date(license_expiry_date.val());
+                                    if (someday &lt; today) {
+                                       alert("The expiry date is before today's date. Please select a valid expiry date");
+                                       return false;
+                                    }
+                                }
+
+                                if (!country_of_incorporation.val()) {
+                                    $(".country_of_incorporation").css(
+                                        "border",
+                                        "1px solid rgb(255 84 86 / 58%)"
+                                    );
+                                    first_flag = false;
+                                }
+                                if (!phone_number.val()) {
+                                    $(".phone_number").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    first_flag = false;
+                                }
+                                if (!address_in_country.val()) {
+                                    $(".address_in_country").css(
+                                        "border",
+                                        "1px solid rgb(255 84 86 / 58%)"
+                                    );
+                                    first_flag = false;
+                                }
+                                return first_flag
+                            }
+                            else if (name=='current_manager_info_skip')
+                            {
+                                return true
+                            }
+                            else if(name == 'current_manager_info_prev')
+                            {
+                               return true 
+                            }
+                            else if (name=='current_manager_info'){
+                                second_flag = true;
+                                if (!first_name.val()) {
+                                    $(".first_name").css("border", "1px solid rgb(255 84 86 / 58%)");
+
+                                    second_flag = false;
+
+                                } else {
+                                    $(".first_name").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!last_name.val()) {
+                                    $(".last_name").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    second_flag = false;
+
+                                } else {
+                                    $(".last_name").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!manager_email.val()) {
+                                    $(".manager_email").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    second_flag = false;
+
+                                } else {
+                                    $(".manager_email").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!manager_mobile.val()) {
+                                    $(".manager_mobile").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    second_flag = false;
+
+                                } else {
+                                    $(".manager_mobile").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!manager_title.val()) {
+                                    $(".manager_title").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    second_flag = false;
+
+                                } else {
+                                    $(".manager_title").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                
+                                return second_flag
+                            }
+                            else if(name =='current_bank_info'){
+                                third_flag = true;
+                                if (!bank_name.val()) {
+                                $(".bank_name").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                third_flag = false;
+
+                                } else {
+                                $(".bank_name").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!bank_account_name.val()) {
+                                $(".bank_account_name").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                third_flag = false;
+
+                                } else {
+                                $(".bank_account_name").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+
+                                
+                                var check_china = document.getElementById("china"); 
+                                if(check_china.checked == true)
+                                {
+                                    $(".iban_code").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                else
+                                {
+                                    if (!iban_code.val()) {
+                                        $(".iban_code").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                        third_flag = false;
+
+                                    }   
+
+                                    var iban_c = document.getElementById("iban_code").value;
+                                    if (iban_c ==''){
+                                        document.getElementById("iban_msg").innerHTML = "Enter IBAN (Mandatory other than China)";
+                                        document.getElementById("iban_imp").innerHTML = "*";
+                                    }else{                                
+                                        document.getElementById("iban_msg").innerHTML = "";
+                                        document.getElementById("iban_imp").innerHTML = "";
+                                    }                              
+                                }
+
+
+
+                                if (!bank_address.val()) {
+                                $(".bank_address").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                third_flag = false;
+
+                                } else {
+                                $(".bank_address").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!acc_number.val()) {
+                                $(".acc_number").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                third_flag = false;
+
+                                } else {
+                                $(".acc_number").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!swift_code.val()) {
+                                $(".swift_code").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                third_flag = false;
+
+                                } else {
+                                $(".swift_code").css("border", "1px solid rgb(92 184 92 / 66%)");
+                                }
+                                if (!currency_id.val()) {
+                                    $(".currency_id").css(
+                                        "border",
+                                        "1px solid rgb(255 84 86 / 58%)"
+                                    );
+                                    third_flag = false;
+
+                                }
+                                return third_flag
+                            }
+                            else if(name == 'current_document_info'){
+
+                                if (!trade_license_doc.val()) {
+                                    $(".trade_license_doc").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                    fourth_flag = false;
+                                }
+                                var trade = document.getElementById("trade_license_doc").value;
+                                if (trade ==''){
+                                    document.getElementById("trade_msg").innerHTML = "Choose Files for Trade License Scan";
+                                }else{                                
+                                    document.getElementById("trade_msg").innerHTML = "";
+                                }
+
+                                var check_uae = document.getElementById("uae"); 
+                                if(check_uae.checked == true)
+                                {
+                                    if (!vat_registration_copy.val()) {
+                                        $(".vat_registration_copy").css("border", "1px solid rgb(255 84 86 / 58%)");
+                                        fourth_flag = false;
+                                    }
+
+                                    var vat_reg = document.getElementById("vat_registration_copy").value;
+                                    if (vat_reg ==''){
+                                        document.getElementById("vat_reg_msg").innerHTML = "Choose Files for VAT Registration Copy";
+                                    }else{                                
+                                        document.getElementById("vat_reg_msg").innerHTML = "";
+                                    }
+
+                                }
+                                
+                                return fourth_flag;
+                            }
+                        } -->
+                        <!-- function openCity(evt, cityName) {
+                            
+                            var check = check_required(evt.currentTarget.id);
+                            
+                            var comp = document.getElementById("company_name").value;
+                            if (comp ==''){
+                                document.getElementById("comp_name_msg").innerHTML = "Enter Company Name";
+                            }else{                                
+                                document.getElementById("comp_name_msg").innerHTML = "";
+                            }
+                            
+                            var comp_email = document.getElementById("company_email").value;
+                            if (comp_email ==''){
+                                document.getElementById("email_msg").innerHTML = "Enter Email";
+                            }else{                                
+                                document.getElementById("email_msg").innerHTML = "";
+                            }
+
+                            var lic = document.getElementById("license_number").value;
+                            if (lic ==''){
+                                document.getElementById("license_msg").innerHTML = "Enter License Number";
+                            }else{                                
+                                document.getElementById("license_msg").innerHTML = "";
+                            }
+
+                            var issue = document.getElementById("license_issue_date").value;
+                            if (issue ==''){
+                                document.getElementById("lic_issue_msg").innerHTML = "Enter License Issue Date";
+                            }else{                                
+                                document.getElementById("lic_issue_msg").innerHTML = "";
+                            }
+
+                            var exp = document.getElementById("license_expiry_date").value;
+                            if (exp ==''){
+                                document.getElementById("lic_exp_msg").innerHTML = "Enter License Expiry Date";
+                            }else{                                
+                                document.getElementById("lic_exp_msg").innerHTML = "";
+                            }
+
+                            var coun = document.getElementById("country_id");
+                            var opt_text = coun.options[coun.selectedIndex].text;
+                            if (opt_text==''){
+                                document.getElementById("country_msg").innerHTML = "Enter Country";
+                            }else{                                
+                                document.getElementById("country_msg").innerHTML = "";
+                            }
+
+                            var pho = document.getElementById("phone").value;
+                            if (pho ==''){
+                                document.getElementById("phone_msg").innerHTML = "Enter Phone Numbr";
+                            }else{                                
+                                document.getElementById("phone_msg").innerHTML = "";
+                            }
+
+                            var addr = document.getElementById("address_in_country").value;
+                            if (addr ==''){
+                                document.getElementById("addr_msg").innerHTML = "Enter Company Address";
+                            }else{                                
+                                document.getElementById("addr_msg").innerHTML = "";
+                            }
+
+                            var city = document.getElementById("city").value;
+                            if (city ==''){
+                                document.getElementById("city_msg").innerHTML = "Enter City";
+                            }else{                                
+                                document.getElementById("city_msg").innerHTML = "";
+                            }
+
+                           
+                            var vat = document.getElementById("vat").value;
+                            if (vat ==''){
+                                document.getElementById("vat_msg").innerHTML = "Enter VAT";
+                            }else{                                
+                                document.getElementById("vat_msg").innerHTML = "";
+                            }
+
+                            var po = document.getElementById("po_box").value;
+                            if (po ==''){
+                                document.getElementById("po_msg").innerHTML = "Enter PO Box";
+                            }else{                                
+                                document.getElementById("po_msg").innerHTML = "";
+                            }
+
+                            var f_name = document.getElementById("first_name").value;
+                            if (f_name ==''){
+                                document.getElementById("fst_name_msg").innerHTML = "Enter First Name";
+                            }else{                                
+                                document.getElementById("fst_name_msg").innerHTML = "";
+                            }
+
+                            var lst_msg = document.getElementById("last_name").value;
+                            if (lst_msg ==''){
+                                document.getElementById("lst_name_msg").innerHTML = "Enter Last Name";
+                            }else{                                
+                                document.getElementById("lst_name_msg").innerHTML = "";
+                            }
+
+                            var mng_email = document.getElementById("manager_email").value;
+                            if (mng_email ==''){
+                                document.getElementById("manager_email_msg").innerHTML = "Enter Manager Email";
+                            }else{                                
+                                document.getElementById("manager_email_msg").innerHTML = "";
+                            }
+
+                            var mng_phone = document.getElementById("manager_mobile").value;
+                            if (mng_phone ==''){
+                                document.getElementById("manager_mobile_msg").innerHTML = "Enter Manager Phone";
+                            }else{                                
+                                document.getElementById("manager_mobile_msg").innerHTML = "";
+                            }
+
+                            var mng_title = document.getElementById("manager_title").value;
+                            if (mng_title ==''){
+                                document.getElementById("manager_title_msg").innerHTML = "Enter Job Position";
+                            }else{                                
+                                document.getElementById("manager_title_msg").innerHTML = "";
+                            }
+
+                            
+                            var bnk_name = document.getElementById("bank_name").value;
+                            if (bnk_name ==''){
+                                document.getElementById("bank_name_msg").innerHTML = "Enter Bank Name";
+                            }else{                                
+                                document.getElementById("bank_name_msg").innerHTML = "";
+                            }
+
+                            var bnk_acc = document.getElementById("bank_account_name").value;
+                            if (bnk_acc ==''){
+                                document.getElementById("bank_acc_msg").innerHTML = "Enter Account Holder Name";
+                            }else{                                
+                                document.getElementById("bank_acc_msg").innerHTML = "";
+                            }
+
+                            var bnk_addr = document.getElementById("bank_address").value;
+                            if (bnk_addr ==''){
+                                document.getElementById("bank_addr_msg").innerHTML = "Enter Bank Address";
+                            }else{                                
+                                document.getElementById("bank_addr_msg").innerHTML = "";
+                            }
+
+                            var acc_num = document.getElementById("acc_number").value;
+                            if (acc_num ==''){
+                                document.getElementById("acc_num_msg").innerHTML = "Enter Account Number";
+                            }else{                                
+                                document.getElementById("acc_num_msg").innerHTML = "";
+                            }
+
+                            var swift = document.getElementById("swift_code").value;
+                            if (swift ==''){
+                                document.getElementById("swift_code_msg").innerHTML = "Enter Swift Code";
+                            }else{                                
+                                document.getElementById("swift_code_msg").innerHTML = "";
+                            }
+
+                            var curr = document.getElementById("currency_id").value;
+                            if (curr ==''){
+                                document.getElementById("currency_msg").innerHTML = "Enter Currency";
+                            }else{                                
+                                document.getElementById("currency_msg").innerHTML = "";
+                            }
+
+                            
+                            
+                            if(!check){
+                                    return false
+                                }
+                            // Declare all variables
+                            var i, tabcontent, tablinks;
+
+                            // Get all elements with class="tabcontent" and hide them
+                            tabcontent = document.getElementsByClassName("tabcontent");
+                            for (i = 0; i &lt; tabcontent.length; i++) {
+                                tabcontent[i].style.display = "none";
+                            }
+
+                            // Get all elements with class="tablinks" and remove the class "active"
+                            tablinks = document.getElementsByClassName("tablinks");
+                            for (i = 0; i &lt; tablinks.length; i++) {
+                                tablinks[i].className = tablinks[i].className.replace(" active", "");
+                            }
+
+                            // Show the current tab, and add an "active" class to the button that opened the tab
+                            document.getElementById(cityName).style.display = "block";
+                            evt.currentTarget.className += " active";
+                            
+                            if(document.getElementsByName(cityName)){
+                                document.getElementsByName(cityName)[0].className += " active";
+                            }
+
+                        } -->
+                        function ajaxpost(){
+
+                            var check = check_required_fields()
+                            <!-- alert(check) -->
+                            if (check == false)
+                            {
+                                alert("Please fill all required fields !!");
+                                return false;
+                            }
+                            <!-- alert(check) -->
+					<!-- //=========Document Validation Message==== -->
+                            var submit_flag = true;
+                            <!-- var trade = document.getElementById("trade_license_doc").value; -->
+                            <!-- if (trade ==''){
+                                alert("Choose Files for Trade License Scan");
+                            } -->
+
+                            <!-- var check_uae = document.getElementById("uae"); 
+                            if(check_uae.checked == true)
+                            {
+                                var vat_reg = document.getElementById("vat_registration_copy").value;
+                                if (vat_reg ==''){
+                                    alert("Choose Files for VAT Registration Copy");
+                                }
+                            } -->
+
+                            <!-- if (trade !=''){
+                                if(check_uae.checked == true){
+                                    if (vat_reg !=''){
+                                        submit_flag = true;
+                                                                            }
+                                }else{
+                                    submit_flag = true;
+                                    
+                                }
+                            } -->
+                            
+
+                            
+                            // (A) GET FORM DATA
+                            var form = document.getElementById("vendorRegistrattionForm");
+                            
+					<!-- console.log(form) -->
+                            var data = new FormData(form);
+                            
+					        console.log(data)
+
+                            // (B) AJAX REQUEST
+                            // (B1) POST DATA TO SERVER, RETURN RESPONSE AS TEXT
+                            fetch("/vendor/registration/submit", { method:"POST", body:data })
+                            .then(res=>res.text())
+
+                            // (B2) SHOW MESSAGE ON SERVER RESPONSE
+                            .then((response) => {
+                                
+					console.log(response);
+                                console.log("submit_flag=====22====",submit_flag)
+
+                                if (submit_flag == true){
+                                    if (response == "OK") {
+                                        alert("You Vendor Registration is Successfully Registered!");
+                                        window.location.reload();
+                                    }
+                                    else {
+                                         alert("Something went Wrong!"); 
+                                         }
+                                }
+                            })
+
+                            // (B3) OPTIONAL - HANDLE FETCH ERROR
+                            .catch((err) => { console.error(err); });
+
+                            // (C) PREVENT FORM SUBMIT
+                            return false;
+                        }
+
+                    
+				</script>
+			</form>
+		</t>
+		<style>
+            body {
+            background-color: #bcd9f5;
+            }
+            /* nav */
+            .card {
+            padding: 0;
+            border: none;
+            border-radius: 0.5rem;
+            }
+
+            a.active {
+            border-bottom: 2px solid #55c57a;
+            }
+
+            .nav-link {
+            color: rgb(110, 110, 110);
+            font-weight: 500;
+            }
+            .nav-link:hover {
+            color: #55c57a;
+            }
+
+            .nav-pills .nav-link.active {
+            color: black;
+            background-color: white;
+            border-radius: 0.5rem 0.5rem 0 0;
+            font-weight: 600;
+            }
+
+            .tab-content {
+            padding-bottom: 1.3rem;
+            }
+
+            .form-control {
+            background-color: rgb(241, 243, 247);
+            border: none;
+            }
+
+            /* 3nd card */
+            span {
+            margin-left: 0.5rem;
+            padding: 1px 10px;
+            <!-- color: white; -->
+            border-radius: 4px;
+            font-weight: 600;
+            }
+
+            .third {
+            padding: 0 1.5rem 0 1.5rem;
+            }
+
+            label {
+            font-weight: 500;
+            color: rgb(104, 104, 104);
+            }
+
+            .btn-success {
+            float: right;
+            }
+
+            .form-control:focus {
+            box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset,
+                0px 0px 7px rgba(0, 0, 0, 0.2);
+            }
+
+            select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            text-indent: 1px;
+            text-overflow: "";
+            }
+
+            /* 1st card */
+
+            ul {
+            list-style: none;
+            margin-top: 1rem;
+            padding-inline-start: 0;
+            }
+
+            .search {
+            padding: 0 1rem 0 1rem;
+            }
+
+            .ccontent li .wrapp {
+            padding: 0.3rem 1rem 0.001rem 1rem;
+            }
+
+            .ccontent li .wrapp div {
+            font-weight: 600;
+            }
+
+            .ccontent li .wrapp p {
+            font-weight: 360;
+            }
+
+            .ccontent li:hover {
+            background-color: rgb(117, 93, 255);
+            color: white;
+            }
+
+            /* 2nd card */
+
+            .addinfo {
+            padding: 0 1rem;
+            }
+
+
+
+
+        </style>
+	</template>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="budget_approval_line_form" model="ir.ui.view">
+        <field name="name">budget.approval.line</field>
+        <field name="model">budget.approval.line</field>
+        <field name="arch" type="xml">
+            <form string="Create Approval Configuration">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="label_type"/>
+                            <field name="is_boolean" invisible="1" />
+                        </group>
+                        <group>
+                            <field name="level" />
+                            <field name="is_send_email" widget="boolean_toggle"/>
+                            <field name="budget_approval_config_id" invisible="1" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="User Details" name="user_approvals_details">
+                            <field name="user_ids" invisible="is_boolean" nolabel="1" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

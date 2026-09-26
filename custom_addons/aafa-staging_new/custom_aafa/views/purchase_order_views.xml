@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_purchase_order_form_approval_states" model="ir.ui.view">
+        <field name="name">purchase.order.form.approval.states</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@id='bid_confirm']" position="attributes">
+                <attribute name="invisible">state != 'approved'</attribute>
+            </xpath>
+            <xpath expr="//button[@id='bid_confirm']" position="after">
+                <button name="action_dept_checked" type="object" string="Dept. Checked"
+                        class="oe_highlight"
+                        invisible="state != 'sent' or dept_review_status != 'pending'"/>
+                <button name="action_dept_approved" type="object" string="Dept. Approved"
+                        class="oe_highlight"
+                        invisible="state != 'sent' or dept_review_status != 'checked'"/>
+                <button name="action_under_approval" type="object" string="Send for Approval"
+                        class="oe_highlight" invisible="state != 'sent'"/>
+                <button name="action_approved" type="object" string="Approved"
+                        class="oe_highlight" invisible="state != 'under_approval'"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="dept_review_status" readonly="1"/>
+            </xpath>
+            <xpath expr="//button[@name='action_rfq_send'][@invisible=&quot;state != 'sent'&quot;]" position="attributes">
+                <attribute name="invisible">state not in ('sent', 'approved')</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_cancel']" position="attributes">
+                <attribute name="invisible">state not in ('draft', 'to approve', 'sent', 'approved', 'purchase') or locked</attribute>
+            </xpath>
+            <xpath expr="//header/field[@name='state']" position="attributes">
+                <attribute name="statusbar_visible">draft,sent,under_approval,approved,purchase</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_purchase_order_filter_approval_states" model="ir.ui.view">
+        <field name="name">purchase.order.search.approval.states</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='waiting_rfqs']" position="after">
+                <filter name="under_approval" string="Sent for Approval" domain="[('state', '=', 'under_approval')]"/>
+                <filter name="rfq_approved" string="Approved" domain="[('state', '=', 'approved')]"/>
+                <filter name="dept_checked" string="Dept. Checked" domain="[('dept_review_status', '=', 'checked')]"/>
+                <filter name="dept_approved" string="Dept. Approved" domain="[('dept_review_status', '=', 'approved')]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

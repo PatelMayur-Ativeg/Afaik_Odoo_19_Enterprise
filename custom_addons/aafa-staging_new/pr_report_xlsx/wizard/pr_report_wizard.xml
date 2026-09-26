@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+   <!-- view_sale_commission_report_form -->
+    <record id="pr_report_xlsx_wizard" model="ir.ui.view">        
+        <field name="name">pr.report.popup.form</field>        
+        <field name="model">pr.report.popup</field>        
+        <field name="arch" type="xml">            
+            <form string="Purchase Request Report">
+                <sheet> 
+                    <group>
+                        <group>
+                            <field name="from_date" required="1"/>  
+                            <field name="employee_id" options="{'no_open':True,'no_create':1,'no_create_edit':1}" required="1"/>    
+                            <field name="department_id" options="{'no_open':True,'no_create':1,'no_create_edit':1}"/>   
+                            <field name="pr_category_id"/>
+                            <field name="state"/>
+                        </group>
+                        <group>
+                            <field name="to_date" required="1"/>
+                            <field name="product_id" options="{'no_open':True,'no_create':1,'no_create_edit':1}"/>
+                            <field name="over_budget"/>
+                            <field name="within_budget"/>
+                            <field name="request_action"/>
+                            <field name="vendor_id" options="{'no_open':True,'no_create':1,'no_create_edit':1}" invisible="('request_action','!=', 'purchase_order')"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="generate_pr_report" string="Generate Excel" type="object"  class="oe_highlight"  />
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer> 
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_purchase_request_reporting" name="Reporting" parent="purchase_request.parent_menu_purchase_request" sequence="100"/>
+
+    <record id="action_view_pr_report" model="ir.actions.act_window">
+        <field name="name">PR Report xlsx</field>        
+        <field name="type">ir.actions.act_window</field>       
+        <field name="res_model">pr.report.popup</field>       
+        <field name="view_mode">form</field>       
+            <field name="target">new</field>
+    </record>
+
+    <menuitem 
+        id="pr_report_xlsx_menu"
+        name="Purchase Request Report XLSX"
+        parent="menu_purchase_request_reporting" 
+        action="action_view_pr_report"
+        sequence="2"/>
+
+
+</data>
+</odoo>

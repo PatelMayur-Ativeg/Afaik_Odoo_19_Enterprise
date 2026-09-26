@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_advanced_search_config_user,advanced.search.config.user,model_advanced_search_config,base.group_user,1,0,0,0
+access_advanced_search_config_tech,advanced.search.config.tech,model_advanced_search_config,base.group_no_one,1,1,1,1

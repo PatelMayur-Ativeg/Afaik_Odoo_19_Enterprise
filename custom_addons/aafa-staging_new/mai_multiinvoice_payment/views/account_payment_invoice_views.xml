@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_payment_invoice_search" model="ir.ui.view">
+        <field name="name">account.payment.invoice.search</field>
+        <field name="model">account.payment.invoice</field>
+        <field name="arch" type="xml">
+            <search string="Payment Lines">
+                <field name="invoice_id"
+                    string="Invoice / Bill"
+                    filter_domain="['|', ('invoice_id.name', 'ilike', self), ('invoice_id.ref', 'ilike', self)]"/>
+                <field name="origin"/>
+                <field name="date_invoice"/>
+                <field name="date_due"/>
+                <field name="amount_total"/>
+                <field name="residual"/>
+                <field name="reconcile_amount"/>
+                <separator/>
+                <filter name="filter_checked" string="Selected" domain="[('checked', '=', True)]"/>
+                <filter name="filter_unchecked" string="Not Selected" domain="[('checked', '=', False)]"/>
+                <separator/>
+                <filter name="filter_has_residual" string="Open Amount" domain="[('residual', '>', 0)]"/>
+                <!-- <group expand="0" string="Group By">
+                    <filter name="group_invoice" string="Invoice" context="{'group_by': 'invoice_id'}"/>
+                    <filter name="group_due_date" string="Due Date" context="{'group_by': 'date_due'}"/>
+                </group> -->
+            </search>
+        </field>
+    </record>
+
+    <record id="view_account_payment_invoice_list_embedded" model="ir.ui.view">
+        <field name="name">account.payment.invoice.list.embedded</field>
+        <field name="model">account.payment.invoice</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list string="Lines"
+                create="false"
+                delete="false"
+                editable="bottom"
+                limit="80"
+                js_class="mai_payment_invoice_embedded_list">
+                <field name="payment_state" column_invisible="1"/>
+                <field name="reverse_payment_state" column_invisible="1"/>
+                <field name="payment_id" column_invisible="1"/>
+                <field name="payment_reverse_id" column_invisible="1"/>
+                <field name="sequence" widget="handle"
+                    readonly="(payment_id and payment_state != 'draft') or (payment_reverse_id and reverse_payment_state != 'draft')"/>
+                <field name="checked" string=" "
+                    readonly="1"
+                    nolabel="1"/>
+                <field name="invoice_id" readonly="1"/>
+                <field name="origin" optional="show" readonly="1"/>
+                <field name="date_invoice" optional="show" readonly="1"/>
+                <field name="date_due" optional="show" readonly="1"/>
+                <field name="amount_total" sum="Total" readonly="1"/>
+                <field name="residual" sum="Due" readonly="1"/>
+                <field name="reconcile_amount" sum="To Reconcile"
+                    readonly="not checked or (payment_id and payment_state != 'draft') or (payment_reverse_id and reverse_payment_state != 'draft')"
+                    force_save="1"/>
+                <field name="residual_reconcile" optional="hide" readonly="1" force_save="1"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+</odoo>

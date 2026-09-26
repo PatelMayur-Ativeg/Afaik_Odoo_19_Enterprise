@@ -1,0 +1,531 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sh_purchase_dynamic_approval
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-05-18 04:16+0000\n"
+"PO-Revision-Date: 2021-05-18 04:16+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sh_purchase_dynamic_approval
+#: model:mail.template,body_html:sh_purchase_dynamic_approval.email_template_for_confirm_purchase_order
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        <h2>\n"
+"                            <b>Order Confirmed: ${object.name}</b>\n"
+"                        </h2>\n"
+"                        <br/>\n"
+"                        <br/>\n"
+"                        Dear User!!,\n"
+"                        <br/>\n"
+"                        <br/>\n"
+"                        This is inform you that your order is confirmed.<br/>\n"
+"                        You can use the following link to access the purchase order.<br/><br/>\n"
+"                        <div style=\"display: inline-block; margin: 15px; text-align: center\">\n"
+"                            <a href=\"/mail/view?model=purchase.order&amp;res_id=${object.id}\" target=\"_blank\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">Order Ref: #${object.name}</a>\n"
+"                        </div><br/>\n"
+"                        Thanks.\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:mail.template,body_html:sh_purchase_dynamic_approval.email_template_for_reject_purchase_order
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        <h2>\n"
+"                            <b>Order Rejected: ${object.name}</b>\n"
+"                        </h2>\n"
+"                        <br/>\n"
+"                        <br/>\n"
+"                        Dear User!!,\n"
+"                        <br/>\n"
+"                        <br/>\n"
+"                        Rejected Order Information.<br/>\n"
+"                        <table class=\"table table-bordered\">\n"
+"                            <thead>\n"
+"                                <tr>\n"
+"                                    <th scope=\"col\">Date</th>\n"
+"                                    <th scope=\"col\">Reject By</th>\n"
+"                                    <th scope=\"col\">Reason</th>\n"
+"                                </tr>\n"
+"                            </thead>\n"
+"                            <tbody>\n"
+"                                <td>${object.rejection_date}</td>\n"
+"                                <td>${object.reject_by.name}</td>\n"
+"                                <td>${object.reject_reason}</td>\n"
+"                            </tbody>\n"
+"                        </table><br/><br/>\n"
+"                        You can use the following link to access the Purchase order.<br/><br/>\n"
+"                        <div style=\"display: inline-block; margin: 15px; text-align: center\">\n"
+"                            <a href=\"/mail/view?model=purchase.order&amp;res_id=${object.id}\" target=\"_blank\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">Order Ref: #${object.name}</a>\n"
+"                        </div><br/>\n"
+"                        Thanks.\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:mail.template,body_html:sh_purchase_dynamic_approval.email_template_for_approve_purchase_order
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        <h2>\n"
+"                            <b>Submit for Approval: ${object.name}</b>\n"
+"                        </h2>\n"
+"                        <br/>\n"
+"                        <br/>\n"
+"                        <p>\n"
+"                            Dear Approver,\n"
+"                            <br/>\n"
+"                            <br/>\n"
+"                            This is inform you that order is submitted for approval.\n"
+"                            <br/>\n"
+"                            <b>User:</b>\n"
+"                            ${object.user_id.name}\n"
+"                            <br/>\n"
+"                            <b>Total Amount:</b>\n"
+"                            ${format_amount(object.amount_total, object.currency_id)}\n"
+"                            <br/>\n"
+"                            <b>Approval Level:</b>\n"
+"                            ${object.approval_level_id.name}\n"
+"                            <br/>\n"
+"                            <b>Minimum Amount:</b>\n"
+"                            ${format_amount(object.approval_level_id.min_amount, object.currency_id)}\n"
+"                            <br/>\n"
+"                            <br/>\n"
+"                            order Approval information as below\n"
+"                        </p>\n"
+"                        <br/>\n"
+"                        <br/>\n"
+"                        \n"
+"                        <table class=\"table table-bordered\">\n"
+"                            <thead>\n"
+"                                <tr>\n"
+"                                    <th scope=\"col\">Level</th>\n"
+"                                    <th scope=\"col\">Approvers</th>\n"
+"                                    <th scope=\"col\">Approved Date</th>\n"
+"                                    <th scope=\"col\">Approved By</th>\n"
+"                                    <th scope=\"col\">Status</th>\n"
+"                                </tr>\n"
+"                            </thead>\n"
+"                            % for line in object.approval_info_line:\n"
+"                                <tbody>\n"
+"                                    <tr>\n"
+"                                        <th>${line.level}</th>\n"
+"                                        <td>\n"
+"                                            % if line.user_ids:\n"
+"                                                % for user in line.user_ids:\n"
+"                                                    <i>${user.name},</i>\n"
+"                                                % endfor\n"
+"\n"
+"                                            % else:\n"
+"                                                % for group in line.group_ids:\n"
+"                                                    <i>${group.name},</i>\n"
+"                                                % endfor\n"
+"                                                \n"
+"                                            % endif\n"
+"                                        </td>\n"
+"                                        <td>${line.approval_date}</td>\n"
+"                                        <td>${line.approved_by.name}</td>\n"
+"                                        <td>${line.status}</td>\n"
+"                                    </tr>\n"
+"                                </tbody>\n"
+"                            % endfor\n"
+"                        </table>\n"
+"                        <br/>\n"
+"                        <br/>\n"
+"                        if you are authorize approver as per approval level.<br/>\n"
+"                        You can use the following link and approve the order<br/><br/>\n"
+"\n"
+"                        <div style=\"display: inline-block; margin: 15px; text-align: center\">\n"
+"                            <a href=\"/mail/view?model=purchase.order&amp;res_id=${object.id}\" target=\"_blank\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">Order Ref: #${object.name}</a>\n"
+"                        </div><br/>\n"
+"                        Thanks.\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_config__company_ids
+msgid "Allowed Companies"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_res_company__approval_based_on
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_res_config_settings__approval_based_on
+msgid "Approval Based On"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.actions.act_window,name:sh_purchase_dynamic_approval.sh_purchase_approval_config_action
+#: model:ir.ui.menu,name:sh_purchase_dynamic_approval.sh_purchase_approval_config_action_menu
+#: model_terms:ir.ui.view,arch_db:sh_purchase_dynamic_approval.sh_purchase_approval_config_view_tree
+msgid "Approval Configuration"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:sh_purchase_dynamic_approval.sh_purchase_approval_config_view_form
+msgid "Approval Details"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:sh_purchase_dynamic_approval.purchase_order_inherit_view_form
+msgid "Approval Info"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_purchase_order__approval_info_line
+msgid "Approval Info Line"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model,name:sh_purchase_dynamic_approval.model_sh_approval_info
+msgid "Approval Information"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_purchase_order__approval_level_id
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_approval_info__level
+msgid "Approval Level"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:sh_purchase_dynamic_approval.sh_purchase_res_config_settings_inherit_view_form
+msgid "Approval minimum amount based on: Untaxed / Total"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:sh_purchase_dynamic_approval.purchase_order_inherit_view_form
+msgid "Approve"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line__approve_by
+msgid "Approve Process By"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_approval_info__approved_by
+msgid "Approved By"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_approval_info__approval_date
+msgid "Approved Date"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_purchase_order__is_boolean
+msgid "Boolean"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:sh_purchase_dynamic_approval.sh_rejection_reason_wizard_view_form
+msgid "Cancel"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model,name:sh_purchase_dynamic_approval.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model,name:sh_purchase_dynamic_approval.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:sh_purchase_dynamic_approval.sh_rejection_reason_wizard_view_form
+msgid "Confirm"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:mail.template,subject:sh_purchase_dynamic_approval.email_template_for_confirm_purchase_order
+msgid "Confirm Order"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model_terms:ir.actions.act_window,help:sh_purchase_dynamic_approval.sh_purchase_approval_config_action
+msgid "Create A New Approval Configuration"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:sh_purchase_dynamic_approval.sh_purchase_approval_line_form
+msgid "Create Approval Configuration"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_approval_info__create_uid
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_config__create_uid
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line__create_uid
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_reject_reason_wizard__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_approval_info__create_date
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_config__create_date
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line__create_date
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_reject_reason_wizard__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_purchase_order__display_name
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_res_company__display_name
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_approval_info__display_name
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_config__display_name
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line__display_name
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_reject_reason_wizard__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model,name:sh_purchase_dynamic_approval.model_sh_purchase_approval_line
+msgid "Dynamic Purchase Approval"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line__from_amount
+msgid "From Amount"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields.selection,name:sh_purchase_dynamic_approval.selection__sh_purchase_approval_line__approve_by__group
+msgid "Group"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_purchase_order__group_ids
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_approval_info__group_ids
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line__group_ids
+msgid "Groups"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_purchase_order__id
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_res_company__id
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_res_config_settings__id
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_approval_info__id
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_config__id
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line__id
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_reject_reason_wizard__id
+msgid "ID"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line__is_boolean
+msgid "Is Boolean"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_purchase_order____last_update
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_res_company____last_update
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_approval_info____last_update
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_config____last_update
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line____last_update
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_reject_reason_wizard____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_approval_info__write_uid
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_config__write_uid
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line__write_uid
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_reject_reason_wizard__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_approval_info__write_date
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_config__write_date
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line__write_date
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_reject_reason_wizard__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line__level
+msgid "Level"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_config__min_amount
+msgid "Minimum Amount"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.actions.act_window,name:sh_purchase_dynamic_approval.sh_purchase_order_my_approval_action
+#: model:ir.ui.menu,name:sh_purchase_dynamic_approval.sh_purchase_order_my_approval_action_menu
+msgid "My Approval"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_config__name
+#: model_terms:ir.ui.view,arch_db:sh_purchase_dynamic_approval.sh_purchase_approval_config_view_form
+msgid "Name"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:sh_purchase_dynamic_approval.purchase_order_inherit_view_form
+msgid "Next Approval"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_purchase_order__level
+msgid "Next Approval Level"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: code:addons/sh_purchase_dynamic_approval/models/inherit_purchase_order.py:0
+#: code:addons/sh_purchase_dynamic_approval/models/inherit_purchase_order.py:0
+#: code:addons/sh_purchase_dynamic_approval/models/inherit_purchase_order.py:0
+#: code:addons/sh_purchase_dynamic_approval/models/inherit_purchase_order.py:0
+#: code:addons/sh_purchase_dynamic_approval/models/inherit_purchase_order.py:0
+#: code:addons/sh_purchase_dynamic_approval/models/rejection_wizard.py:0
+#, python-format
+msgid "Notitification"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line__purchase_approval_config_id
+msgid "Purchase Approval Config"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model,name:sh_purchase_dynamic_approval.model_sh_purchase_approval_config
+msgid "Purchase Approval Configuration"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_config__purchase_approval_line
+msgid "Purchase Approval Line"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model,name:sh_purchase_dynamic_approval.model_purchase_order
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_approval_info__purchase_order_id
+msgid "Purchase Order"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:sh_purchase_dynamic_approval.sh_purchase_res_config_settings_inherit_view_form
+msgid "Purchase Orders"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.actions.act_window,name:sh_purchase_dynamic_approval.sh_rejection_reason_action
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_reject_reason_wizard__name
+msgid "Reason"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields.selection,name:sh_purchase_dynamic_approval.selection__purchase_order__state__reject
+#: model_terms:ir.ui.view,arch_db:sh_purchase_dynamic_approval.purchase_order_inherit_view_form
+msgid "Reject"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_purchase_order__reject_by
+msgid "Reject By"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_purchase_order__rejection_date
+msgid "Reject Date"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:mail.template,subject:sh_purchase_dynamic_approval.email_template_for_reject_purchase_order
+msgid "Reject Order"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:sh_purchase_dynamic_approval.purchase_order_inherit_view_form
+msgid "Reject Order Info"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_purchase_order__reject_reason
+msgid "Reject Reason"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:sh_purchase_dynamic_approval.purchase_order_inherit_view_form
+msgid "Reset to Draft"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_purchase_order__state
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_approval_info__status
+msgid "Status"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:mail.template,subject:sh_purchase_dynamic_approval.email_template_for_approve_purchase_order
+msgid "Submit for Approval"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line__to_amount
+msgid "To Amount"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields.selection,name:sh_purchase_dynamic_approval.selection__res_company__approval_based_on__total
+msgid "Total"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields.selection,name:sh_purchase_dynamic_approval.selection__res_company__approval_based_on__untaxed_amount
+msgid "Untaxed amount"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields.selection,name:sh_purchase_dynamic_approval.selection__sh_purchase_approval_line__approve_by__user
+msgid "User"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_config__is_boolean
+msgid "User Always in CC"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_purchase_order__user_ids
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_approval_info__user_ids
+#: model:ir.model.fields,field_description:sh_purchase_dynamic_approval.field_sh_purchase_approval_line__user_ids
+msgid "Users"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.actions.act_window,name:sh_purchase_dynamic_approval.sh_purchase_order_waiting_approval_action
+#: model:ir.ui.menu,name:sh_purchase_dynamic_approval.sh_purchase_order_waiting_approval_action_menu
+msgid "Waiting Approval"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model.fields.selection,name:sh_purchase_dynamic_approval.selection__purchase_order__state__waiting_for_approval
+msgid "Waiting for Approval"
+msgstr ""
+
+#. module: sh_purchase_dynamic_approval
+#: model:ir.model,name:sh_purchase_dynamic_approval.model_sh_reject_reason_wizard
+msgid "sh.reject.reason.wizard"
+msgstr ""

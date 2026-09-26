@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="purchase_extension.ChooseReasonWidget">
+        <a t-att-tabindex="reason ? '0' : '-1'"
+           t-on-click="showPopup"
+           t-att-class="!reason ? 'invisible' : ''"
+           class="fa fa-info-circle cursor-pointer text-info"
+        />
+    </t>
+
+    <t t-name="purchase_extension.ChooseReasonPopover">
+        <div class="p-3">
+            <h5 class="mb-3">Selection Reason</h5>
+            <div class="o_choose_reason_popover_text" t-esc="props.reason"/>
+        </div>
+    </t>
+</templates>

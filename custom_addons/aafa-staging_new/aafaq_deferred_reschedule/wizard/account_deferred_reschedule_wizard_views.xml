@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_deferred_reschedule_wizard_form" model="ir.ui.view">
+        <field name="name">account.deferred.reschedule.wizard.form</field>
+        <field name="model">account.deferred.reschedule.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reschedule Deferral">
+                <field name="move_id" invisible="1"/>
+                <field name="is_bulk" invisible="1"/>
+                <field name="company_currency_id" invisible="1"/>
+                <div class="mb-3">
+                    <p>
+                        Posted deferral entries are kept. The remaining unposted amount
+                        is redistributed from the first unposted month through the new end date.
+                    </p>
+                </div>
+                <div class="alert alert-warning" role="alert" invisible="not warning_message">
+                    <field name="warning_message" nolabel="1"/>
+                </div>
+                <group invisible="not is_bulk">
+                    <label for="apply_end_date"/>
+                    <div class="o_row">
+                        <field name="apply_end_date" nolabel="1"/>
+                        <button name="action_apply_end_date_to_all"
+                                type="object"
+                                string="Apply to All"
+                                class="btn-secondary"/>
+                    </div>
+                </group>
+                <field name="line_ids">
+                    <list editable="bottom" create="false" delete="false">
+                        <field name="source_line_id" column_invisible="1"/>
+                        <field name="company_currency_id" column_invisible="1"/>
+                        <field name="move_id" column_invisible="not parent.is_bulk"/>
+                        <field name="partner_id" column_invisible="not parent.is_bulk" optional="show"/>
+                        <field name="product_id" optional="show"/>
+                        <field name="name" optional="hide"/>
+                        <field name="original_amount"/>
+                        <field name="posted_amount"/>
+                        <field name="remaining_amount"/>
+                        <field name="deferred_start_date"/>
+                        <field name="deferred_end_date"/>
+                        <field name="remaining_start_date" optional="hide"/>
+                        <field name="new_end_date"/>
+                        <field name="remaining_period_count"/>
+                        <field name="new_period_amount"/>
+                    </list>
+                </field>
+                <footer>
+                    <button name="action_confirm" type="object" string="Reschedule" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

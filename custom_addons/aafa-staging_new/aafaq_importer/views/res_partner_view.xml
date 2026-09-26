@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="customer_type" />
+                <field name="aafaq_queue_id" readonly="True"/>
+                <field name="internal_id" readonly="True"/>
+            </xpath>
+            <!-- Add new tab -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Finacle Info">
+                    <group>
+                        <group>
+                            <field name="finacle_acct_num"/>
+                            <field name="schm_code"/>
+                            <field name="gl_sub_head_code"/>
+                            <field name="currency_code"/>
+                            <field name="account_id"/>
+                        </group>
+                        <group>
+                            <field name="scheme_analytic_account_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="gl_analytic_account_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="segment_analytic_account_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="subsegment_analytic_account_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="adv_type_analytic_account_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

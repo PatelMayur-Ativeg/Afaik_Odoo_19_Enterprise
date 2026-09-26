@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_purchase_order_form_inherit" model="ir.ui.view">
+        <field name="name">view.purchase.order.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+
+        <field name="arch" type="xml">
+            <!-- <xpath expr="//button[@name='action_create_invoice']" position="replace">
+                <button name="action_create_invoice" string="Create Bill" type="object" class="oe_highlight" context="{'create_bill':True}" invisible="state not in ['purchase'] or invoice_status in ['no','invoiced']" data-hotkey="w"/>
+            </xpath> -->
+            <!-- <xpath expr="//button[@name='confirm_reminder_mail']" position="replace">
+                <button name="confirm_reminder_mail" string="Confirm Receipt Date" type="object" invisible="state not in ('purchase') or mail_reminder_confirmed or not date_planned" groups="base.group_no_one" data-hotkey="o"/>
+            </xpath> -->
+            <xpath expr="//div[hasclass('oe_title')]" position="replace">
+                <span class="o_form_label"
+                      invisible="state not in ('draft', 'sent', 'under_approval', 'approved') or not is_purchase_requisition">
+                    Purchase Requisition
+                </span>
+                <span class="o_form_label"
+                      invisible="state not in ('draft', 'sent', 'under_approval', 'approved') or is_purchase_requisition">
+                    Request for Quotation
+                </span>
+                    <span class="o_form_label"
+                          invisible="state in ('draft', 'sent', 'under_approval', 'approved')">
+                        Purchase Order
+                    </span>
+                    <h1 class="d-flex">
+                        <field name="priority" widget="priority" class="me-3"/>
+                        <field name="name" readonly="1"/>
+                    </h1>
+            </xpath>
+            <field name="name" position="after">
+                <field name="is_purchase_requisition" invisible="1"/>
+            </field>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_purchase_request"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-file-text-o"
+                        invisible="not custom_requisition_id"
+                        string="Purchase Request"/>
+            </xpath>
+            <field name="date_order" position="after">
+                <field name="po_categ_id"/>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="custom_requisition_id" readonly="1"/>
+            </field>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='name']" position="after">
+                <field name="prod_categ_id"/>
+                <field name="budget_id" domain="[('state','=','done')]"/>
+            </xpath>
+            <!-- <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="after">
+                <field name="analytic_account_id"/>
+                <field name="analytic_remain_amt" widget="monetary" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='analytic_distribution']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath> -->
+
+        </field>
+    </record>
+
+    <record id="purchase_requisition" model="ir.actions.act_window">
+        <field name="name">Purchase Requisition</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">list,kanban,form,pivot,graph,calendar,activity</field>
+        <field name="view_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="domain">[]</field>
+        <field name="search_view_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="context">{'default_is_purchase_requisition': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            No Purchase Requisition found. Let's create one!
+            </p><p>
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem action="purchase_requisition" id="menu_purchase_requisition"
+        parent="purchase.menu_procurement_management"
+        sequence="0"/>
+
+
+    <record model="ir.ui.menu" id="purchase.menu_purchase_rfq">
+    <field name="sequence">2</field>
+</record>
+
+    <record id="purchase_order_line_compare_tree_choose_reason" model="ir.ui.view">
+        <field name="name">purchase.order.line.compare.list.choose.reason</field>
+        <field name="model">purchase.order.line</field>
+        <field name="inherit_id" ref="purchase_requisition.purchase_order_line_compare_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list/button[@name='action_clear_quantities']" position="after">
+                <widget name="choose_reason_popover" width="20px"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

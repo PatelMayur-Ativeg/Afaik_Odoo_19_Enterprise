@@ -1,0 +1,31 @@
+<odoo>
+    <record id="sh_account_res_config_settings_inherit_view_form" model="ir.ui.view">
+        <field name="name">sh.account.res.config.settings.inherit.view.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='account']" position="inside">
+                <h2>Account Invoices</h2>
+
+                <div class="row mt16 o_settings_container">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label for="account_approval_based_on" />
+                            <div class="text-muted">
+                               Approval Based On
+                            </div>
+                            <br />
+                            <div class="content-group">
+                                <div class="mt-16">
+                                    <field name="account_approval_based_on" class="o_light_label" widget="radio"></field>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

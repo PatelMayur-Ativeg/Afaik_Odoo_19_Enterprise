@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_res_partner_form" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='child_ids']//form//field[@name='company_id']" position="after">
+                <field name="birth_date" />
+                <field name="prev_nationality_id" />
+                <field name="passport_type" />
+                <field name="passport_no" />
+                <field name="passport_issued_country_id" />
+                <field name="passport_issue_date" />
+                <field name="passport_exp_date" />
+            </xpath>
+            <field name="category_id" position="after">
+                <field name="vendor_registration_id" readonly="1"/>
+                <field name="inco_country_id" />
+                <field name="company_activity" widget="many2many_tags" />
+                <field name="license_number" />
+                <field name="license_issue_date" />
+                <field name="license_expiry_date" />
+            </field>
+        </field>
+    </record>
+
+</odoo>

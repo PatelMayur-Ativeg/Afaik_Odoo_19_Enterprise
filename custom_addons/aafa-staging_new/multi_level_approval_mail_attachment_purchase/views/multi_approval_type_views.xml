@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="multi_approval_type_view_form_mail_attachment_purchase" model="ir.ui.view">
+        <field name="name">multi.approval.type.form.mail.attachment.purchase</field>
+        <field name="model">multi.approval.type</field>
+        <field name="inherit_id" ref="multi_level_approval_mail_attachment.multi_approval_type_view_form_mail_attachment"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='mail_attachment_settings']/div" position="after">
+                <button
+                    name="action_load_po_rfq_mail_attachments"
+                    type="object"
+                    string="Load RFQ Attachment Defaults"
+                    class="btn-secondary"
+                    invisible="model_id != 'purchase.order'"
+                    colspan="2"
+                />
+                <button
+                    name="action_load_batch_payment_mail_attachments"
+                    type="object"
+                    string="Load Payment Batch Attachment Defaults"
+                    class="btn-secondary"
+                    invisible="model_id != 'account.batch.payment'"
+                    colspan="2"
+                />
+            </xpath>
+            <xpath expr="//field[@name='report_id']" position="attributes">
+                <attribute name="invisible">source not in ('origin_report', 'related_report', 'po_chosen_report', 'po_comparison_sheet')</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

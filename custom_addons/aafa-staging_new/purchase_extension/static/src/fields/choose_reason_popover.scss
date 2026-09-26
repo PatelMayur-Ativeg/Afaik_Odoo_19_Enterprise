@@ -1,0 +1,19 @@
+.o_popover.o_choose_reason_popover {
+    min-width: 420px !important;
+    max-width: 560px !important;
+    width: 420px;
+    min-height: 180px !important;
+    max-height: 360px !important;
+}
+
+.o_choose_reason_popover h5 {
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.o_choose_reason_popover_text {
+    white-space: pre-wrap;
+    font-size: 1.05rem;
+    line-height: 1.55;
+    min-height: 120px;
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+		<t t-name="pos_receipt" t-extend="OrderReceipt">
+		    <t t-jquery=".pos-receipt-contact" t-operation="append">
+                Branch:
+                <t t-esc="widget.pos.pos_session.branch_id[1]"/>
+		    </t>
+		</t>
+</templates>
+
+

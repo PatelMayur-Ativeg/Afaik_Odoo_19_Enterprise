@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+
+<!-- 
+        <record id="vendor_registration_menu" model="website.menu">
+            <field name="name">Vendor Registration</field>
+            <field name="url">/vendor/register</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" type="int">11</field>
+        </record> -->
+
+        <template id="auth_signup.login" inherit_id="web.login">
+            <xpath expr="//button[@type='submit']" position="after">
+                <div class="justify-content-between mt-2 d-flex small">
+                    <a t-if="signup_enabled" t-attf-href="/web/signup?{{ keep_query() }}">Don't have an account?</a>
+                    <a t-if="reset_password_enabled" t-attf-href="/vendor/register?{{ keep_query() }}">Vendor Registration</a>
+                    <a t-if="reset_password_enabled" t-attf-href="/web/reset_password?{{ keep_query() }}">Reset Password</a>
+                </div>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

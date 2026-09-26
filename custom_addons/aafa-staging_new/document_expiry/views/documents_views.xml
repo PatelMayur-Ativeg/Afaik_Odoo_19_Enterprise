@@ -1,0 +1,62 @@
+<odoo>
+    <data>
+        <record id="documents_view_list_inherit" model="ir.ui.view">
+            <field name="name">documents list inherit</field>
+            <field name="model">documents.document</field>
+            <field name="inherit_id" ref="documents.documents_view_list"/>
+            <field name="arch" type="xml">
+                <field name="owner_id" position="after">
+                    <field name="expiry_date"/>
+                    <field name="notify_before"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="document_view_form_rename_inherit" model="ir.ui.view">
+            <field name="name">documents rename form inherit</field>
+            <field name="model">documents.document</field>
+            <field name="inherit_id" ref="documents.document_view_form_rename"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <group>
+                        <group>
+                            <field name="expiry_date"/>
+                            <field name="notify_before"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="documents_upload_url_view_inherit" model="ir.ui.view">
+            <field name="name">documents upload form inherit</field>
+            <field name="model">documents.document</field>
+            <field name="inherit_id" ref="documents.documents_upload_url_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position-="inside">
+                    <group>
+                        <group>
+                            <field name="expiry_date"/>
+                            <field name="notify_before"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="documents_view_kanban_inherit" model="ir.ui.view">
+            <field name="name">documents kanban inherit</field>
+            <field name="model">documents.document</field>
+            <field name="inherit_id" ref="documents.document_view_kanban"/>
+            <field name="arch" type="xml">
+                <field name="owner_id" position="after">
+                    <field name="expiry_date"/>
+                    <field name="notify_before"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

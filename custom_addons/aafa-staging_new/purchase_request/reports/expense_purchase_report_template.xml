@@ -1,0 +1,398 @@
+<odoo>
+    <template id="report_expense_po_req_form_document">
+        <!-- <t t-call="web.external_layout"> -->
+        <t t-set="o" t-value="o.with_context(lang=o.create_uid.partner_id.lang)"/>
+        <t t-set="approval_lines" t-value="o.approval_info_line if 'approval_info_line' in o._fields else []"/>
+        <div class="page">
+            <div class="oe_structure"/>
+            <!-- <strong><center><h1>
+                Expense Purchase Request Form
+            </h1></center></strong> -->
+            <div style="width:80%;float: left;">
+                <strong>
+                    <left>
+                        <h1>
+                            <p style="font-size:40px;color:#00008B;padding-top:14mm; padding-left:5mm;">Expense Purchase
+                                Request Form
+                            </p>
+                        </h1>
+                    </left>
+                </strong>
+            </div>
+            <div style="width:20%;float: right;">
+                <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)"
+                     style="max-height:180px; width:100%; padding-top:0mm; padding-right:5mm; padding-left:0mm;"/>
+            </div>
+            <br/>
+            <br/>
+            <table class="information" width="100%">
+                <!-- <tr>
+                    <td style="padding-bottom:2mm;">
+                        <strong>Date of Request:</strong>
+                    </td>
+                    <td style="border-bottom: 1px solid black;padding-bottom:2mm;">
+                        <div t-field="o.date_start"/>
+                    </td>
+                    <td style="text-align:center;padding-bottom:2mm;">
+                        <strong>Ref. Number:</strong><br/>
+                    </td>
+                    <td style="border-bottom: 1px solid black;padding-bottom:2mm;">
+                        <div t-field="o.name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom:2mm;">
+                        <strong>Name:</strong>
+                    </td>
+                    <td style="border-bottom: 1px solid black;padding-bottom:2mm;">
+                        <div t-field="o.employee_id.name"/>
+                    </td>
+                    <td style="text-align:center;padding-bottom:2mm;">
+                        <strong>Department:</strong>
+                    </td>
+                    <td style="border-bottom: 1px solid black;padding-bottom:2mm;">
+                        <div t-field="o.department_id.name"/>
+                    </td>
+                    <tr>
+                        <td style="padding-bottom:2mm;">
+                            <strong>Purpose:</strong>
+                        </td>
+                        <td style="border-bottom: 1px solid black;padding-bottom:2mm;">
+                            <div t-field="o.description"/>
+                        </td>
+                        <td style="border-bottom: 1px solid black;padding-bottom:2mm;"></td>
+                        <td style="border-bottom: 1px solid black;padding-bottom:2mm;"></td>
+                    </tr>
+                </tr> -->
+                <tr>
+                    <td width="18%">Date of Request:
+                        <p></p>
+                    </td>
+                    <td style="border-bottom: 1px solid black; padding-right:0mm; padding-bottom:0mm; padding-top:0mm;"
+                        width="30%">
+                        <div t-field="o.date_start"/>
+                    </td>
+                    <td style="text-align:right; padding-bottom:0mm; padding-left:0mm; padding-top:0mm;">Ref. Number:
+                    </td>
+                    <td style="border-bottom: 1px solid black; padding-right:0mm; padding-top:0mm;" width="20%">
+                        <div t-field="o.name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td style="border-bottom: 1px solid black; padding-top:2mm;">
+                        <div t-field="o.employee_id.name"/>
+                    </td>
+                    <td style="text-align:right; padding-bottom:0mm; padding-left:0mm; padding-top:0mm;">Department:
+                    </td>
+                    <td style="border-bottom: 1px solid black;padding-top:2mm;" width="20%">
+                        <div t-field="o.department_id.name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Purpose:</td>
+                    <td colspan="4" style="border-bottom: 1px solid black;padding-top:2mm;">
+                        <div t-field="o.description"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Analytic Acccout/ Cost center:</td>
+                    <td style="border-bottom: 1px solid black;padding-top:2mm;">
+                        <div t-field="o.analytic_account_id.name"/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <br/>
+            <!-- <table class="budget_information" width="100%">
+                <tr>
+                    <td>
+                        <strong>Budgeted?</strong>
+                    </td>
+                    <td>
+                        <strong>Yes</strong>
+                    </td>
+                    <t t-if="o.budget_type == 'yes'">
+                        <td>
+                            <input type="checkbox" checked="checked"/>
+                        </td>
+                    </t>
+                    <t t-if="not o.budget_type == 'yes'">
+
+                        <td>
+                            <input type="checkbox"/>
+                        </td>
+                    </t>
+                    <td style="text-align:right;">
+                        <strong>No</strong>
+                    </td>
+                    <t t-if="o.budget_type == 'no'">
+                        <td style="text-align:right;">
+                            <input type="checkbox" checked="checked"/>
+                        </td>
+                    </t>
+                    <t t-if="not o.budget_type == 'no'">
+                        <td style="text-align:right;">
+                            <input type="checkbox"/>
+                        </td>
+                    </t>
+
+                    <td style="text-align:right;">
+                        <strong>Recurring</strong>
+                    </td>
+                    <t t-if="o.pr_type == 'recurring'">
+                        <td style="text-align:right">
+                            <input type="checkbox" checked="checked"/>
+                        </td>
+                    </t>
+                    <t t-if="not o.pr_type == 'recurring'">
+                        <td style="text-align:right">
+                            <input type="checkbox"/>
+                        </td>
+                    </t>
+                    <td style="text-align:right">
+                        <strong>New</strong>
+                    </td>
+                    <t t-if="o.pr_type == 'new'">
+                        <td style="text-align:right">
+                            <input type="checkbox" checked="checked"/>
+                        </td>
+                    </t>
+                    <t t-if="not o.pr_type == 'new'">
+                        <td style="text-align:right">
+                            <input type="checkbox"/>
+                        </td>
+                    </t>
+                </tr>
+            </table>
+            <br/> -->
+            <br/>
+            <br/>
+            <table class="purchase_table_lines" width="100%" style="border:1px solid black; border-collapse: collapse;">
+                <thead>
+                    <tr style="border:1px solid black">
+                        <th style="border:1px solid black;font-weight:bold;background-color:#D3D3D3;" width="50%">
+                            Details of Goods or Services
+                        </th>
+                        <th style="border:1px solid black;font-weight:bold;background-color:#D3D3D3;" width="15%">
+                            Estimated Cost (AED)
+                        </th>
+                        <th style="border:1px solid black;font-weight:bold;background-color:#D3D3D3;" width="10%">QTY
+                        </th>
+                        <th style="border:1px solid black;font-weight:bold;background-color:#D3D3D3;" width="25%">
+                            Remarks
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="o.line_ids" t-as="line">
+                        <tr style="border:1px solid black">
+                            <td style="border:1px solid black;padding-left:2mm;">
+                                <t t-if="not o.new_product_request">
+                                    <span t-field="line.product_id.name"/>
+                                </t>
+                            </td>
+                            <td style="border:1px solid black;text-align:right">
+                                <t t-if="not o.new_product_request">
+                                    <span t-field="line.cost_price"/>
+                                </t>
+                            </td>
+                            <td style="border:1px solid black;text-align:right">
+                                <span t-field="line.product_qty"/>
+                            </td>
+                            <td style="border:1px solid black;text-align:left; padding-right:2mm;">
+                                <span t-field="line.remarks"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+            <br/>
+            <br/>
+
+            <div class="row">
+                <table class="signature_details" width="100%">
+                    <tr>
+                        <td style="page-break-inside: avoid; text-align:left;padding-bottom:4mm;">
+                            <strong>Requested By:</strong>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="page-break-inside: avoid; text-align:left;padding-bottom:4mm;">
+                            <strong>Reviewed By:</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom: 1px solid black; text-align:left; padding-top:5mm; padding-bottom:2mm;"
+                            width="40%">
+                            <span t-field="o.employee_id"/>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="border-bottom: 1px solid black; text-align:left; padding-top:5mm; padding-bottom:2mm;"
+                            width="40%">
+                            <span t-field="o.assigned_manager_id"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;padding-bottom:4mm;">
+                            <strong>Requesting Staff</strong>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center;padding-bottom:4mm;">
+                            <strong>Department Head/ Manager</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" style="border-bottom: 1px solid black;padding-bottom:4mm;"></td>
+                    </tr>
+                    <!-- //=====================================// -->
+                    <tr>
+                        <td style="page-break-inside: avoid; text-align:left; padding-bottom:4mm; padding-top:8mm;">
+                            <t t-foreach="approval_lines" t-as="each">
+                                <t t-if="each.label_type == 'verified_by' ">
+                                    <strong>Verified By:</strong>
+                                </t>
+                            </t>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="page-break-inside: avoid; text-align:left; padding-bottom:4mm; padding-top:8mm;">
+                            <t t-foreach="approval_lines" t-as="each">
+                                <t t-if="each.label_type == 'supported_by' ">
+                                    <strong>Supported By:</strong>
+                                </t>
+                            </t>
+                        </td>
+                    </tr>
+                    <tr>
+                        <t t-foreach="approval_lines" t-as="each">
+                            <t t-if="each.label_type == 'verified_by' ">
+                                <td style="border-bottom: 1px solid black; text-align:left; padding-top:5mm; padding-bottom:2mm; "
+                                    width="40%">
+                                    <span t-field="each.approved_by"/>
+                                </td>
+                            </t>
+                        </t>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <t t-foreach="approval_lines" t-as="each">
+                            <t t-if="each.label_type == 'supported_by' ">
+                                <td style="border-bottom: 1px solid black; text-align:left; padding-top:5mm; padding-bottom:2mm;"
+                                    width="40%">
+                                    <span t-field="each.approved_by"/>
+                                </td>
+                            </t>
+                        </t>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;padding-bottom:4mm;">
+                            <t t-foreach="approval_lines" t-as="each">
+                                <t t-if="each.label_type == 'verified_by' ">
+                                    <strong>Reviewed Control</strong>
+                                </t>
+                            </t>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center;padding-bottom:4mm;">
+                            <t t-foreach="approval_lines" t-as="each">
+                                <t t-if="each.label_type == 'supported_by' ">
+                                    <strong>Head of Finance and Treasury</strong>
+                                </t>
+                            </t>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" style="border-bottom: 1px solid black;padding-bottom:4mm;"></td>
+                    </tr>
+                    <!-- //=====================================// -->
+                    <tr>
+                        <td style="page-break-inside: avoid; text-align:left; padding-top:8mm; padding-bottom:4mm;">
+                            <t t-foreach="approval_lines" t-as="each">
+                                <t t-if="each.label_type == 'reviewed_by' and each.show_in_report">
+                                    <strong>Reviewed By:</strong>
+                                </t>
+                            </t>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="page-break-inside: avoid; text-align:left; padding-bottom:4mm; padding-top:8mm;">
+                            <t t-foreach="approval_lines" t-as="each">
+                                <t t-if="each.label_type == 'approved_by' ">
+                                    <strong>Approved By:</strong>
+                                </t>
+                            </t>
+                        </td>
+                    </tr>
+                    <tr>
+                        <t t-foreach="approval_lines" t-as="each">
+                            <t t-if="each.label_type == 'reviewed_by' and each.show_in_report">
+                                <td style="border-bottom: 1px solid black; text-align:left; padding-top:5mm; padding-bottom:2mm;"
+                                    width="40%">
+                                    <span t-field="each.approved_by"/>
+                                </td>
+                            </t>
+                        </t>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <t t-foreach="approval_lines" t-as="each">
+                            <t t-if="each.label_type == 'approved_by' ">
+                                <td style="border-bottom: 1px solid black; text-align:left; padding-top:5mm;"
+                                    width="40%">
+                                    <span t-field="each.approved_by"/>
+                                </td>
+                            </t>
+                        </t>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;padding-bottom:4mm;">
+                            <t t-foreach="approval_lines" t-as="each">
+                                <t t-if="each.label_type == 'reviewed_by' and each.show_in_report">
+                                    <strong>COO</strong>
+                                </t>
+                            </t>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center;padding-bottom:4mm;">
+                            <t t-foreach="approval_lines" t-as="each">
+                                <t t-if="each.label_type == 'approved_by' ">
+                                    <strong>CEO</strong>
+                                </t>
+                            </t>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!-- </t> -->
+    </template>
+
+    <template id="template_expense_po_req_form">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="purchase_request.report_expense_po_req_form_document" t-lang="o.create_uid.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

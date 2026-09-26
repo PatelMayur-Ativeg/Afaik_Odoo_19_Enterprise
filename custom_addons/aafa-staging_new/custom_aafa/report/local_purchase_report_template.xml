@@ -1,0 +1,151 @@
+<odoo>
+    <template id="report_local_purchaseorder_document">
+        <!-- <t t-call="web.external_layout"> -->
+            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+            <div class="page">
+                <div class="oe_structure"/>
+                <!-- <strong><left><h1>
+                    <p style="font-size:40px;color:#00008B;padding-top:4mm; padding-left:2mm;">Local Purchase Order</p>
+                </h1></left></strong> -->
+                <div style="width:60%;float: left;">
+                    <strong><left><h1>
+                        <p style="font-size:40px;color:#00008B;padding-top:14mm; padding-left:5mm;">Local Purchase Order</p>
+                    </h1></left></strong>
+                </div>
+                <div style="width:20%;float: right;">
+                    <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height:180px; width:100%; padding-top:0mm; padding-right:5mm; padding-left:0mm;" />
+                </div>                  
+                <br/>
+                <br/>
+                <table class="information" width="100%">
+                    <tr>
+                        <td style="padding-bottom:5mm;padding-top:0mm;"><div t-field="res_company.partner_id"
+                            t-options='{"widget": "contact", "fields": ["address",]}' name="res_company_address"/></td>
+                    </tr>
+                    <tr>
+                        <td width="20%">
+                            <strong>Control No.:</strong>
+                        </td>
+                        <td style="border-bottom: 1px solid black;" width="35%">
+                            <div t-field="o.name"/>
+                        </td>
+                        <td width="10%" style="text-align:right; padding-right:0mm; " >
+                            <strong>Date:</strong>
+                        </td>
+                        <td style="border-bottom: 1px solid black; padding-left:0mm;" width="40%">
+                            <div t-field="o.date_order"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Vendor's Name:</strong>
+                        </td>
+                        <td colspan="3" style="border-bottom: 1px solid black; padding-top:3mm;">
+                            <div t-field="o.partner_id.name"/> 
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Vendor's Address:</strong>
+                        </td>
+                        <td colspan="3" style="border-bottom: 1px solid black; padding-top:3mm;">
+                            <div t-field="o.partner_id"
+                                t-options='{"widget": "contact", "fields": ["address",]}' name="purchase_vendor_address"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Telephone No.:</strong>
+                        </td>
+                        <td style="border-bottom: 1px solid black; padding-top:3mm;">
+                            <div t-field="o.partner_id.phone"/> 
+                        </td>
+                        <td style="text-align:right; padding-right:0mm; padding-top:3mm;" >
+                            <strong>Mobile:</strong>
+                        </td>
+                        <td style="border-bottom: 1px solid black; padding-top:3mm;">
+                            <div t-field="o.partner_id.mobile"/> 
+                        </td>
+                    </tr>
+                </table>
+                <br/>
+                <br/>
+                <br/>
+
+                <table class="purchase_table_lines" width="100%" style="border:1px solid black; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border:1px solid black;">
+                            <th style="border:1px solid black;font-weight:bold; background-color:#D3D3D3;" width="60%">Details OF GOODS / SERVICES</th>
+                            <th style="border:1px solid black;font-weight:bold;background-color:#D3D3D3;" width="10%">Qty</th>
+                            <th style="border:1px solid black;font-weight:bold;background-color:#D3D3D3;" width="15%" >Price</th>
+                            <th style="border:1px solid black;font-weight:bold;background-color:#D3D3D3;" width="15%">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="o.order_line" t-as="line">
+                            <tr style="border:1px solid black;">
+                                <td style="border:1px solid black;padding-left:2mm;">
+                                    <span t-field="line.product_id.name"/>
+                                </td>
+                                <td style="border:1px solid black;text-align:right">
+                                    <span t-field="line.product_qty"/>
+                                </td>
+                                <td style="border:1px solid black;text-align:right">
+                                    <span t-field="line.price_unit"/>
+                                </td>
+                                <td style="border:1px solid black;text-align:right">
+                                    <span t-esc="'%.2f'% line.price_subtotal"/>
+                                    <span t-esc="o.currency_id.name"/>
+
+                                </td>
+                            </tr>
+                        </t>
+                       <!--  <tr>
+                            <td style="border:1px solid black"></td>
+                            <td style="border:1px solid black"></td>
+                            <td style="border:1px solid black"></td>
+                            <td style="border:1px solid black"></td>
+                          
+                        </tr> -->
+                        <tr>
+                            <td style="border:1px solid black;font-weight:bold;text-align:left;padding-left:2mm;" colspan="1">
+                                <strong>Total</strong>
+                            </td>
+                            <td style="border:1px solid black"></td>
+                            <td style="border:1px solid black;font-weight:bold;text-align:right" colspan="1">
+                                <span t-esc="o.currency_id.name"/>
+                            </td>
+                            <td style="border:1px solid black;text-align:right" colspan="1">
+                                <span t-esc="'%.2f'% o.amount_total"/>
+                                <span t-esc="o.currency_id.name"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/> <br/> <br/>
+               
+                <div class="row">
+                    <table class="signature_details" width="100%">
+                        <tr>
+                            <td></td><td></td><td></td>
+                            <td style="border-bottom: 1px solid black; text-align:right; padding-top:5mm;" width="40%" ></td>
+                        </tr>
+                        <tr>
+                            <td style="page-break-inside: avoid; text-align:left;padding-top:8mm;"></td>
+                            <td></td><td></td>
+                            <td style="page-break-inside: avoid; text-align:right; padding-top:3mm;padding-right:18mm;" width="30%"><strong>Authorized Purchaser</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        <!-- </t> -->
+    </template>
+
+    <template id="template_local_purchaseorder">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="custom_aafa.report_local_purchaseorder_document" t-lang="o.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

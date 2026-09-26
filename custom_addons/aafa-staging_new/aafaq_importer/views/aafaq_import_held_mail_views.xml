@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_aafaq_import_held_mail_list" model="ir.ui.view">
+        <field name="name">aafaq.import.held.mail.list</field>
+        <field name="model">aafaq.import.held.mail</field>
+        <field name="arch" type="xml">
+            <list string="Held Import Emails" create="false">
+                <field name="date"/>
+                <field name="email_from"/>
+                <field name="subject"/>
+                <field name="alias_config_id"/>
+                <field name="record_type" optional="show"/>
+                <field name="filename"/>
+                <field name="state" widget="badge"
+                       decoration-warning="state == 'onhold'"
+                       decoration-success="state == 'done'"/>
+                <field name="queue_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_aafaq_import_held_mail_form" model="ir.ui.view">
+        <field name="name">aafaq.import.held.mail.form</field>
+        <field name="model">aafaq.import.held.mail</field>
+        <field name="arch" type="xml">
+            <form string="Held Import Email" create="false" edit="false">
+                <header>
+                    <button name="action_process_held_mails" type="object"
+                            string="Process Now" class="btn-primary"
+                            invisible="state != 'onhold'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="onhold,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" invisible="1"/>
+                            <field name="email_from"/>
+                            <field name="subject"/>
+                            <field name="date"/>
+                            <field name="alias_config_id"/>
+                            <field name="record_type"/>
+                            <field name="company_id"/>
+                            <field name="journal_id"/>
+                        </group>
+                        <group>
+                            <field name="filename" invisible="1"/>
+                            <field name="file" filename="filename"/>
+                            <field name="mail_message_id"/>
+                            <field name="queue_id" invisible="state != 'done'"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_aafaq_import_held_mail_search" model="ir.ui.view">
+        <field name="name">aafaq.import.held.mail.search</field>
+        <field name="model">aafaq.import.held.mail</field>
+        <field name="arch" type="xml">
+            <search string="Search Held Emails">
+                <field name="subject"/>
+                <field name="email_from"/>
+                <field name="alias_config_id"/>
+                <field name="filename"/>
+                <filter name="filter_onhold" string="On Hold" domain="[('state', '=', 'onhold')]"/>
+                <filter name="filter_done" string="Done" domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <group>
+                    <filter name="group_alias" string="Email Alias" context="{'group_by': 'alias_config_id'}"/>
+                    <filter name="group_type" string="Record Type" context="{'group_by': 'record_type'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_aafaq_import_held_mail" model="ir.actions.act_window">
+        <field name="name">Held Emails</field>
+        <field name="res_model">aafaq.import.held.mail</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_filter_onhold': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No held emails</p>
+            <p>
+                Incoming Journal and Adjustment entry emails stay here until the nightly
+                process or until you run Process Held Emails.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_server_process_held_mails" model="ir.actions.server">
+        <field name="name">Process Held Emails</field>
+        <field name="model_id" ref="model_aafaq_import_held_mail"/>
+        <field name="binding_model_id" ref="model_aafaq_import_held_mail"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = records.action_process_held_mails()
+else:
+    action = env['aafaq.import.held.mail'].search([('state', '=', 'onhold')]).action_process_held_mails()
+        </field>
+    </record>
+
+    <menuitem id="menu_aafaq_import_held_mail"
+              name="Held Emails"
+              parent="menu_aafaq_import_root"
+              action="action_aafaq_import_held_mail"
+              sequence="15"/>
+</odoo>

@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_aafa_vendor_option_user,aafa.vendor.option.user,model_aafa_vendor_option,base.group_user,1,1,1,0
+access_aafa_vendor_option_manager,aafa.vendor.option.manager,model_aafa_vendor_option,base.group_partner_manager,1,1,1,1
+access_vendor_product,vendor_product,model_vendor_product,,1,1,1,1
+access_budget_approval_config,access_budget_approval_config,model_budget_approval_config,base.group_user,1,1,1,1
+access_budget_approval_line,access_budget_approval_line,model_budget_approval_line,base.group_user,1,1,1,1
+access_budget_approval_info,access_budget_approval_info,model_budget_approval_info,base.group_user,1,1,1,1

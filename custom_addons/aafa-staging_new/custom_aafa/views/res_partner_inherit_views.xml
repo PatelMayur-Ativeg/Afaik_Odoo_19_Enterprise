@@ -1,0 +1,164 @@
+<odoo>
+    <record id="view_res_partner_form_inherit" model="ir.ui.view">
+        <field name="name">view.res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form[1]/sheet" position="before">
+                <header>
+                    <button name="action_approve_vendor"
+                            string="Approve"
+                            type="object"
+                            class="btn-primary"
+                            groups="custom_aafa.group_vendor_approver"
+                            invisible="state in ('approved', 'rejected')"/>
+                    <button name="action_reject_vendor"
+                            string="Reject"
+                            type="object"
+                            groups="custom_aafa.group_vendor_approver"
+                            invisible="state in ('approved', 'rejected')"/>
+                    <button name="action_reset_vendor_to_draft"
+                            string="Reset to Draft"
+                            type="object"
+                            groups="custom_aafa.group_vendor_approver"
+                            invisible="state not in ('approved', 'rejected')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,approved,rejected,portal_registered"/>
+                </header>
+            </xpath>
+            <xpath expr="//page[2]" position="after">
+                <page string="Products">
+                    <field name="vendor_prod_line">
+                        <list string="Products" editable="bottom">
+                            <field name="product_id" readonly="1"/>
+                            <field name="partner_supplier_id" invisible="1"/>
+                            <field name="minimum_qty" readonly="1"/>
+                            <field name="price" readonly="1"/>
+                            <field name="delivery_lead_time" readonly="1"/>
+                        </list>
+                        <form string="Products Line">
+                            <group>
+                                <group>
+                                    <field name="product_id" readonly="1"/>
+                                    <field name="partner_supplier_id" readonly="1"/>
+                                    <field name="minimum_qty" readonly="1"/>
+                                </group>
+                                <group>
+                                    
+                                    <field name="price" readonly="1"/>
+                                    <field name="delivery_lead_time" readonly="1"/>
+                                </group>
+                            </group>
+                        </form>
+                    </field>
+                </page>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Vendor Information" name="vendor_information">
+                    <group string="Vendor Classification">
+                        <group>
+                            <field name="vendor_seq"/>
+                            <field name="vendor_category_id"/>
+                            <field name="vendor_criticality_id"/>
+                        </group>
+                        <group>
+                            <field name="vendor_status_id"/>
+                            <field name="business_owner_id"/>
+                            <field name="business_owner_department_id"/>
+                            <field name="vendor_manager_id"/>
+                        </group>
+                    </group>
+                    <group string="Contract Information">
+                        <group>
+                            <field name="contract_number"/>
+                            <field name="contract_start_date"/>
+                            <field name="contract_expiry_date"/>
+                        </group>
+                        <group>
+                            <field name="renewal_required"/>
+                            <field name="renewal_status_id"/>
+                        </group>
+                    </group>
+                    <group string="Annual Assessment">
+                        <group>
+                            <field name="last_assessment_date"/>
+                            <field name="next_assessment_date"/>
+                        </group>
+                        <group>
+                            <field name="assessment_status_id"/>
+                            <field name="business_assessment_id"/>
+                        </group>
+                    </group>
+                    <group string="Compliance &amp; Risk">
+                        <group>
+                            <field name="risk_assessment_status_id"/>
+                            <field name="risk_rating_id"/>
+                            <field name="compliance_risk_id"/>
+                            <field name="risk_assessment_date"/>
+                        </group>
+                        <group>
+                            <field name="total_risk_rating_id"/>
+                            <field name="assessed_by_id"/>
+                            <field name="next_risk_review"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="risk_mitigation" placeholder="Risk Mitigation"/>
+                    </group>
+                    <group string="Document Control">
+                        <group>
+                            <field name="trade_license_id" invisible="1"/>
+                            <field name="trade_license" filename="trade_license_filename"/>
+                            <field name="trade_license_filename" invisible="1"/>
+                            <field name="license_expiry"/>
+                            <field name="insurance_document_id" invisible="1"/>
+                            <field name="insurance_document" filename="insurance_document_filename"/>
+                            <field name="insurance_document_filename" invisible="1"/>
+                            <field name="insurance_expiry"/>
+                        </group>
+                        <group>
+                            <field name="contract_document_id" invisible="1"/>
+                            <field name="contract_document" filename="contract_document_filename"/>
+                            <field name="contract_document_filename" invisible="1"/>
+                            <field name="nda_document_id" invisible="1"/>
+                            <field name="nda_document" filename="nda_document_filename"/>
+                            <field name="nda_document_filename" invisible="1"/>
+                            <field name="sla_document_id" invisible="1"/>
+                            <field name="sla_document" filename="sla_document_filename"/>
+                            <field name="sla_document_filename" invisible="1"/>
+                            <field name="other_document_ids" widget="many2many_binary"/>
+                        </group>
+                    </group>
+                    <group string="Review / Approval">
+                        <group>
+                            <field name="business_review_id"/>
+                            <field name="vendor_management_review_id"/>
+                            <field name="compliance_risk_review_id"/>
+                        </group>
+                        <group>
+                            <field name="management_approval_id"/>
+                            <field name="overall_vendor_status_id"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_res_partner_tree_inherit_state" model="ir.ui.view">
+        <field name="name">view.res.partner.list.inherit.state</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="state"
+                       widget="badge"
+                       optional="show"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'approved'"
+                       decoration-danger="state == 'rejected'"
+                       decoration-warning="state == 'portal_registered'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,43 @@
+<odoo>
+
+        <record id="view_purchase_order_inherit_pr" model="ir.ui.view">
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_purchase_request"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-file-text-o"
+                        invisible="not request_id"
+                        string="Purchase Request"/>
+            </xpath>
+            <field name="date_order" position="after">
+                <field name="request_new_product" />
+                <field name="request_id" readonly="1"/>
+            </field>
+             <xpath expr="//field[@name='order_line']//list//field[@name='product_id']" position="after">
+             <field name="request_new_product"/>
+                </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_id']" position="attributes">
+                <attribute name="readonly">
+                    state in ('purchase', 'to approve', 'done', 'cancel')
+                </attribute>
+
+                <attribute name="required">
+                    request_new_product == False and display_type == False
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_uom_id']" position="attributes">
+                <attribute name="readonly">
+                    state in ('purchase', 'done', 'cancel')
+                </attribute>
+
+                <attribute name="required">
+                    display_type == False and request_new_product == False
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

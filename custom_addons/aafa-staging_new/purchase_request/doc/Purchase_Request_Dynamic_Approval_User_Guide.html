@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Purchase Request &amp; Dynamic Approval — User Guide</title>
+  <style>
+    :root {
+      --primary: #194173;
+      --primary-light: #e8f0f8;
+      --accent: #2e7d32;
+      --warn: #e65100;
+      --text: #222;
+      --muted: #555;
+      --border: #c5d5e8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", system-ui, Arial, sans-serif;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 24px 28px 56px;
+      color: var(--text);
+      line-height: 1.6;
+      background: #fafbfc;
+    }
+    @media print {
+      body { background: #fff; padding: 16px; }
+      .no-print { display: none !important; }
+      .part { page-break-before: always; }
+      .part:first-of-type { page-break-before: avoid; }
+      .flow-box, .step-card { break-inside: avoid; }
+    }
+    .toolbar {
+      background: var(--primary-light);
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 24px;
+      font-size: 0.95em;
+    }
+    .cover {
+      text-align: center;
+      padding: 48px 24px 56px;
+      background: linear-gradient(180deg, var(--primary) 0%, #2a5a8a 100%);
+      color: #fff;
+      border-radius: 8px;
+      margin-bottom: 32px;
+    }
+    .cover h1 { margin: 0 0 8px; font-size: 1.85rem; font-weight: 700; }
+    .cover .subtitle { font-size: 1.1rem; opacity: 0.95; margin-bottom: 16px; }
+    .cover .modules { font-size: 0.95rem; opacity: 0.85; }
+    nav.toc {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 32px;
+    }
+    nav.toc h2 { margin: 0 0 12px; font-size: 1.1rem; color: var(--primary); }
+    nav.toc ol { margin: 0; padding-left: 1.4em; }
+    nav.toc li { margin: 6px 0; }
+    nav.toc a { color: var(--primary); text-decoration: none; }
+    nav.toc a:hover { text-decoration: underline; }
+    .part {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+    }
+    .part-header {
+      background: var(--primary);
+      color: #fff;
+      margin: -24px -28px 20px;
+      padding: 12px 28px;
+      border-radius: 8px 8px 0 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    h3 { color: var(--primary); margin: 1.4em 0 0.6em; font-size: 1.05rem; }
+    h3:first-child { margin-top: 0; }
+    p { margin: 0.5em 0 1em; }
+    ul, ol { margin: 0.5em 0 1em; padding-left: 1.5em; }
+    li { margin: 0.35em 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92em;
+      margin: 1em 0;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+    tr:nth-child(even) { background: #f8fafc; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      font-weight: 600;
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .flow-box {
+      background: var(--primary-light);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 6px;
+      text-align: center;
+      min-width: 100px;
+    }
+    .flow-arrow { color: var(--muted); font-weight: bold; }
+    .step-card {
+      border-left: 4px solid var(--primary);
+      background: #f8fafc;
+      padding: 14px 16px;
+      margin: 12px 0;
+      border-radius: 0 6px 6px 0;
+    }
+    .step-card strong { color: var(--primary); }
+    .tip {
+      background: #e8f5e9;
+      border: 1px solid #a5d6a7;
+      padding: 12px 14px;
+      border-radius: 6px;
+      margin: 1em 0;
+      font-size: 0.95em;
+    }
+    .warn {
+      background: #fff3e0;
+      border: 1px solid #ffcc80;
+      padding: 12px 14px;
+      border-radius: 6px;
+      margin: 1em 0;
+      font-size: 0.95em;
+    }
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin: 1em 0;
+    }
+    .role-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      background: #fff;
+    }
+    .role-card h4 { margin: 0 0 6px; color: var(--primary); font-size: 0.95rem; }
+    .role-card p { margin: 0; font-size: 0.88em; color: var(--muted); }
+    code { background: #eee; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar no-print">
+    <strong>How to use this guide:</strong> Open in any browser. Use <kbd>Ctrl+P</kbd> (or <kbd>Cmd+P</kbd>) → Save as PDF to share with your team.
+  </div>
+
+  <header class="cover">
+    <h1>Purchase Request &amp; Dynamic Approval</h1>
+    <p class="subtitle">Complete user guide — request, approve, and procure</p>
+    <p class="modules">Modules: Purchase Request + Purchase Dynamic Approval</p>
+  </header>
+
+  <nav class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#overview">What this application does</a></li>
+      <li><a href="#roles">Who does what (user roles)</a></li>
+      <li><a href="#status">Request statuses explained</a></li>
+      <li><a href="#menu">Where to find things in Odoo</a></li>
+      <li><a href="#requester">Steps for the employee (requester)</a></li>
+      <li><a href="#manager">Steps for the line manager</a></li>
+      <li><a href="#approvers">Steps for approval levels</a></li>
+      <li><a href="#admin">Steps for IT / General admin</a></li>
+      <li><a href="#new-product">New product requests (special flow)</a></li>
+      <li><a href="#lines">Product lines &amp; requisition actions</a></li>
+      <li><a href="#budget">Budget information</a></li>
+      <li><a href="#buttons">Buttons by status (quick reference)</a></li>
+      <li><a href="#setup">Administrator setup (approval configuration)</a></li>
+      <li><a href="#faq">Common questions</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1. Overview -->
+  <section class="part" id="overview">
+    <div class="part-header">1. What this application does</div>
+    <p>
+      This application lets employees ask the company to buy items or move stock internally.
+      Instead of creating a purchase order directly, staff fill in a <strong>Purchase Request (PR)</strong>.
+      The request then moves through review and <strong>multi-level approval</strong> before purchase orders
+      or internal transfers are created automatically.
+    </p>
+    <p><strong>In simple terms:</strong></p>
+    <ul>
+      <li><strong>You request</strong> — describe what you need, quantities, and category (General or IT).</li>
+      <li><strong>Your manager reviews</strong> — sends the request into the formal approval chain.</li>
+      <li><strong>Configured approvers approve</strong> — one or more levels (by user or security group).</li>
+      <li><strong>Procurement runs</strong> — the system can create RFQs, purchase orders, and/or stock pickings.</li>
+      <li><strong>Request is closed</strong> — marked Done when the process is complete.</li>
+    </ul>
+    <div class="tip">
+      <strong>Tip:</strong> You will receive email and in-app notifications when a request needs your action or when it is approved or rejected.
+    </div>
+  </section>
+
+  <!-- 2. Roles -->
+  <section class="part" id="roles">
+    <div class="part-header">2. Who does what (user roles)</div>
+    <div class="role-grid">
+      <div class="role-card">
+        <h4>Purchase Request User</h4>
+        <p>Creates and submits own purchase requests. Cannot approve others’ requests.</p>
+      </div>
+      <div class="role-card">
+        <h4>Purchase Request Manager</h4>
+        <p>Line manager / requisition responsible. Sees requests assigned to them. Can send for approval, reset to draft (with rights).</p>
+      </div>
+      <div class="role-card">
+        <h4>Approval level users / groups</h4>
+        <p>Defined in Approval Configuration. See <strong>Approve</strong> and <strong>Reject</strong> when it is their turn.</p>
+      </div>
+      <div class="role-card">
+        <h4>PR IT Admin / PR Admin</h4>
+        <p>Can create RFQs at configured stages, fill requisition actions on lines, and use extra procurement buttons.</p>
+      </div>
+      <div class="role-card">
+        <h4>Purchase manager (setup)</h4>
+        <p>Maintains Approval Configuration and purchase settings.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Status -->
+  <section class="part" id="status">
+    <div class="part-header">3. Request statuses explained</div>
+    <p>The coloured bar at the top of each request shows where it is in the process:</p>
+    <table>
+      <thead>
+        <tr><th>Status</th><th>Meaning</th><th>Who usually acts next</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="badge">Draft</span></td><td>Being prepared; not yet submitted.</td><td>Requester</td></tr>
+        <tr><td><span class="badge">Waiting for Review</span></td><td>Submitted; waiting for line manager to send to approval.</td><td>Requisition responsible / manager</td></tr>
+        <tr><td><span class="badge">Waiting for Approval</span></td><td>In the approval chain; current level must approve or reject.</td><td>Assigned approvers (or admin for line details)</td></tr>
+        <tr><td><span class="badge">Approved</span></td><td>Manager approval recorded (simple flow without multi-level).</td><td>Manager — Confirm or Done</td></tr>
+        <tr><td><span class="badge">In Progress</span></td><td>POs and/or pickings created; procurement underway.</td><td>Buyer / admin — Done when finished</td></tr>
+        <tr><td><span class="badge">Rejected</span></td><td>Request was rejected (reason stored on Approval Info tab).</td><td>Can reset to Draft if allowed</td></tr>
+        <tr><td><span class="badge">Done</span></td><td>Process completed.</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <h3>Typical flow (with Dynamic Approval enabled)</h3>
+    <div class="flow">
+      <span class="flow-box">Draft</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-box">Waiting for Review</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-box">Waiting for Approval</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-box">In Progress</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-box">Done</span>
+    </div>
+    <p class="muted" style="font-size:0.9em;color:var(--muted);">Side path: any approver can <strong>Reject</strong> → status becomes <strong>Rejected</strong>.</p>
+  </section>
+
+  <!-- 4. Menu -->
+  <section class="part" id="menu">
+    <div class="part-header">4. Where to find things in Odoo</div>
+    <table>
+      <thead>
+        <tr><th>What you need</th><th>Menu path</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>All purchase requests</td><td><strong>Purchase Requests</strong> → <strong>Purchase Requests</strong></td></tr>
+        <tr><td>Also under Purchase</td><td><strong>Purchase</strong> → <strong>Purchase Requests</strong> (procurement menu)</td></tr>
+        <tr><td>Approval setup (admins)</td><td><strong>Purchase Requests</strong> → <strong>Configuration</strong> → <strong>Approval Configuration</strong></td></tr>
+        <tr><td>Company approval setting</td><td><strong>Settings</strong> → <strong>Purchase</strong> → Approval based on (Request Category)</td></tr>
+        <tr><td>Linked purchase orders</td><td>On the PR form → smart button <strong>Purchase Orders</strong></td></tr>
+        <tr><td>Linked pickings</td><td>On the PR form → smart button <strong>Pickings</strong> (stock managers)</td></tr>
+        <tr><td>Approval history</td><td>On the PR form → tab <strong>Approval Info</strong></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 5. Requester -->
+  <section class="part" id="requester">
+    <div class="part-header">5. Steps for the employee (requester)</div>
+
+    <div class="step-card">
+      <strong>Step 1 — Open a new request</strong><br />
+      Go to <strong>Purchase Requests</strong> → <strong>Create</strong>.
+    </div>
+    <div class="step-card">
+      <strong>Step 2 — Fill header information</strong><br />
+      <ul>
+        <li><strong>Employee</strong> — usually yourself (filled automatically).</li>
+        <li><strong>Requisition Responsible</strong> — your line manager (often filled from employee record).</li>
+        <li><strong>Category</strong> — <em>General Category</em> or <em>IT Category</em> (required; drives approval rules).</li>
+        <li><strong>Requisition date</strong>, deadline, and description as needed.</li>
+        <li><strong>New Product Request</strong> — tick only if the product does not exist in the catalogue yet.</li>
+      </ul>
+    </div>
+    <div class="step-card">
+      <strong>Step 3 — Add lines</strong><br />
+      <ul>
+        <li><strong>Existing products:</strong> use the <strong>Products</strong> tab — choose product, quantity, unit of measure, remarks.</li>
+        <li><strong>New products:</strong> use the <strong>New Products Request</strong> tab — description, estimated cost, quantity.</li>
+      </ul>
+    </div>
+    <div class="step-card">
+      <strong>Step 4 — Picking details (if needed)</strong><br />
+      On <strong>Picking Details</strong>, set picking type and source/destination locations for internal moves.
+    </div>
+    <div class="step-card">
+      <strong>Step 5 — Submit</strong><br />
+      Click <strong>Submit for Approval</strong>. Status becomes <em>Waiting for Review</em>. Your manager receives an email notification.
+    </div>
+    <div class="warn">
+      <strong>Before submitting:</strong> Add at least one product line (or new product line). Empty requests cannot be submitted.
+    </div>
+    <p>After submit, you can follow progress on the same form and from email notifications. You do not need to click Approve unless you are also an approver.</p>
+  </section>
+
+  <!-- 6. Manager -->
+  <section class="part" id="manager">
+    <div class="part-header">6. Steps for the line manager (requisition responsible)</div>
+    <p>When a request is <span class="badge">Waiting for Review</span> and you are the requisition responsible (or primary approver per configuration):</p>
+
+    <div class="step-card">
+      <strong>Step 1 — Open the request</strong><br />
+      From Purchase Requests list or from the email link.
+    </div>
+    <div class="step-card">
+      <strong>Step 2 — Review content</strong><br />
+      Check products, quantities, category, budget (if shown), and picking details.
+    </div>
+    <div class="step-card">
+      <strong>Step 3 — Request approval</strong><br />
+      Click <strong>Request approval</strong>. Status becomes <em>Waiting for Approval</em>. The first approval level receives email and in-app notification.
+    </div>
+    <p>If no approval configuration exists for that category, the system may confirm the request immediately and create purchase documents (same as final approval).</p>
+    <div class="step-card">
+      <strong>Optional — Reset to Draft</strong><br />
+      Managers with rights can use <strong>Reset to Draft</strong> to send the request back for correction (when visible).
+    </div>
+  </section>
+
+  <!-- 7. Approvers -->
+  <section class="part" id="approvers">
+    <div class="part-header">7. Steps for approval levels (dynamic approval)</div>
+    <p>When status is <span class="badge">Waiting for Approval</span> and you are in the current approval user list or group:</p>
+
+    <div class="step-card">
+      <strong>Step 1 — Open the request</strong><br />
+      You should see buttons <strong>Approve</strong> and <strong>Reject</strong>.
+    </div>
+    <div class="step-card">
+      <strong>Step 2 — Admin level only: set requisition action</strong><br />
+      If you are an IT/General admin at an <em>admin approval level</em>, extra columns appear on product lines:
+      <ul>
+        <li><strong>Requisition Action</strong> — required before approving.</li>
+        <li><strong>Qty to Buy</strong> / <strong>Qty to Receive</strong> — for partial scenarios.</li>
+        <li><strong>Vendor</strong> — for purchase or partial lines.</li>
+      </ul>
+      Use the refresh icon next to <strong>Analytic Account</strong> to copy the header analytic account to all lines if needed.
+    </div>
+    <div class="step-card">
+      <strong>Step 3 — Approve</strong><br />
+      Click <strong>Approve</strong>.
+      <ul>
+        <li>If more levels exist, the next approvers are notified and status stays <em>Waiting for Approval</em>.</li>
+        <li>On the <strong>last level</strong>, the request moves to <em>In Progress</em>, purchase orders and/or pickings are created, and the requester is notified.</li>
+        <li>If all lines are <em>Internal Picking</em> only, a picking may be created and status set to <em>In Progress</em> at that level.</li>
+      </ul>
+    </div>
+    <div class="step-card">
+      <strong>Step 4 — Or reject</strong><br />
+      Click <strong>Reject</strong>, enter a <strong>reason</strong> in the popup, and confirm. Status becomes <em>Rejected</em>; the requester is notified.
+    </div>
+    <p>Track who approved at each level on the <strong>Approval Info</strong> tab (level, users/groups, date, approved by).</p>
+  </section>
+
+  <!-- 8. Admin -->
+  <section class="part" id="admin">
+    <div class="part-header">8. Steps for IT / General admin (PR Admin)</div>
+
+    <h3>Create RFQ — during approval (catalogue products)</h3>
+    <div class="step-card">
+      When status is <em>Waiting for Approval</em>, your approval level has <strong>Create RFQ Access</strong>, and RFQ is not yet created:
+      click <strong>Create RFQ</strong> to generate draft/confirmed purchase orders per vendor from lines marked <em>Purchase Order</em>.
+    </div>
+
+    <h3>Create RFQ — after approval (extra)</h3>
+    <div class="step-card">
+      When status is <em>In Progress</em>, <strong>Create RFQ</strong> (highlighted) may appear to create an additional RFQ from purchase-order lines.
+    </div>
+
+    <h3>New product — wizard RFQ (base module)</h3>
+    <div class="step-card">
+      For <strong>New Product Request</strong> in <em>Waiting for Review</em> or <em>Waiting for Approval</em>, IT/General admin may see <strong>Create RFQ</strong> (wizard) to enter vendor quotations for new items before catalogue products exist.
+    </div>
+
+    <h3>Approve — new product requests</h3>
+    <div class="step-card">
+      For new-product requests, <strong>Approve</strong> may require that at least one RFQ/PO exists (<code>purchase_count &gt; 0</code>) before the final approve button works — create RFQs first, then approve.
+    </div>
+  </section>
+
+  <!-- 9. New product -->
+  <section class="part" id="new-product">
+    <div class="part-header">9. New product requests (special flow)</div>
+    <table>
+      <thead>
+        <tr><th>Topic</th><th>What to know</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>When to use</td>
+          <td>Tick <strong>New Product Request</strong> when the item is not in Odoo products yet.</td>
+        </tr>
+        <tr>
+          <td>Lines tab</td>
+          <td>Use <strong>New Products Request</strong> — description, cost, quantity (not the Products tab).</td>
+        </tr>
+        <tr>
+          <td>RFQ timing</td>
+          <td>Admins create RFQs via wizard while status is Waiting for Review or Waiting for Approval.</td>
+        </tr>
+        <tr>
+          <td>Approval</td>
+          <td>Approvers use the Approve button variant that applies when <em>New Product Request</em> is set; RFQs may need to exist first.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 10. Lines -->
+  <section class="part" id="lines">
+    <div class="part-header">10. Product lines &amp; requisition actions</div>
+    <p>For standard (catalogue) products, admins set <strong>Requisition Action</strong> on each line before final approval:</p>
+    <table>
+      <thead>
+        <tr><th>Action</th><th>What happens when request is confirmed</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Internal Picking</strong></td>
+          <td>Creates an internal stock transfer (move from source to destination location).</td>
+        </tr>
+        <tr>
+          <td><strong>Purchase Order</strong></td>
+          <td>Creates a purchase order / RFQ for the selected vendor(s) with the requested quantity.</td>
+        </tr>
+        <tr>
+          <td><strong>Partial</strong></td>
+          <td>Can create both a picking (receive quantity) and a purchase order (buy quantity) per vendor rules.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Other useful line fields: <strong>Available QTY</strong> (stock on hand), <strong>Vendor</strong> (tags), <strong>Analytic Account</strong> (cost centre).</p>
+  </section>
+
+  <!-- 11. Budget -->
+  <section class="part" id="budget">
+    <div class="part-header">11. Budget information (when visible)</div>
+    <p>Budget fields appear for users with budget access (typically managers and admins):</p>
+    <ul>
+      <li><strong>Budget</strong> — linked analytic budget for the department/account.</li>
+      <li><strong>Planned / Actual / PR Amount / Remaining Budget</strong> — help check if the request fits the budget.</li>
+      <li><strong>Remaining Budget</strong> turns <span style="color:red;">red</span> if the request would exceed budget.</li>
+    </ul>
+    <div class="warn">
+      A warning may appear when line amounts change if budget is exceeded. Coordinate with finance before forcing approval.
+    </div>
+  </section>
+
+  <!-- 12. Buttons reference -->
+  <section class="part" id="buttons">
+    <div class="part-header">12. Buttons by status (quick reference)</div>
+    <p>Buttons depend on your security groups and whether Dynamic Approval is configured. Below is the combined behaviour.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Requester</th>
+          <th>Manager</th>
+          <th>Current approver</th>
+          <th>IT / General admin</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Draft</td>
+          <td>Submit for Approval</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Waiting for Review</td>
+          <td>—</td>
+          <td>Request approval</td>
+          <td>—</td>
+          <td>Create RFQ (new products, if enabled)</td>
+        </tr>
+        <tr>
+          <td>Waiting for Approval</td>
+          <td>—</td>
+          <td>Reset to Draft*</td>
+          <td>Approve, Reject</td>
+          <td>Create RFQ (if level allows), set line actions</td>
+        </tr>
+        <tr>
+          <td>Approved</td>
+          <td>—</td>
+          <td>Confirm, Done, Reject*</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>In Progress</td>
+          <td>—</td>
+          <td>Done, Reset to Draft*</td>
+          <td>—</td>
+          <td>Create RFQ (extra)</td>
+        </tr>
+        <tr>
+          <td>Rejected</td>
+          <td>—</td>
+          <td>Reset to Draft (SH)</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Done</td>
+          <td>—</td>
+          <td>Reset to Draft*</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.9em;color:var(--muted);">* Reset to Draft / manager-only buttons require Purchase Request Manager (or equivalent) rights. With Dynamic Approval, simple Approve/Reject/Confirm on the base form are hidden when an approval configuration applies.</p>
+  </section>
+
+  <!-- 13. Setup -->
+  <section class="part" id="setup">
+    <div class="part-header">13. Administrator setup (approval configuration)</div>
+    <p>For purchase managers setting up the system:</p>
+
+    <div class="step-card">
+      <strong>Step 1 — Enable category-based approval</strong><br />
+      <strong>Settings</strong> → <strong>Purchase</strong> → set <strong>Approval based on</strong> to <em>Request Category</em>.
+    </div>
+    <div class="step-card">
+      <strong>Step 2 — Create approval configuration</strong><br />
+      <strong>Purchase Requests</strong> → <strong>Configuration</strong> → <strong>Approval Configuration</strong> → <strong>Create</strong>.
+      <ul>
+        <li><strong>Name</strong> — e.g. “IT Purchase Approval”.</li>
+        <li><strong>Category</strong> — General or IT (must match PR category).</li>
+        <li><strong>Companies</strong> — limit to relevant companies.</li>
+        <li><strong>Primary approval</strong> — <em>Line Manager</em> (manager sends to chain) or <em>Own Approval</em> (employee can request approval).</li>
+        <li><strong>Buyer</strong> — user assigned on generated purchase orders.</li>
+      </ul>
+    </div>
+    <div class="step-card">
+      <strong>Step 3 — Define approval lines</strong><br />
+      On tab <strong>Approval Details</strong>, add one row per level:
+      <ul>
+        <li><strong>Level</strong> — unique number (1, 2, 3…).</li>
+        <li><strong>Approve Process By</strong> — specific <em>Users</em> or <em>Group</em>.</li>
+        <li><strong>Label type</strong> — Verified / Supported / Reviewed / Approved By (for reports).</li>
+        <li><strong>Is Admin Level?</strong> — tick if IT/General admin must set requisition actions on lines.</li>
+        <li><strong>Create RFQ Access</strong> — tick on the level where admins may create RFQ during approval.</li>
+      </ul>
+    </div>
+    <div class="step-card">
+      <strong>Step 4 — Assign user groups in Odoo</strong><br />
+      Ensure employees have: Purchase Request User (requesters), Manager (managers), PR IT Admin / PR Admin (admins), and membership in approval groups defined above.
+    </div>
+  </section>
+
+  <!-- 14. FAQ -->
+  <section class="part" id="faq">
+    <div class="part-header">14. Common questions</div>
+
+    <h3>I submitted but I see no buttons — is it broken?</h3>
+    <p>After submit, status is <em>Waiting for Review</em>. Only your <strong>requisition responsible</strong> sees <strong>Request approval</strong>. Wait for them or ask them to act.</p>
+
+    <h3>I am an approver but I do not see Approve</h3>
+    <ul>
+      <li>Confirm status is <em>Waiting for Approval</em>.</li>
+      <li>Confirm you are in the <strong>user list or group</strong> for the current level (see Approval Info tab → Next Approval).</li>
+      <li>For new-product requests, create RFQs first if required.</li>
+    </ul>
+
+    <h3>What is the difference between Approve and Confirm?</h3>
+    <p><strong>Approve</strong> (dynamic approval) moves the request through approval levels. <strong>Confirm</strong> (base module, when no dynamic config) creates POs/pickings from approved lines. Final approval usually calls confirm automatically.</p>
+
+    <h3>Where are purchase orders created?</h3>
+    <p>Open the PR and click the <strong>Purchase Orders</strong> smart button. They are also under <strong>Purchase</strong> → <strong>Orders</strong>.</p>
+
+    <h3>Can I delete a request?</h3>
+    <p>Only in <strong>Draft</strong>. After submit, use rejection or reset to draft (if you have rights).</p>
+
+    <h3>How do I search my requests?</h3>
+    <p>Use list filters: <em>My Requests</em>, <em>Assigned to Me</em>, or filter by status (Draft, Waiting for Review, etc.).</p>
+  </section>
+
+  <footer style="text-align:center;color:var(--muted);font-size:0.85em;margin-top:32px;">
+    Purchase Request + Purchase Dynamic Approval — User Guide<br />
+    Generated for Odoo 19 · AAFA custom modules
+  </footer>
+
+</body>
+</html>

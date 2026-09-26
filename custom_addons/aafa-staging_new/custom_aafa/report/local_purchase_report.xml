@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================== Purchase Order ================== -->
+
+        <record id="action_report_local_purchaseorder_vat" model="ir.actions.report">
+            <field name="name">Local Purchase Order</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">custom_aafa.template_local_purchaseorder_vat</field>
+            <field name="report_file">custom_aafa.template_local_purchaseorder_vat</field>
+            <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_report_local_purchaseorder" model="ir.actions.report">
+            <field name="name">Local Purchase Order without VAT</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">custom_aafa.template_local_purchaseorder</field>
+            <field name="report_file">custom_aafa.template_local_purchaseorder</field>
+            <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>

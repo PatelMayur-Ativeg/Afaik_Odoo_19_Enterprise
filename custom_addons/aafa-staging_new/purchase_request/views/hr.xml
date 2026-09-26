@@ -1,0 +1,27 @@
+<odoo>
+
+
+    <record id="view_department_form_inherit" model="ir.ui.view">
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form" />
+        <field name="arch" type="xml">
+            <field name="manager_id" position="before">
+                <field name="analytic_account_id" />
+            </field>
+            <xpath expr="//group[1]" position="after">
+                <notebook>
+                    <page name="picking_info" string="Picking Info">
+                        <group>
+                            <group>
+                                <field name="picking_type_id" options="{'no_open':True,'no_create':1,'no_create_edit':1}"/>
+                                <field name="src_location_id" options="{'no_open':True,'no_create':1,'no_create_edit':1}"/>
+                                <field name="dest_location_id" options="{'no_open':True,'no_create':1,'no_create_edit':1}"/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

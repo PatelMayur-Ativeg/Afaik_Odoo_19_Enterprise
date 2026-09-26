@@ -1,0 +1,118 @@
+<?xml version="1.0" ?>
+<odoo>
+
+	<record id="view_asset_tracking_form" model="ir.ui.view">
+        <field name="name">asset.tracking.form</field>
+        <field name="model">asset.tracking</field>
+        <field name="arch" type="xml">
+            <form string="Asset">
+                <header>
+                    <field
+                        name="state_id"
+                        widget="statusbar"
+                        statusbar_visible="new,active,inactive,scrap,sold"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            type="object"
+                            name="action_view_asset_movement"
+                            class="oe_stat_button"
+                            icon="fa-exchange"
+                            string="Movements"
+                        >
+	                        <field
+	                            name="movement_count"
+	                            widget="statinfo"
+	                            string="Movements"
+	                        />
+                        </button>
+                    </div>
+                    <!-- <field name="image_asset" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;avatar_128&quot;}" forcesave="1"/> -->
+                    <div class="oe_edit_only">
+                        <label for="name" class="oe_inline"/>
+                    </div>
+                    <h1>
+                        <field
+                            name="name" placeholder="e.g Laptop iBook" 
+                            class="oe_inline"
+                        />
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="category_id" />
+                            <field name="reference" /> 
+                            <field name="date" />
+                        </group>
+                        <group>
+                            <field name="company_id" />
+                            <field name="product_id" />
+                            <field name="vendor_id" />
+                        </group>
+                        <group name="location" string="Location">
+                            <field name="asset_location_id" readonly="1" />
+                            <field name="employee_id" readonly="1" />
+                            <field name="department_id" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+	<record id="view_asset_tracking_tree" model="ir.ui.view">
+        <field name="name">asset.tracking.list</field>
+        <field name="model">asset.tracking</field>
+        <field name="arch" type="xml">
+            <list name="Asset">
+                <field name="name" />
+                <field name="company_id" />
+                <field name="category_id" />
+                <field name="product_id" />
+                <field name="vendor_id" />
+                <field name="reference" />
+                <field name="date" />
+                <field name="asset_location_id" />
+                <field name="employee_id" />
+                <field name="department_id" />
+                <field name="state_id" />
+            </list>
+        </field>
+    </record>
+
+	<record model="ir.actions.act_window" id="asset_tracking_form_action">
+        <field name="name">Asset</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">asset.tracking</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <!-- <field name="search_view_id" ref="view_asset_tracking_search" /> -->
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create new asset tracking process.
+            </p>
+            <p>
+            </p>
+        </field>
+    </record>
+
+	<menuitem
+        id="parent_menu_asset_tracking"
+        name="Asset Tracking"
+        sequence="22"
+        web_icon="asset_tracking,static/description/icon.png"
+    />
+    <menuitem
+        id="menu_asset_tracking"
+        name="Asset"
+        parent="parent_menu_asset_tracking"
+        action="asset_tracking_form_action"
+        sequence="10"
+    />
+        <!-- groups="group_asset_tracking_user,group_asset_tracking_manager"
+        groups="group_asset_tracking_user,group_asset_tracking_manager"
+ -->
+</odoo>

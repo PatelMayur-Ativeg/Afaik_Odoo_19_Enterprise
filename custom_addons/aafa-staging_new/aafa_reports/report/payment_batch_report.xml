@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_payment_batch_approval" model="report.paperformat">
+        <field name="name">Payment Approval Batch</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">52</field>
+        <field name="margin_bottom">32</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">52</field>
+        <field name="dpi">90</field>
+        <field name="css_margins" eval="True"/>
+    </record>
+
+    <record id="action_report_payment_batch_approval" model="ir.actions.report">
+        <field name="name">Payment Approval Batch</field>
+        <field name="model">account.batch.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">aafa_reports.report_payment_batch_approval</field>
+        <field name="report_file">aafa_reports.report_payment_batch_approval</field>
+        <field name="print_report_name">'Payment Approval Batch - %s' % (object.name)</field>
+        <field name="paperformat_id" eval="False"/>
+        <field name="binding_model_id" ref="account_batch_payment.model_account_batch_payment"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

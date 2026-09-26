@@ -1,0 +1,193 @@
+<odoo>
+    <template id="report_office_supply_req_form_document">
+        <!-- <t t-call="web.external_layout"> -->
+            <t t-set="o" t-value="o.with_context(lang=o.create_uid.partner_id.lang)"/>
+            <t t-set="approval_lines" t-value="o.approval_info_line if 'approval_info_line' in o._fields else []"/>
+            <div class="page">
+                <div class="oe_structure"/>
+                <!-- <strong><center><h1>
+                    Office Supply Request Form
+                </h1></center></strong> -->
+                <div style="width:80%;float: left;">
+                    <strong><left><h1>
+                        <p style="font-size:40px;color:#00008B;padding-top:14mm; padding-left:2mm;">Office Supply Request Form</p>
+                    </h1></left></strong>
+                </div>
+                <div style="width:20%;float: right;">
+                    <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height:180px; width:100%; padding-top:0mm; padding-right:5mm; padding-left:0mm;" />
+                </div> 
+                <br/>
+                <br/>
+                <table class="information" width="100%">
+                    
+                    <tr>
+                        <td width="18%">Date of Request:<p></p>
+                        </td>
+                        <td style="border-bottom: 1px solid black; padding-right:0mm; padding-bottom:0mm; padding-top:0mm;" width="30%">
+                            <div t-field="o.date_start"/>
+                        </td>
+                        <td style="text-align:center; padding-bottom:0mm; padding-left:0mm; padding-top:0mm;">Reference Number:
+                            <p style="font-size:13px;padding-top:0mm;padding-bottom:0mm"> (For Internal user only)</p>
+                        </td>
+                        <td style="border-bottom: 1px solid black; padding-right:0mm; padding-top:0mm; text-align:left; padding-bottom:0mm;" >
+                            <div t-field="o.name"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Name:
+                        </td>
+                        <td colspan="2" style="border-bottom: 1px solid black; padding-top:2mm;">
+                            <div t-field="o.employee_id.name"/> 
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td>Department:
+                        </td>
+                        <td colspan="2" style="border-bottom: 1px solid black;padding-top:2mm;">
+                            <div t-field="o.department_id.name"/> 
+                        </td>
+                        <tr>
+                            <td>Purpose:
+                            </td>
+                            <td colspan="2" style="border-bottom: 1px solid black;padding-top:2mm;">
+                                <div t-field="o.description"/> 
+                            </td>
+                        </tr>
+                    </tr>
+                </table>
+                <br/>
+                <table class="purchase_table_lines" width="100%" style="border:1px solid black;border-collapse: collapse;">
+                    <thead>
+                        <tr style="border:1px solid black">
+                            <th style="border:1px solid black;font-weight:bold; background-color:#D3D3D3;" width="60%">Details OF GOODS / SERVICES</th>
+                            <th style="border:1px solid black;font-weight:bold; background-color:#D3D3D3;" width="20%">QTY</th>
+                            <th style="border:1px solid black;font-weight:bold;background-color:#D3D3D3;" width="30%">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="o.line_ids" t-as="line">
+                            <tr style="border:1px solid black">
+                                <td style="border:1px solid black; padding-left:2mm;">
+                                    <span t-field="line.product_id.name"/>
+                                </td>
+                                <td style="border:1px solid black;text-align:right">
+                                    <span t-field="line.product_qty"/>
+                                </td>
+                                <td style="border:1px solid black; padding-left:2mm; text-align:left">
+                                    <span t-field="line.remarks"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <br/> <br/> <br/>
+               
+                <div class="row">
+                    <table class="signature_details" width="100%" >
+                        <tr>
+                            <td style="page-break-inside: avoid; text-align:left;padding-bottom:4mm;"><strong>Prepared By:</strong></td>
+                            <td></td><td></td><td></td><td></td>
+                            <td style="page-break-inside: avoid; text-align:left;padding-bottom:4mm;">
+                                <!-- <t t-foreach="approval_lines" t-as="each"> -->
+                                    <!-- <t t-if ="each.label_type == 'approved_by' "> -->
+                                        <strong>Approved By:</strong>
+                                    <!-- </t> -->
+                                <!-- </t> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid black; text-align:left; padding-top:5mm; padding-bottom:2mm;" width="40%" >
+                            </td>
+                            <td></td><td></td><td></td><td></td>
+                            <td style="border-bottom: 1px solid black; text-align:left; padding-bottom:2mm; padding-top:5mm;" width="40%" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;padding-top:4mm;">Name:
+                                <span t-field="o.employee_id.name"/>
+                            </td><td></td><td></td><td></td><td></td>
+                            <td style="text-align:left;padding-top:4mm;">Name: 
+                                <span t-field="o.assigned_manager_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;padding-top:2mm;">Designation: 
+                                <span t-field="o.employee_id.job_title"/>
+                            </td><td></td><td></td><td></td><td></td>
+                            <td style="text-align:left;padding-top:2mm;">Designation:
+                                <span t-field="o.assigned_manager_id.job_title"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;padding-top:2mm;">Department: 
+                                <span t-field="o.employee_id.department_id.name"/>
+                            </td>
+                            <td></td><td></td><td></td><td></td>
+                            <td style="text-align:left;padding-top:2mm;">Department:
+                                <span t-field="o.assigned_manager_id.department_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;padding-top:2mm;">Date:
+                                <span t-field="o.date_start"/>
+                            </td><td></td><td></td><td></td><td></td>
+                            <td style="text-align:left;padding-top:2mm;">Date:
+                                <span t-field="o.requisition_deadline"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="page-break-inside: avoid; text-align:left;padding-top:8mm;"></td><td></td>
+                            <td></td><td></td><td></td>
+                            <td style="page-break-inside: avoid; text-align:left;padding-top:8mm;"><strong>Received By:</strong></td>
+                        </tr>
+                        <t t-foreach="approval_lines" t-as="each">
+                            <t t-if ="each.label_type == 'reviewed_by' ">
+                                <tr>
+                                    <td></td><td></td><td></td><td></td><td></td>
+                                    <td style="border-bottom: 1px solid black; text-align:left; padding-top:5mm;" width="40%" >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;"></td><td></td><td></td>
+                                    <td></td><td></td>
+                                    <td style="text-align:left;padding-top:4mm;">Name: 
+                                        <span t-field="each.approved_by.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;"></td><td></td><td></td>
+                                    <td></td><td></td>
+                                    <td style="text-align:left;padding-top:2mm;">Designation:
+                                     <span t-field="each.approved_by.employee_id.job_title"/> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;"></td><td></td><td></td>
+                                    <td></td><td></td>
+                                    <td style="text-align:left;padding-top:2mm;">Department: 
+                                        <span t-field="each.approved_by.employee_id.department_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;"></td><td></td><td></td>
+                                    <td></td><td></td>
+                                    <td style="text-align:left;padding-top:2mm;">Date: 
+                                        <span t-field="each.approval_date"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </table>
+                </div>  
+            </div>
+        <!-- </t> -->
+    </template>
+
+    <template id="template_office_supply_req_form">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="purchase_request.report_office_supply_req_form_document" t-lang="o.create_uid.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

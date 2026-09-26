@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_asset_tracking,access_asset_tracking,model_asset_tracking,base.group_user,1,1,1,1
+access_asset_state_config,access_asset_state_config,model_asset_state_config,base.group_user,1,1,1,1
+access_asset_location,access_asset_location,model_asset_location,base.group_user,1,1,1,1
+access_asset_movement,access_asset_movement,model_asset_movement,base.group_user,1,1,1,1

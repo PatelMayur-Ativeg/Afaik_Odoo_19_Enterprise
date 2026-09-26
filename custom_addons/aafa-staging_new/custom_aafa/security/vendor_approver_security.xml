@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_vendor_approver" model="res.groups">
+        <field name="name">Vendor Approver</field>
+        <field name="comment">Approve or reject vendor contacts.</field>
+    </record>
+</odoo>

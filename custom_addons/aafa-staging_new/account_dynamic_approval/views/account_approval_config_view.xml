@@ -1,0 +1,185 @@
+<odoo>
+	<record id="sh_account_approval_config_view_form" model="ir.ui.view">
+		<field name="name">sh.account.approval.config.view.form</field>
+		<field name="model">sh.account.approval.config</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<div class="oe_title">
+						<h1>
+							<field name="name" required="1" default_focus="1" placeholder="Name" />
+						</h1>
+					</div>
+					<group>
+						<group>
+							<field name="min_amount" />
+							<field name="company_ids" widget="many2many_tags" options="{'no_open':True,'no_create':1,'no_create_edit':1}" groups="base.group_multi_company
+                            " />
+							<field name="is_boolean" widget="boolean_toggle" />
+							<field name="approval_type"/>
+						</group>
+					</group>
+					<notebook>
+						<page string="Approval Details" name="approvals_details">
+							<field name="account_approval_line" nolabel="1" context="{'form_view_ref': 'account_dynamic_approval.sh_account_approval_line_form'}">
+								<list>
+									<field name="level" />
+									<field name="from_amount" invisible="1" />
+									<field name="to_amount" invisible="1" />
+									<field name="approve_by" />
+								</list>
+							</field>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+	<record id="sh_account_approval_config_view_tree" model="ir.ui.view">
+		<field name="name">sh.account.approval.config.view.list</field>
+		<field name="model">sh.account.approval.config</field>
+		<field name="arch" type="xml">
+			<list>
+				<field name="name" string="Approval Configuration" />
+				<field name="min_amount" />
+				<field name="is_boolean" widget="boolean_toggle" />
+			</list>
+		</field>
+	</record>
+	<record id="sh_account_approval_config_action" model="ir.actions.act_window">
+		<field name="name">Approval Configuration</field>
+		<field name="res_model">sh.account.approval.config</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_mode">list,form</field>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">Create A New Approval Configuration</p>
+		</field>
+	</record>
+	<menuitem   id="sh_account_approval_config_action_menu"
+                name="Approval Configuration" 
+                action="sh_account_approval_config_action"  
+                parent="account.menu_account_config" 
+                sequence="99" />
+
+
+
+	<record id="sh_payment_approval_config_view_form" model="ir.ui.view">
+		<field name="name">sh.payment.approval.config.view.form</field>
+		<field name="model">sh.payment.approval.config</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<div class="oe_title">
+						<h1>
+							<field name="name" required="1" default_focus="1" placeholder="Name"/>
+						</h1>
+					</div>
+					<group>
+						<group>
+							<field name="min_amount"/>
+							<field name="company_ids" widget="many2many_tags" options="{'no_open':True,'no_create':1,'no_create_edit':1}" groups="base.group_multi_company "/>
+							<field name="is_boolean" widget="boolean_toggle"/>
+						</group>
+					</group>
+					<notebook>
+						<page string="Approval Details" name="approvals_details">
+							<field name="payment_approval_line" nolabel="1" context="{'form_view_ref': 'account_dynamic_approval.sh_payment_approval_line_form'}">
+								<list>
+									<field name="label_type"/>
+									<field name="level" string="Approval Level"/>
+									<field name="from_amount" invisible="1"/>
+									<field name="to_amount" invisible="1"/>
+									<field name="approve_by"/>
+								</list>
+							</field>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+	<record id="sh_payment_approval_config_view_tree" model="ir.ui.view">
+		<field name="name">sh.payment.approval.config.view.tree</field>
+		<field name="model">sh.payment.approval.config</field>
+		<field name="arch" type="xml">
+			<list>
+				<field name="name" string="Approval Configuration"/>
+				<field name="min_amount"/>
+				<field name="is_boolean" widget="boolean_toggle"/>
+			</list>
+		</field>
+	</record>
+	<record id="sh_payment_approval_config_action" model="ir.actions.act_window">
+		<field name="name">Payment Approval Configuration</field>
+		<field name="res_model">sh.payment.approval.config</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_mode">list,form</field>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">Create A New Approval Configuration</p>
+		</field>
+	</record>
+	<menuitem id="sh_payment_approval_config_action_menu" name="Payment Approval Configuration" action="sh_payment_approval_config_action" parent="account.menu_account_config" sequence="99"/>
+
+
+
+    <record id="sh_batch_payment_approval_config_view_form" model="ir.ui.view">
+		<field name="name">sh.batch.payment.approval.config.view.form</field>
+		<field name="model">sh.batch.payment.approval.config</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<div class="oe_title">
+						<h1>
+							<field name="name" required="1" default_focus="1" placeholder="Name"/>
+						</h1>
+					</div>
+					<group>
+						<group>
+							<!-- <field name="min_amount"/> -->
+							<field name="company_ids" widget="many2many_tags" options="{'no_open':True,'no_create':1,'no_create_edit':1}" groups="base.group_multi_company "/>
+							<field name="is_boolean" widget="boolean_toggle"/>
+						</group>
+					</group>
+					<notebook>
+						<page string="Approval Details" name="approvals_details">
+							<field name="payment_approval_line" nolabel="1" context="{'form_view_ref': 'account_dynamic_approval.sh_batch_payment_approval_line_form'}">
+								<list>
+									<field name="label_type"/>
+									<field name="level" string="Approval Level"/>
+									<field name="from_amount" invisible="1"/>
+									<field name="to_amount" invisible="1"/>
+									<field name="approve_by"/>
+								</list>
+							</field>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+	<record id="sh_batch_payment_approval_config_view_tree" model="ir.ui.view">
+		<field name="name">sh.batch.payment.approval.config.view.list</field>
+		<field name="model">sh.batch.payment.approval.config</field>
+		<field name="arch" type="xml">
+			<list>
+				<field name="name" string="Approval Configuration"/>
+				<!-- <field name="min_amount"/> -->
+				<field name="is_boolean" widget="boolean_toggle"/>
+			</list>
+		</field>
+	</record>
+
+	<record id="sh_batch_payment_approval_config_action" model="ir.actions.act_window">
+		<field name="name">Batch Payment Approval Configuration</field>
+		<field name="res_model">sh.batch.payment.approval.config</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_mode">list,form</field>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">Create A New Approval Configuration</p>
+		</field>
+	</record>
+	<menuitem id="sh_batch_payment_approval_config_action_menu" name="Batch Payment Approval Configuration" action="sh_batch_payment_approval_config_action" parent="account.menu_account_config" sequence="100"/>
+
+
+
+</odoo>

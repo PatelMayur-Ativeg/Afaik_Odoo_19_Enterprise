@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_purchase_request_category_list" model="ir.ui.view">
+        <field name="name">purchase.request.category.list</field>
+        <field name="model">purchase.request.category</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_purchase_request_category_form" model="ir.ui.view">
+        <field name="name">purchase.request.category.form</field>
+        <field name="model">purchase.request.category</field>
+        <field name="arch" type="xml">
+            <form string="Purchase Request Category">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_purchase_request_category" model="ir.actions.act_window">
+        <field name="name">PR Categories</field>
+        <field name="res_model">purchase.request.category</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Purchase Request Category
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_purchase_request_config"
+        name="Configuration"
+        parent="parent_menu_purchase_request"
+        sequence="100"
+        groups="purchase.group_purchase_manager,purchase_request.group_purchase_request_manager"
+    />
+
+    <menuitem
+        id="menu_purchase_request_category"
+        name="PR Categories"
+        parent="menu_purchase_request_config"
+        action="action_purchase_request_category"
+        sequence="10"
+        groups="purchase.group_purchase_manager,purchase_request.group_purchase_request_manager"
+    />
+</odoo>

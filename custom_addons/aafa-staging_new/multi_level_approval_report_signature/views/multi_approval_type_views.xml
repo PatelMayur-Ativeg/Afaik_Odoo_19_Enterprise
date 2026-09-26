@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="multi_approval_type_view_form_report_signature" model="ir.ui.view">
+        <field name="name">multi.approval.type.form.report.signature</field>
+        <field name="model">multi.approval.type</field>
+        <field name="inherit_id" ref="multi_level_approval.multi_approval_type_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='line_ids']/list/field[@name='require_opt']" position="after">
+                <field name="signature_label" optional="show"/>
+            </xpath>
+            <xpath expr="//group[@name='model_settings']" position="after">
+                <group
+                    string="Report Signatures"
+                    name="report_signature_settings"
+                    invisible="not apply_for_model"
+                >
+                    <field name="print_signature"/>
+                    <field
+                        name="print_creator_signature"
+                        invisible="not print_signature"
+                    />
+                    <field
+                        name="creator_signature_label"
+                        invisible="not print_signature or not print_creator_signature"
+                    />
+                    <field
+                        name="signature_report_ids"
+                        widget="many2many_tags"
+                        invisible="not print_signature"
+                        required="print_signature"
+                        domain="[('model', '=', model_id), ('report_type', 'in', ('qweb-pdf', 'qweb-html'))]"
+                    />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

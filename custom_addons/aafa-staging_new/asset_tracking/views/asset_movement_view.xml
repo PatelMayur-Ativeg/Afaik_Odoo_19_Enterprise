@@ -1,0 +1,99 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <record id="view_asset_movement_form" model="ir.ui.view">
+        <field name="name">asset.movement.form</field>
+        <field name="model">asset.movement</field>
+        <field name="arch" type="xml">
+            <form string="Asset Movement">
+                <header>
+                    <button
+                        type="object"
+                        name="action_confirm"
+                        string="CONFIRM"
+                        class="oe_highlight"
+                        invisible="state == 'approved'"
+                    />
+                    <field
+                    name="state"
+                    widget="statusbar"
+                    statusbar_visible="draft,approved"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_edit_only">
+                        <label for="name" class="oe_inline" nolabel="1" readonly="1" />
+                    </div>
+                    <h1>                        
+                        <field
+                            name="name"
+                            class="oe_inline"
+                            readonly="1"
+                        />
+                    </h1>
+        
+                    <group>
+                        <group>
+                            <field name="asset_name_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                        </group>
+                        <group name= "curr_location" string="Current Location">
+                            <field name="curr_location_id" readonly="1"/>
+                            <field name="curr_employee_id" readonly="1"/>
+                            <field name="curr_department_id" readonly="1"/>
+                        </group>
+                        <group name= "move_location" string="Move Location">
+                            <field name="move_location_id"/>
+                            <field name="move_employee_id"/>
+                            <field name="move_department_id"/>
+                        </group>
+                        <field name="description"/>
+                    </group>
+                    
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+	<record id="view_asset_movement_tree" model="ir.ui.view">
+        <field name="name">asset.movement</field>
+        <field name="model">asset.movement</field>
+        <field name="arch" type="xml">
+            <list string="Asset Movement">
+                <field name="name"/>
+                <field name="asset_name_id"/>
+                <field name="date"/>
+                <field name="curr_location_id"/>
+                <field name="curr_employee_id"/>
+                <field name="curr_department_id"/>
+                <field name="move_location_id"/>
+                <field name="move_employee_id"/>
+                <field name="move_department_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="asset_movement_form_action">
+        <field name="name">Asset Movement</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">asset.movement</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create new asset movement.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_asset_movement"
+        name="Asset Movement"
+        parent="asset_tracking.parent_menu_asset_tracking"
+        action="asset_movement_form_action"
+        sequence="20"
+    />
+</odoo>

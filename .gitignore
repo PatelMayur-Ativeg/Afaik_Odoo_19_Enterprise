@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Odoo
+*.log
+*.pyc
+
+# Environment / secrets
+.env
+
+# Odoo data
+filestore/
+data/
+
+# PostgreSQL / backups
+backup/
+*.sql
+*.dump
+*.zip
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Temporary files
+*.tmp
+*.swp

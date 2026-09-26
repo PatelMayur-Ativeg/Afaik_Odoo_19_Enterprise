@@ -1,0 +1,22 @@
+<odoo>
+
+     <record id="view_hr_expense_sheet_form_inherit" model="ir.ui.view">
+        <field name="name">hr.expense.form.inherit</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
+        <field name="arch" type="xml">
+            <!-- <field name="accounting_date" position="replace">
+                <field name="accounting_date" groups="account.group_account_invoice,account.group_account_readonly" invisible="state not in ('draft','approve', 'post', 'done')" readonly="state in ('post', 'done')"/>
+            </field> -->
+            <xpath expr="//field[@name='date']" position="after">
+                    <field name="budget_id" readonly="1" force_save="1"  invisible="state == 'draft'"/>
+                    <field name="budget_planned_amt" string="Planned Amt." invisible="state == 'draft'"/>
+                    <field name="practical_amt" string="Actual Amt." invisible="state == 'draft'"/>
+                    <field name="forecast_amt" string="Expense Amount" invisible="state == 'draft'"/>
+                    <field name="forecast_remaining_amt" string="Remaining Budget"  invisible="state == 'draft'"/>
+                    <field name="analytic_account_id" readonly="1" force_save="1"  invisible="state == 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,71 @@
+<odoo>
+    <record id="view_crossovered_budget_form_inherit" model="ir.ui.view">
+        <field name="name">view.budget.analytic.form.inherit</field>
+        <field name="model">budget.analytic</field>
+        <field name="inherit_id" ref="account_budget.view_budget_analytic_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_budget_draft']" position="replace">
+                <button string="Reset to Draft" name="action_budget_draft"  type="object"/>
+            </xpath>
+            
+            <xpath expr="//button[@name='action_budget_confirm']" position="after">
+                <button string="CFO Approve" name="action_cfo_approve" type="object" class="oe_highlight" invisible="not is_boolean or state != 'confirm'"/>
+                <!-- groups="custom_aafa.group_show_cfo_unlock_button_budget" -->
+                <button string="COO Approve" name="action_coo_approve" type="object" class="oe_highlight" invisible="not is_boolean or state != 'cfo_approve'"/>
+                <!-- groups="custom_aafa.group_show_coo_unlock_button_budget"-->
+                <button string="CEO Approve" name="action_ceo_approve" type="object" class="oe_highlight" invisible="not is_boolean or state != 'coo_approve'"/>
+                <!-- groups="custom_aafa.group_show_ceo_unlock_button_budget" -->
+            </xpath>
+            <xpath expr="//field[@name='state']" position="replace">
+                <field name="state" widget="statusbar" statusbar_visible="draft, cancel,confirm, cfo_approve, coo_approve, done" readonly="1" />
+            </xpath>
+            <xpath expr="//button[@name='action_budget_done']" position="replace">
+                <button string="Done" name="action_budget_done" type="object" class="oe_highlight"/>
+            </xpath>
+            <xpath expr="//button[@name='action_budget_cancel']" position="replace">
+                <button string="Cancel Budget" name="action_budget_cancel" type="object"/>
+            </xpath>
+
+            <!-- <xpath expr="//button[@name='action_budget_validate']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath> -->
+            <xpath expr="//field[@name='budget_line_ids']/list/field[@name='achieved_amount']" position="after">
+                <field name="real_amount" string="Real(Balance) Amount"/>
+            </xpath>
+
+            <xpath expr="//notebook//page[@name='budget_lines']" position="after">
+                <page string="Approval Info" name="budget_approvals_info_details">
+                    <group>
+                        <group string="Next Approval">
+                            <field name="level" />
+                            <field name="user_ids" widget="many2many_tags" readonly="1" force_save="1" />
+                            <field name="approval_level_id" invisible="1"/>
+                            <field name="is_boolean"  invisible="1"/>
+                            <field name="sum_planned_amount"  invisible="1"/>
+                            <field name="label_name"  invisible="1"/>
+                            <field name="is_sent_email"  invisible="1"/>
+
+                        </group>
+
+                        <!-- <group string="Reject Order Info">
+                            <field name="rejection_date" />
+                            <field name="reject_by" />
+                            <field name="reject_reason" />
+                        </group> -->
+                        <field name="budget_approval_info_line" nolabel="0" context="{'form_view_ref': 'custom_aafa.budget_approval_info_view_form'}">
+                            <list>
+                                <field name="label_type"/>
+                                <field name="level" />
+                                <field name="user_ids"/>
+                                <field name="status" widget="boolean_toggle" readonly="1" />
+                                <field name="approval_date" />
+                                <field name="approved_by" />
+                                <field name="cross_budget_id" invisible="1" />
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_deferred_reschedule_wizard,account.deferred.reschedule.wizard,model_account_deferred_reschedule_wizard,account.group_account_invoice,1,1,1,1
+access_account_deferred_reschedule_wizard_line,account.deferred.reschedule.wizard.line,model_account_deferred_reschedule_wizard_line,account.group_account_invoice,1,1,1,1

@@ -1,0 +1,187 @@
+<odoo>
+    <data>
+        <record id="view_vendor_registration_tree" model="ir.ui.view">
+            <field name="name">vendor.registration.list</field>
+            <field name="model">vendor.registration</field>
+            <field name="arch" type="xml">
+                <list  decoration-success="state=='approved'" decoration-danger="state=='rejected'" decoration-primary="state=='draft'">
+                    <field name="name" />
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_vendor_registration" model="ir.ui.view">
+            <field name="name">vendor.registration.view</field>
+            <field name="model">vendor.registration</field>
+            <field name="arch" type="xml">
+                <form >
+                    <header>
+                        <button name="action_approve" groups="vendor_registration.vendor_reg_group"
+                                string="Approve" type="object" class="btn-primary"
+                                invisible="state != 'draft'"/>
+                        <button name="action_acc_approve" groups="vendor_registration.vendor_account_reg_group"
+                                string="Account Approve" type="object" class="btn-primary"
+                                invisible="state != 'approved'"/>
+                        <button name="%(vendor_registration.reject_reason_action)d" string="Reject" data-hotkey="l" title="Reject"
+                            type="action" invisible="state != 'draft'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,approved,account_approved,rejected"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_partner" type="object"
+                                    class="oe_stat_button" icon="fa-user"
+                                    invisible="partner_count == 0">
+                                <field name="partner_count" widget="statinfo" string="Vendor"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="company_id" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Company Details">
+                                <group>
+                                    <group>
+                                        <field name="company_name" required="1"/>
+                                        <field name="company_website" required="1"/>
+                                        <field name="company_email" required="1"/>
+                                        <field name="country_id" required="1"/>
+                                        <field name="mobile_phone" required="1"/>
+                                        <field name="company_address" required="1"/>
+                                        <field name="company_city" required="1"/>
+                                        <!-- <field name="company_activity"  widget="many2many_tags" required="1"/> -->
+                                        <field name="vat"/>
+                                        <field name="company_zip" required="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="license_number" required="1"/>
+                                        <field name="license_issue_date" required="1"/>
+                                        <field name="license_expiry_date" required="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Manager Details">
+                                <group>
+                                    <group>
+                                        <field name="first_name"/>
+                                        <!-- <field name="company_email" /> -->
+                                        <field name="last_name" />
+                                        <field name="email" />
+                                        <field name="mobile" />
+                                        <field name="job_position" />
+                                        <!-- <field name="birth_date" required="1"/> -->
+                                    </group>
+                                    <group>
+                                        <!-- <field name="manager_country_id" required="1"/>
+                                        <field name="prev_nationality_id" required="1"/>
+                                        <field name="passport_type" required="1"/>
+                                        <field name="passport_no" required="1"/>
+                                        <field name="passport_issued_country_id" required="1"/>
+                                        <field name="manager_address" required="1"/>
+                                        <field name="passport_issue_date" required="1"/>
+                                        <field name="passport_exp_date" required="1"/> -->
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Bank Details">
+                                <group>
+                                    <group >
+                                        <field name="bank_name" required="1"/>
+                                        <field name="acc_holder_name" required="1"/>
+                                        <field name="acc_number" required="1"/>
+                                    </group>
+                                    <group>
+
+                                         <field name="china_bool" invisible="1" />
+                                         <field name="uae_bool" invisible="1" />
+                                         <!-- <field name="acc_approve_bool" invisible="1" /> -->
+
+
+                                         <field name="iban" required="not china_bool"/>
+                                         <field name="bank_address" required="1"/>
+                                        <!-- <field name="ifcs_code" /> -->
+                                        <field name="swift_code" required="1"/>
+                                        <field name="currency_id" required="1"/>
+                                        <field name="bank_details_scan" filename="bank_details_scan_name"/>
+                                        <field name="bank_details_scan_name" invisible="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Documents Upload">
+                                <group>
+                                    <group >
+                                        <field name="trade_license_scan" filename="trade_license_scan_name" required="1"/>
+                                        <field name="trade_license_scan_name" invisible="1"/>
+                                        <field name="emirates_id_scan" filename="emirates_id_scan_name" />
+                                        <field name="emirates_id_scan_name" invisible="1"/>
+                                        <field name="passport_scan_1st_page" filename="passport_scan_1st_page_name" />
+                                        <field name="passport_scan_1st_page_name" invisible="1"/>
+                                        <field name="visa_scan" filename="visa_scan_name" />
+                                        <field name="visa_scan_name" invisible="1"/>
+                                        <field name="company_protfolio" filename="company_protfolio_name"/>
+                                        <field name="company_protfolio_name" invisible="1"/>
+                                        <field name="coc_membership_cert" filename="coc_membership_cert_name" />
+                                        <field name="coc_membership_cert_name" invisible="1"/>
+                                        <field name="vat_registration_copy" filename="vat_registration_copy_name" required="uae_bool"/>
+                                        <field name="vat_registration_copy_name" invisible="1"/>
+                                        <field name="bank_details_scan" filename="bank_details_scan_name"/>
+                                        <field name="bank_details_scan_name" invisible="1"/>
+                                        <field name="other_documents_copy" filename="other_documents_copy_name"/>
+                                        <field name="other_documents_copy_name" invisible="1"/>
+                                    </group>
+
+                                </group>
+                            </page>
+                            <page string="Other Info" invisible="not reject_reason">
+                                <group>
+                                    <group>
+                                        <field name="reject_reason" invisible="not reject_reason"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_vendor_registration_filter" model="ir.ui.view">
+            <field name="name">vendor.registration.search</field>
+            <field name="model">vendor.registration</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_draft_vendor_registration" model="ir.actions.act_window">
+            <field name="name">Vendor Registration</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vendor.registration</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('state','in',['draft', 'rejected'])]</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_approved_vendor_registration">
+            <field name="name">Vendor Registration</field>
+            <field name="res_model">vendor.registration</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('state','in',['approved','account_approved'])]</field>
+        </record>
+
+        <menuitem name="Waiting Approval Registration" id="menu_waiting_approval_root" action="action_draft_vendor_registration"
+                  sequence="13" parent="purchase.menu_procurement_management" />
+        <menuitem name="Approved Registration" id="menu_approved_approval_root"
+                  sequence="14" parent="purchase.menu_procurement_management" action="action_approved_vendor_registration"/>
+
+   </data>
+</odoo>

@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <!-- Users Inherit Form View to Modify it -->
+        <record id="view_users_form_inherit_analytic" model="ir.ui.view">
+            <field name="name">view.users.form.inherit.analytic</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/notebook/page[2]/group[1]" position="before">
+                    <group name="analytic">
+                        <field name="analytic_account_id" required="0"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-inherit="documents.DocumentsInspector.documentsInfo" t-inherit-mode="extension">
+        <xpath expr="//div/table/tbody/tr[hasclass('o_inspector_divider')]" position="before">
+            <t t-call="documents.DocumentsInspector.field">
+                <t t-set="field">expiry_date</t>
+            </t>
+            <t t-call="documents.DocumentsInspector.field">
+                <t t-set="field">notify_before</t>
+            </t>
+        </xpath>
+    </t>
+
+</templates>

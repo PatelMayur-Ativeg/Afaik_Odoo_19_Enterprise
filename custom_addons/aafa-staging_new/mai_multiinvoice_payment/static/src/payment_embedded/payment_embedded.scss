@@ -1,0 +1,58 @@
+.mai_payment_embedded_list_widget {
+    .o_content {
+        max-height: 420px;
+        overflow: auto;
+    }
+
+    .o_control_panel {
+        border: 1px solid var(--border-color, #dee2e6);
+        border-bottom: 0;
+        border-radius: 0.25rem 0.25rem 0 0;
+    }
+
+    .o_list_view {
+        border: 1px solid var(--border-color, #dee2e6);
+        border-top: 0;
+        border-radius: 0 0 0.25rem 0.25rem;
+    }
+
+    .o_data_row {
+        cursor: default;
+        transition: background-color 0.2s ease;
+    }
+
+    td[name="checked"] {
+        cursor: pointer;
+        width: 2.5rem;
+        text-align: center;
+        vertical-align: middle;
+
+        .form-check-input:disabled,
+        input[type="checkbox"]:disabled {
+            opacity: 1;
+            pointer-events: none;
+        }
+    }
+
+    .mai_payment_line_locked td[name="checked"] {
+        cursor: not-allowed;
+
+        .form-check-input:disabled,
+        input[type="checkbox"]:disabled {
+            opacity: 0.5;
+        }
+    }
+
+    .o_data_row.mai_payment_row_moving {
+        position: relative;
+        z-index: 2;
+        will-change: transform;
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .o_data_row {
+            transition: none;
+        }
+    }
+}

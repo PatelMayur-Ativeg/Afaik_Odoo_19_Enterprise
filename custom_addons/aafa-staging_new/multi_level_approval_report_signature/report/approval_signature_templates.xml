@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_approval_signatures">
+        <div class="o_approval_report_signatures" style="margin-top: 28px; page-break-inside: avoid;">
+            <table class="o_ignore_layout_styling table table-borderless mb-0" width="100%" cellpadding="0" cellspacing="0" border="0" style="border: none; border-collapse: collapse;">
+                <t t-foreach="signature_rows" t-as="row">
+                    <tr>
+                        <t t-foreach="row" t-as="block">
+                            <td t-att-style="block['cell_style']">
+                                <div style="min-height: 42px;">
+                                    <img t-if="block['image_src']"
+                                         t-att-src="block['image_src']"
+                                         style="max-height: 48px; max-width: 140px; object-fit: contain;"
+                                         alt="Signature"/>
+                                </div>
+                                <div style="border-top: 1px solid #000; margin-top: 4px; padding-top: 6px; font-size: 11px; color: #111;">
+                                    <div>
+                                        <t t-out="block['role']"/>
+                                        <t t-out="block['name']"/>
+                                    </div>
+                                    <div t-if="block['date']" style="margin-top: 2px;">
+                                        <t t-out="block['date']"/>
+                                    </div>
+                                </div>
+                            </td>
+                        </t>
+                    </tr>
+                </t>
+            </table>
+        </div>
+    </template>
+
+    <template id="report_approval_signatures_hook">
+        <t t-if="o and approval_signature_rows_map">
+            <t t-set="signature_rows" t-value="approval_signature_rows_map.get(o.id)"/>
+            <t t-if="signature_rows">
+                <t t-call="multi_level_approval_report_signature.report_approval_signatures"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="external_layout_standard_approval_signatures" inherit_id="web.external_layout_standard">
+        <xpath expr="//t[@t-out='0']" position="after">
+            <t t-call="multi_level_approval_report_signature.report_approval_signatures_hook"/>
+        </xpath>
+    </template>
+    <template id="external_layout_boxed_approval_signatures" inherit_id="web.external_layout_boxed">
+        <xpath expr="//t[@t-out='0']" position="after">
+            <t t-call="multi_level_approval_report_signature.report_approval_signatures_hook"/>
+        </xpath>
+    </template>
+    <template id="external_layout_bold_approval_signatures" inherit_id="web.external_layout_bold">
+        <xpath expr="//t[@t-out='0']" position="after">
+            <t t-call="multi_level_approval_report_signature.report_approval_signatures_hook"/>
+        </xpath>
+    </template>
+    <template id="external_layout_striped_approval_signatures" inherit_id="web.external_layout_striped">
+        <xpath expr="//t[@t-out='0']" position="after">
+            <t t-call="multi_level_approval_report_signature.report_approval_signatures_hook"/>
+        </xpath>
+    </template>
+    <template id="external_layout_folder_approval_signatures" inherit_id="web.external_layout_folder">
+        <xpath expr="//t[@t-out='0']" position="after">
+            <t t-call="multi_level_approval_report_signature.report_approval_signatures_hook"/>
+        </xpath>
+    </template>
+    <template id="external_layout_wave_approval_signatures" inherit_id="web.external_layout_wave">
+        <xpath expr="//t[@t-out='0']" position="after">
+            <t t-call="multi_level_approval_report_signature.report_approval_signatures_hook"/>
+        </xpath>
+    </template>
+    <template id="external_layout_bubble_approval_signatures" inherit_id="web.external_layout_bubble">
+        <xpath expr="//t[@t-out='0']" position="after">
+            <t t-call="multi_level_approval_report_signature.report_approval_signatures_hook"/>
+        </xpath>
+    </template>
+    <template id="internal_layout_approval_signatures" inherit_id="web.internal_layout">
+        <xpath expr="//t[@t-out='0']" position="after">
+            <t t-call="multi_level_approval_report_signature.report_approval_signatures_hook"/>
+        </xpath>
+    </template>
+    <template id="basic_layout_approval_signatures" inherit_id="web.basic_layout">
+        <xpath expr="//t[@t-out='0']" position="after">
+            <t t-call="multi_level_approval_report_signature.report_approval_signatures_hook"/>
+        </xpath>
+    </template>
+</odoo>

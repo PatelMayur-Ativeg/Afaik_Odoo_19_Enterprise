@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_vendor.registration,vendor.registration,model_vendor_registration,,1,1,1,1
+access_company.activity,company.activity,model_company_activity,,1,1,1,0
+access_reject.reason.wizard,reject.reason.wizard,model_reject_reason_wizard,,1,1,1,0

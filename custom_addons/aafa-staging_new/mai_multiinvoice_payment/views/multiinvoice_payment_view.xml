@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="account_payment_form_inherited" model="ir.ui.view">
+            <field name="name">account.payment.form.inherited</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='amount_div']" position="after">
+                    <label for="excess_amount"/>
+                    <div name="excess_amount_div" class="o_row">
+                        <field name="excess_amount"/>
+                    </div>
+                </xpath>
+                <xpath expr="//group[.//notebook[@name='payment_notebook']]" position="after">
+                    <field name="payment_invoice_ids" invisible="1"/>
+                    <field name="payment_reversal_ids" invisible="1"/>
+
+                    <!-- Both lists are always used (invoices/bills + credits/refunds). -->
+                    <separator string="Invoices / Bills"
+                            invisible="not partner_id or not currency_id or (partner_type == 'customer' and payment_type == 'outbound') or (partner_type == 'supplier' and payment_type == 'inbound')"/>
+                    <separator string="Credit Notes / Vendor credits" 
+                        invisible="not partner_id or not currency_id or (partner_type == 'customer' and payment_type == 'inbound') or (partner_type == 'supplier' and payment_type == 'outbound')"/>
+                    <widget name="mai_payment_embedded_list"
+                        title="Invoices / Bills"
+                        o2m_field="payment_invoice_ids"
+                        inverse_field="payment_id"
+                        invisible="not id or not partner_id or not currency_id"/>
+
+                    <separator string="Invoices / Bills (draft)"
+                        invisible="id or not partner_id or not currency_id"/>
+                    <field name="payment_invoice_ids"
+                        invisible="id or not partner_id or not currency_id">
+                        <list editable="bottom" create="false" default_order="sequence, id">
+                            <field name="sequence" widget="handle" force_save="1"/>
+                            <field name="checked"/>
+                            <field name="invoice_id" readonly="1" force_save="1"/>
+                            <field name="origin"/>
+                            <field name="date_invoice"/>
+                            <field name="date_due"/>
+                            <field name="amount_total" sum="Total Amount"/>
+                            <field name="residual" sum="Total Due Amount"/>
+                            <field name="reconcile_amount" sum="Total Amount To Reconciled" force_save="1"
+                                readonly="not checked or payment_state != 'draft'"/>
+                            <field name="currency_id" column_invisible="1"/>
+                            <field name="payment_state" column_invisible="1"/>
+                        </list>
+                    </field>
+
+                    <separator string="Invoices / Bills" 
+                            invisible="not partner_id or not currency_id or (partner_type == 'customer' and payment_type == 'inbound') or (partner_type == 'supplier' and payment_type == 'outbound')"/>
+                    <separator string="Credit Notes / Vendor credits"
+                        invisible="not partner_id or not currency_id or (partner_type == 'customer' and payment_type == 'outbound') or (partner_type == 'supplier' and payment_type == 'inbound')"/>
+                    <widget name="mai_payment_embedded_list"
+                        title="Credit Notes / Vendor Credits"
+                        o2m_field="payment_reversal_ids"
+                        inverse_field="payment_reverse_id"
+                        invisible="not id or not partner_id or not currency_id"/>
+
+                    <separator string="Credit Notes / Vendor credits (draft)"
+                        invisible="id or not partner_id or not currency_id"/>
+                    <field name="payment_reversal_ids"
+                        invisible="id or not partner_id or not currency_id">
+                        <list editable="bottom" create="false" default_order="sequence, id">
+                            <field name="sequence" widget="handle" force_save="1"/>
+                            <field name="checked"/>
+                            <field name="invoice_id" readonly="1" force_save="1"/>
+                            <field name="origin"/>
+                            <field name="date_invoice"/>
+                            <field name="date_due"/>
+                            <field name="amount_total" sum="Total Amount"/>
+                            <field name="residual" sum="Total Due Amount"/>
+                            <field name="reconcile_amount" sum="Total Amount To Reconciled" force_save="1"
+                                readonly="not checked or reverse_payment_state != 'draft'"/>
+                            <field name="currency_id" column_invisible="1"/>
+                            <field name="reverse_payment_state" column_invisible="1"/>
+                        </list>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

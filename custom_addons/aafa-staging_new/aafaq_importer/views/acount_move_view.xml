@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="account_invoice_form">
+        <field name="name">Account Invoice</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@id='other_tab_entry']/group[@id='other_tab_entry_group']/group[@name='misc_group']" position="inside">
+                <field name="internal_id" readonly="1" invisible="not internal_id"/>
+                <field name="affaq_queue_id" readonly="1" invisible="not internal_id"/>
+                <field name="entry_user" readonly="state in ['cancel', 'posted']" />
+                <field name="entry_date" readonly="state in ['cancel', 'posted']" />
+                <field name="transaction_date" readonly="state in ['cancel', 'posted']" />
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/list" position="inside">
+                <field name="acc_number" optional="hide"/>
+                <field name="transaction_date" optional="hide"/>
+                <field name="code_rpt" optional="hide"/>
+                <field name="ref_num" optional="hide"/>
+                <field name="free_text" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/form/group" position="inside">
+                <field name="acc_number" />
+                <field name="transaction_date" />
+                <field name="code_rpt" />
+                <field name="ref_num" />
+                <field name="free_text" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_account_move_reset_to_draft" model="ir.actions.server">
+        <field name="name">Reset to Draft</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    records.button_draft()
+        </field>
+    </record>
+    <record id="action_account_move_cancel" model="ir.actions.server">
+        <field name="name">Cancel</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    records.button_cancel()
+        </field>
+    </record>
+</odoo>

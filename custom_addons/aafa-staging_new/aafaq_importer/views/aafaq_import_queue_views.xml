@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_aafaq_import_queue_list" model="ir.ui.view">
+        <field name="name">aafaq.import.queue.list</field>
+        <field name="model">aafaq.import.queue</field>
+        <field name="arch" type="xml">
+            <list string="Aafaq Import Queue" create="false" edit="false">
+                <field name="name"/>
+                <field name="record_type"/>
+                <field name="import_source"/>
+                <field name="alias_email" optional="show"/>
+                <field name="email_from" optional="hide"/>
+                <field name="company_id"/>
+                <field name="user_id"/>
+                <field name="filename"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'done'"
+                       decoration-warning="state == 'in_progress'"
+                       decoration-danger="state == 'failed'"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_netsuite_import_queue_form" model="ir.ui.view">
+        <field name="name">aafaq.import.queue.form</field>
+        <field name="model">aafaq.import.queue</field>
+        <field name="arch" type="xml">
+            <form string="Aafaq Import Queue" create="false" edit="false">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,done,failed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_customer"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            invisible="not customer_ids or record_type not in ('customer', 'customer_wakala_asset', 'customer_wakala_lib') or not customer_count">
+                            <field name="customer_count" widget="statinfo" string=" Customer"/>
+                        </button>
+                        <button name="action_view_accounts"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-book"
+                            invisible="record_type != 'coa' or account_count == 0">
+                            <field name="account_count" widget="statinfo" string="Accounts"/>
+                        </button>
+                        <button name="action_view_updated_accounts"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-refresh"
+                            invisible="record_type != 'coa' or updated_account_count == 0">
+                            <field name="updated_account_count" widget="statinfo" string="Updated Accounts"/>
+                        </button>
+                        <button name="action_view_journal_entries"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            invisible="not move_ids or record_type not in ('journal_entries', 'adj_entries') or not move_count">
+                            <field name="move_count" widget="statinfo" string="Journal Entries"/>
+                        </button>
+                        <button name="action_view_existing_moves"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-files-o"
+                            invisible="existing_move_count == 0">
+                            <field name="existing_move_count" widget="statinfo" string="Already Exists"/>
+                        </button>
+                        <button name="action_view_updated_partners"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-users"
+                            invisible="updated_partner_count == 0">
+                            <field name="updated_partner_count" widget="statinfo" string="Updated Partners"/>
+                        </button>
+                        <button name="action_view_logs"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-list"
+                            invisible="log_count == 0">
+                            <field name="log_count" widget="statinfo" string="Logs"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="name"/>
+                        <field name="record_type"/>
+                        <field name="import_source"/>
+                        <field name="alias_config_id" invisible="import_source != 'email'"/>
+                        <field name="alias_email" invisible="import_source != 'email'"/>
+                        <field name="email_from" invisible="import_source != 'email'"/>
+                        <field name="journal_id" invisible="record_type not in ('journal_entries', 'adj_entries')"/>
+                        <field name="entry_status" widget="badge"
+                               invisible="record_type not in ('journal_entries', 'adj_entries')"
+                               decoration-success="entry_status == 'done'"
+                               decoration-warning="entry_status == 'draft'"/>
+                        <field name="company_id"/>
+                        <field name="user_id"/>
+                        <field name="file" filename="script_att"/>
+                        <field name="file" filename="filename"/>
+                        <field name="filename" invisible="1"/>
+                    </group>
+                    <group string="Progress">
+                        <field name="log" readonly="1" widget="text"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_aafaq_import_queue_search" model="ir.ui.view">
+        <field name="name">aafaq.import.queue.search</field>
+        <field name="model">aafaq.import.queue</field>
+        <field name="arch" type="xml">
+            <search string="Search Import Queue">
+                <field name="name"/>
+                <field name="filename"/>
+                <field name="alias_email"/>
+                <field name="email_from"/>
+                <filter name="filter_email" string="Incoming Email" domain="[('import_source', '=', 'email')]"/>
+                <filter name="filter_manual" string="Internal Upload" domain="[('import_source', '=', 'manual')]"/>
+                <separator/>
+                <filter name="filter_coa" string="Chart of Accounts" domain="[('record_type', '=', 'coa')]"/>
+                <separator/>
+                <filter name="filter_failed" string="Failed" domain="[('state', '=', 'failed')]"/>
+                <group>
+                    <filter name="group_source" string="Source" context="{'group_by': 'import_source'}"/>
+                    <filter name="group_alias" string="Email Alias" context="{'group_by': 'alias_config_id'}"/>
+                    <filter name="group_type" string="Record Type" context="{'group_by': 'record_type'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_aafaq_import_queue" model="ir.actions.act_window">
+        <field name="name">Aafaq Import Queue</field>
+        <field name="res_model">aafaq.import.queue</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_aafaq_import_root" name="Aafaq Importer" sequence="10"/>
+    <menuitem id="menu_aafaq_import_queue"
+              name="Import Queue"
+              parent="menu_aafaq_import_root"
+              action="action_aafaq_import_queue"
+              sequence="10"/>
+</odoo>

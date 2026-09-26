@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<odoo>
+	<record id="view_asset_state_config_tree" model="ir.ui.view">
+        <field name="name">asset.state.config</field>
+        <field name="model">asset.state.config</field>
+        <field name="arch" type="xml">
+            <list string="Asset" editable="bottom">
+                <field name="name"/>
+                <!-- <field name="code"/> -->
+            </list>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="asset_state_config_form_action">
+        <field name="name">Asset States</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">asset.state.config</field>
+        <field name="view_mode">list</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click create new asset status.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_asset_config"
+        name="Configuration"
+        parent="asset_tracking.parent_menu_asset_tracking"
+        sequence="50"
+    />
+    <menuitem
+        id="menu_asset_state_config"
+        name="Asset States"
+        parent="menu_asset_config"
+        action="asset_state_config_form_action"
+        sequence="1"
+    />
+</odoo>

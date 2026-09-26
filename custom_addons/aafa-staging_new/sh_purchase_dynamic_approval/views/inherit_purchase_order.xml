@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_purchase_request_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.request.inherit.view.form</field>
+        <field name="model">purchase.request</field>
+        <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
+        <field name="arch" type="xml">
+            <field name="employee_id" position="after">
+                <field name="approval_level_id" invisible="1"/>
+                <field name="is_boolean" invisible="1"/>
+                <field name="create_rfq_access" invisible="1"/>
+                <field name="rfq_added" invisible="1"/>
+                <field name="create_rfq_access_extra" invisible="1"></field>
+                <!-- <field name="terms_and_conditions_id"/> -->
+            </field>
+
+            <!-- Dynamic approval uses action_approve_order (which confirms on final level) -->
+            <!-- <xpath expr="//header/button[@name='button_approved']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='button_rejected']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath> -->
+
+            <field name="analytic_account_id" position="replace">
+                <label for="analytic_account_id" string="Analytic Account"/>
+                <div class="address_format">
+                    <field name="analytic_account_id" style="width: 75%" readonly="1" force_save="1"
+                            invisible="not show_budget_fields"/>
+                    <button name="update_analytic_vals" icon="fa-refresh" style="width: 25%" type="object"
+                            invisible="not analytic_account_id"/>
+                </div>
+            </field>
+            <xpath expr="//header" position="inside">
+                <field name="hide_admin_fields" invisible="1"/>
+                <field name="manager_approval" invisible="1"/>
+                <!-- Create RFQ -->
+                <button string="Create RFQ"
+                        type="object"
+                        name="action_create_rfq"
+                        invisible="state not in ['waiting_for_approval'] or not create_rfq_access or rfq_added"/>
+
+                <!-- Create RFQ Extra -->
+                <button class="oe_highlight"
+                        string="Create RFQ"
+                        type="object"
+                        name="action_create_rfq_extra"
+                        invisible="state not in ['in_progress'] or not create_rfq_access_extra"/>
+
+                <!-- Approve (case 1) -->
+                <button class="oe_highlight"
+                        string="Approve"
+                        type="object"
+                        name="action_approve_order"
+                        invisible="state not in ['waiting_for_approval'] or not is_boolean or not new_product_request or purchase_count &lt; 0"/>
+
+                <!-- Approve (case 2) -->
+                <button class="oe_highlight"
+                        string="Approve"
+                        type="object"
+                        name="action_approve_order"
+                        invisible="state not in ['waiting_for_approval'] or not is_boolean or new_product_request"/>
+
+                <!-- Reject -->
+                <button string="Reject"
+                        type="action"
+                        name="%(sh_purchase_dynamic_approval.sh_rejection_reason_action)d"
+                        invisible="state not in ['waiting_for_approval'] or not is_boolean"/>
+
+                <!-- Reset to Draft -->
+                <button string="Reset to Draft"
+                        type="object"
+                        name="action_reset_to_draft"
+                        invisible="state not in ['reject']"/>
+            </xpath>
+            <xpath expr="//list//field[@name='requisition_action']" position="replace">
+                <field name="requisition_action" string="Requisiton Action"
+                       column_invisible="parent.hide_admin_fields"
+                       required="not parent.hide_admin_fields"/>
+            </xpath>
+            <!-- <xpath expr="//list//field[@name='qty_to_buy']" position="replace">
+                <field name="qty_to_buy" string="Qty to Buy"
+                       column_invisible="parent.hide_admin_fields"
+                        required="not parent.hide_admin_fields"/>
+            </xpath>
+            <xpath expr="//list//field[@name='pending_qty_to_receive']" position="replace">
+                <field name="pending_qty_to_receive" string="Qty to Receive"
+                       column_invisible="parent.hide_admin_fields"
+                        required="not parent.hide_admin_fields"/>
+            </xpath> -->
+            <!-- <xpath expr="//list//field[@name='free_qty_today']" position="after">
+                <field name="vendor_id_domain" column_invisible="1"/>
+                <field name="vendor_id" string="Vendor" widget="many2many_tags" force_save="1"
+                       options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}" domain="vendor_id_domain"
+                       column_invisible="parent.hide_admin_fields"
+                        readonly="requisition_action not in ('purchase_order', 'partial')"
+                        required="not parent.hide_admin_fields and requisition_action in ('purchase_order', 'partial')"/>
+            </xpath> -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Approval Info" name="">
+                    <group>
+
+                        <group string="Next Approval">
+                            <field name="level"/>
+                            <field name="user_ids" widget="many2many_tags" readonly="1" force_save="1"/>
+                            <field name="group_ids" widget="many2many_tags"/>
+                        </group>
+
+                        <group string="Reject Order Info">
+                            <field name="rejection_date"/>
+                            <field name="reject_by"/>
+                            <field name="reject_reason"/>
+                        </group>
+
+                        <field name="approval_info_line" nolabel="1"
+                               context="{'form_view_ref': 'sh_purchase_dynamic_approval.sh_approval_info_view_form'}">
+                            <list>
+                                <field name="label_type"/>
+                                <field name="level"/>
+                                <field name="user_ids"/>
+                                <field name="group_ids"/>
+                                <field name="status" widget="boolean_toggle" readonly="1"/>
+                                <field name="approval_date"/>
+                                <field name="approved_by"/>
+                                <field name="show_in_report" invisible="0"/>
+                                <field name="purchase_approval_line_id" invisible="1"/>
+                                <field name="purchase_request_id" invisible="1"/>
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_purchase_order_form_inherit_readonly" model="ir.ui.view">
+        <field name="name">purchase.order.inherit.view.form.readonly</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='button_confirm']" position="replace">
+                <button name="button_confirm" type="object" string="Lock" invisible="state == 'done'"
+                        groups="sh_purchase_dynamic_approval.group_purchase_order_edit" data-hotkey="l"/>
+            </xpath>
+            <xpath expr="//button[@name='button_unlock']" position="replace">
+                <button name="button_unlock" type="object" string="Unlock"
+                        groups="sh_purchase_dynamic_approval.group_purchase_order_edit" data-hotkey="l"/>
+            </xpath>
+
+
+        </field>
+    </record>
+
+    <record id="sh_purchase_order_waiting_approval_action" model="ir.actions.act_window">
+        <field name="name">Waiting Approval</field>
+        <field name="res_model">purchase.order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">list,kanban,form,pivot,graph,calendar,activity</field>
+        <field name="view_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="domain">[('state','=','waiting_for_approval')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face"></p>
+        </field>
+    </record>
+
+    <menuitem id="sh_purchase_order_waiting_approval_action_menu"
+              name="Waiting Approval"
+              action="sh_purchase_order_waiting_approval_action"
+              parent="purchase.menu_procurement_management"
+              sequence="1"/>
+
+    <record id="sh_purchase_order_my_approval_action" model="ir.actions.act_window">
+        <field name="name">My Approval</field>
+        <field name="res_model">purchase.order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">list,kanban,form,pivot,graph,calendar,activity</field>
+        <field name="view_id" ref="purchase.purchase_order_kpis_tree"/>
+
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face"></p>
+        </field>
+    </record>
+
+    <menuitem id="sh_purchase_order_my_approval_action_menu"
+              name="My Approval"
+              action="sh_purchase_order_my_approval_action"
+              parent="purchase.menu_procurement_management"
+              sequence="1"/>
+</odoo>
+

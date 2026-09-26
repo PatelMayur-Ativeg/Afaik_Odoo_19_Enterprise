@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_reschedule_deferral" model="ir.ui.view">
+        <field name="name">account.move.form.reschedule.deferral</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <field name="has_draft_deferred_moves" invisible="1"/>
+                <button name="action_open_reschedule_deferral"
+                        class="oe_stat_button"
+                        icon="fa-calendar"
+                        type="object"
+                        invisible="not has_draft_deferred_moves"
+                        groups="account.group_account_invoice"
+                        string="Reschedule Deferral"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_server_reschedule_deferral_multi" model="ir.actions.server">
+        <field name="name">Reschedule Deferral</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_open_reschedule_deferral_multi()</field>
+    </record>
+
+    <record id="view_account_move_line_deferred_reschedule_list" model="ir.ui.view">
+        <field name="name">account.move.line.deferred.reschedule.list</field>
+        <field name="model">account.move.line</field>
+        <field name="arch" type="xml">
+            <list string="Deferred Lines" create="false" delete="false">
+                <field name="move_id"/>
+                <field name="date" optional="hide"/>
+                <field name="partner_id" optional="show"/>
+                <field name="product_id"/>
+                <field name="name"/>
+                <field name="account_id" optional="hide"/>
+                <field name="balance" optional="show"/>
+                <field name="deferred_start_date"/>
+                <field name="deferred_end_date"/>
+                <field name="parent_state" column_invisible="1"/>
+                <field name="company_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_account_move_line_deferred_reschedule" model="ir.actions.act_window">
+        <field name="name">Deferred Lines</field>
+        <field name="res_model">account.move.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_account_move_line_deferred_reschedule_list"/>
+        <field name="domain">
+            [
+                ('deferred_start_date', '!=', False),
+                ('deferred_end_date', '!=', False),
+                ('display_type', 'not in', ('line_section', 'line_note')),
+                ('move_id.state', '=', 'posted'),
+                ('move_id.move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')),
+            ]
+        </field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No posted deferred invoice or bill lines</p>
+            <p>
+                To update end dates with Odoo Import: export these lines with IDs
+                (Import-compatible export), change <b>Deferred End Date</b>, then
+                Favorites → Import records. Posted deferral entries are kept and
+                remaining drafts are rebuilt.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_account_move_line_deferred_reschedule"
+              name="Deferred Lines"
+              parent="account.menu_finance_entries"
+              action="action_account_move_line_deferred_reschedule"
+              groups="account.group_account_invoice"
+              sequence="85"/>
+</odoo>

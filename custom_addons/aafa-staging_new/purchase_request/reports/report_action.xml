@@ -1,0 +1,57 @@
+<guru>
+    <data>
+
+        <record id="paperformat_base_sale" model="report.paperformat">
+            <field name="name">Paper Format Purchase Request</field>
+            <field name="default" eval="False"/>
+            <field name="format">B4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">55</field>
+            <field name="margin_bottom">45</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_spacing">58</field>
+        </record>
+
+        <record id="Purchase_request_report" model="ir.actions.report">
+            <field name="name">Purhcase Request Report</field>
+            <field name="model">purchase.request</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">purchase_request.report_purchase_request_document</field>
+            <field name="report_file">purchase_request.report_purchase_request_document</field>
+            <field name="print_report_name">(object._get_report_base_filename())</field>
+            <field name="attachment">((object.name).replace('/','_')+'.pdf')
+            </field>
+            <field name="binding_model_id" eval="purchase_request.model_purchase_request"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="invoice_report.paperformat_base_sale"/>
+        </record>
+
+
+	 <!-- <template id="report_invoice_template_new_copies">
+	     <t t-call="web.html_container">
+	         <t t-foreach="docs" t-as="o">
+	         	<t t-set="lang" t-value="o.invoice_user_id.sudo().lang if o.move_type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+	            <t t-set="print_with_payments" t-value="True"/>
+	            <t t-call="invoice_report.report_invoice_document_original" t-lang="lang"/>
+				<t t-call="invoice_report.report_invoice_duplicate_main" t-lang="lang"/>
+                <t t-call="invoice_report.report_invoice_triplicate_main" t-lang="lang"/>
+                <t t-call="invoice_report.report_invoice_copy_extra" t-lang="lang"/>
+	         </t>
+	     </t>
+	 </template>
+	 
+        <record id="account_invoices_copies" model="ir.actions.report">
+            <field name="name">Invoice Copies</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">invoice_report.report_invoice_template_new_copies</field>
+            <field name="report_file">invoice_report.report_invoice_template_new_copies</field>
+            <field name="print_report_name">(object._get_report_base_filename())</field>
+            <field name="attachment">(object.state == 'posted') and ((object.name or 'INV').replace('/','_')+'.pdf')</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="paperformat_id" ref="invoice_report.paperformat_base_sale"/>
+        </record> -->
+
+    </data>
+</guru>

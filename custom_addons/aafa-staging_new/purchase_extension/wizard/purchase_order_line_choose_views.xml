@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_line_choose_wizard_form" model="ir.ui.view">
+        <field name="name">purchase.order.line.choose.wizard.form</field>
+        <field name="model">purchase.order.line.choose.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reason for Choosing this Line">
+                <group>
+                    <field name="line_id" invisible="1"/>
+                    <field name="product_id"/>
+                    <field name="partner_id"/>
+                    <field name="reason" placeholder="Why are you choosing this line?"/>
+                </group>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

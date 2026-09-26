@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="multi_approval_type_view_form_mail_attachment" model="ir.ui.view">
+        <field name="name">multi.approval.type.form.mail.attachment</field>
+        <field name="model">multi.approval.type</field>
+        <field name="inherit_id" ref="multi_level_approval.multi_approval_type_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='page_other']/group[1]" position="after">
+                <group
+                    string="Request Mail Attachments"
+                    name="mail_attachment_settings"
+                    invisible="not mail_notification"
+                >
+                    <div class="text-muted" colspan="2">
+                        The request email template stays the same for every type.
+                        Attachments are resolved from the origin document when the
+                        request is sent.
+                    </div>
+                    <field name="model_id" invisible="1"/>
+                    <field name="mail_attachment_line_ids" nolabel="1" colspan="2">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="name"/>
+                            <field name="source"/>
+                            <field
+                                name="report_id"
+                                optional="show"
+                                invisible="source not in ('origin_report', 'related_report')"
+                                domain="[('report_type', '=', 'qweb-pdf'), ('model', '=', parent.model_id)]"
+                            />
+                            <field
+                                name="related_path"
+                                optional="hide"
+                                invisible="source not in ('related_report', 'related_chatter')"
+                            />
+                            <field
+                                name="related_domain"
+                                optional="hide"
+                                invisible="source not in ('related_report', 'related_chatter')"
+                            />
+                            <field
+                                name="python_code"
+                                widget="ace"
+                                options="{'mode': 'python'}"
+                                optional="hide"
+                                invisible="source != 'python'"
+                            />
+                            <field name="active"/>
+                        </list>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

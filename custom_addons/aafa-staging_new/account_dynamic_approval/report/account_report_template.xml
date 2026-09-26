@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+         <template id="report_invoice_document" name="Invoice "
+                  inherit_id="account.report_invoice_document">
+            <xpath expr="//div[hasclass('page')]" position="inside">
+                <br/>
+                <table width="100%">
+                    <tr>
+                        <th>
+                            <div class="cashier">
+                                <div>
+                                    <span t-field="o.create_uid"></span>
+                                </div>
+                                <div>
+                                    <b>Created By</b>
+
+                                </div>
+                            </div>
+                        </th>
+                        <t t-foreach="o.approval_info_line" t-as="line">
+                            <th>
+                                <div class="cashier">
+                                    <span t-field="line.approved_by"></span>&#160;&#160;
+                                    <div>
+                                        <b>Approval &#160;&#160; <span t-field="line.level"></span> </b>
+                                    </div>
+                                </div>
+                            </th>
+                        </t>
+                    </tr>
+                </table>
+            </xpath>
+        </template>
+    </data>
+</odoo>

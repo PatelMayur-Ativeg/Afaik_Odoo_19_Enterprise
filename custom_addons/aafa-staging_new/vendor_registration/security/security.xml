@@ -1,0 +1,18 @@
+<odoo>
+    <record id="vendor_reg_group" model="res.groups">
+        <field name="name">Vendor PO Registration Approve</field>
+    </record>
+
+    <record id="vendor_po_notification_group" model="res.groups">
+        <field name="name">Vendor PO Notification</field>
+    </record>
+
+    <record id="vendor_account_reg_group" model="res.groups">
+        <field name="name">Vendor Account Registration Approve</field>
+    </record>
+
+    <record id="vendor_account_notification_group" model="res.groups">
+        <field name="name">Vendor Account Notification</field>
+    </record>
+
+</odoo>

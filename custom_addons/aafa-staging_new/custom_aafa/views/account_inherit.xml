@@ -1,0 +1,23 @@
+<odoo>
+	    <!-- //=============Analytic Account============= -->
+    <record id="account_analytic_account_form_inherit" model="ir.ui.view">
+        <field name="name">view.account.analytic.account.form.inherit</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="total_real_amount"/>
+            </field>
+        </field>
+    </record>
+    <record id="account_analytic_account_form_inherit2_budget" model="ir.ui.view">
+        <field name="name">view.account.analytic.account.form.inherit2.budget</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="account_budget.view_account_analytic_account_form_inherit_budget"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='budget_line_ids']/list/field[@name='achieved_amount']" position="after">
+                <field name="real_amount"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="public_approval_confirm_approve" name="Confirm Approve">
+        <html>
+            <head>
+                <meta charset="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <title>Confirm Approval</title>
+                <style>
+                    body { font-family: Arial, Helvetica, sans-serif; background: #f5f5f5; margin: 0; padding: 24px; color: #333; }
+                    .card { max-width: 640px; margin: 40px auto; background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+                    h1 { font-size: 22px; margin-top: 0; }
+                    .meta { margin: 16px 0; line-height: 1.6; }
+                    .btn { display: inline-block; padding: 10px 18px; border: none; border-radius: 3px; color: #fff; font-weight: bold; cursor: pointer; font-size: 14px; background: #198754; }
+                </style>
+            </head>
+            <body>
+                <div class="card">
+                    <h1>Confirm Approval</h1>
+                    <p>Do you want to approve this request?</p>
+                    <div class="meta">
+                        <div><strong>Request:</strong> <t t-esc="approval.display_name" /></div>
+                        <div><strong>Code:</strong> <t t-esc="approval.code" /></div>
+                        <div><strong>Requested by:</strong> <t t-esc="approval.user_id.name" /></div>
+                        <div><strong>Approver:</strong> <t t-esc="approver.name" /></div>
+                        <t t-if="origin_name">
+                            <div>
+                                <strong>Document:</strong>
+                                <t t-if="origin_url">
+                                    <a t-att-href="origin_url" t-esc="origin_name" />
+                                </t>
+                                <t t-else="">
+                                    <t t-esc="origin_name" />
+                                </t>
+                            </div>
+                        </t>
+                    </div>
+                    <form t-att-action="token.approve_url" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="csrf_token" />
+                        <button type="submit" class="btn">Approve</button>
+                    </form>
+                </div>
+            </body>
+        </html>
+    </template>
+
+    <template id="public_approval_confirm_reject" name="Confirm Reject">
+        <html>
+            <head>
+                <meta charset="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <title>Refuse Approval</title>
+                <style>
+                    body { font-family: Arial, Helvetica, sans-serif; background: #f5f5f5; margin: 0; padding: 24px; color: #333; }
+                    .card { max-width: 640px; margin: 40px auto; background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+                    h1 { font-size: 22px; margin-top: 0; }
+                    .meta { margin: 16px 0; line-height: 1.6; }
+                    .error { color: #dc3545; margin-bottom: 12px; }
+                    label { font-weight: bold; display: block; margin-bottom: 6px; }
+                    textarea { width: 100%; min-height: 100px; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 3px; }
+                    .btn { display: inline-block; padding: 10px 18px; border: none; border-radius: 3px; color: #fff; font-weight: bold; cursor: pointer; font-size: 14px; background: #dc3545; margin-top: 12px; }
+                </style>
+            </head>
+            <body>
+                <div class="card">
+                    <h1>Refuse Approval</h1>
+                    <p>Please provide a reason to refuse this request.</p>
+                    <div class="meta">
+                        <div><strong>Request:</strong> <t t-esc="approval.display_name" /></div>
+                        <div><strong>Code:</strong> <t t-esc="approval.code" /></div>
+                        <div><strong>Requested by:</strong> <t t-esc="approval.user_id.name" /></div>
+                        <div><strong>Approver:</strong> <t t-esc="approver.name" /></div>
+                        <t t-if="origin_name">
+                            <div>
+                                <strong>Document:</strong>
+                                <t t-if="origin_url">
+                                    <a t-att-href="origin_url" t-esc="origin_name" />
+                                </t>
+                                <t t-else="">
+                                    <t t-esc="origin_name" />
+                                </t>
+                            </div>
+                        </t>
+                    </div>
+                    <t t-if="error">
+                        <div class="error" t-esc="error" />
+                    </t>
+                    <form t-att-action="token.reject_url" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="csrf_token" />
+                        <label for="reason">Reason</label>
+                        <textarea id="reason" name="reason" required="required" />
+                        <button type="submit" class="btn">Refuse</button>
+                    </form>
+                </div>
+            </body>
+        </html>
+    </template>
+
+    <template id="public_approval_success" name="Approval Action Success">
+        <html>
+            <head>
+                <meta charset="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <title t-esc="title" />
+                <style>
+                    body { font-family: Arial, Helvetica, sans-serif; background: #f5f5f5; margin: 0; padding: 24px; color: #333; }
+                    .card { max-width: 640px; margin: 40px auto; background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+                    h1 { font-size: 22px; margin-top: 0; }
+                </style>
+            </head>
+            <body>
+                <div class="card">
+                    <h1 t-esc="title" />
+                    <p t-esc="message" />
+                </div>
+            </body>
+        </html>
+    </template>
+
+    <template id="public_approval_error" name="Approval Action Error">
+        <html>
+            <head>
+                <meta charset="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <title t-esc="title" />
+                <style>
+                    body { font-family: Arial, Helvetica, sans-serif; background: #f5f5f5; margin: 0; padding: 24px; color: #333; }
+                    .card { max-width: 640px; margin: 40px auto; background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+                    h1 { font-size: 22px; margin-top: 0; }
+                </style>
+            </head>
+            <body>
+                <div class="card">
+                    <h1 t-esc="title" />
+                    <p t-esc="message" />
+                </div>
+            </body>
+        </html>
+    </template>
+</odoo>

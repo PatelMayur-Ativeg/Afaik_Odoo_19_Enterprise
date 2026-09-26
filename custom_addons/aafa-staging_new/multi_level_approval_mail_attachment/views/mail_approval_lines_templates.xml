@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="mail_approval_lines_table">
+        <div class="approval-lines-email-table" style="margin: 20px 0 8px 0;">
+            <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: 700; color: #1f2937;">
+                Approvers
+            </p>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                   style="border: 1px solid #e5e7eb; border-collapse: collapse; font-size: 13px; color: #111827;">
+                <thead>
+                    <tr style="background-color: #f3f4f6;">
+                        <th align="left" style="padding: 9px 12px; border-bottom: 1px solid #e5e7eb; font-weight: 600;">
+                            User
+                        </th>
+                        <th align="left" style="padding: 9px 12px; border-bottom: 1px solid #e5e7eb; font-weight: 600;">
+                            Approved On
+                        </th>
+                        <th align="left" style="padding: 9px 12px; border-bottom: 1px solid #e5e7eb; font-weight: 600;">
+                            State
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="lines" t-as="line">
+                        <tr t-att-style="'background-color: #ffffff;' if line_index % 2 == 0 else 'background-color: #fafafa;'">
+                            <td style="padding: 9px 12px; border-bottom: 1px solid #e5e7eb;">
+                                <t t-out="line['user']"/>
+                            </td>
+                            <td style="padding: 9px 12px; border-bottom: 1px solid #e5e7eb; color: #4b5563;">
+                                <t t-out="line['approved_on']"/>
+                            </td>
+                            <td style="padding: 9px 12px; border-bottom: 1px solid #e5e7eb;">
+                                <span t-att-style="line['state_style']">
+                                    <t t-out="line['state']"/>
+                                </span>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </template>
+</odoo>

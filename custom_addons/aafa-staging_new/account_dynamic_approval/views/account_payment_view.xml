@@ -1,0 +1,55 @@
+<odoo>
+    <record id="view_account_payment_form_inherit" model="ir.ui.view">
+        <field name="name">account.payment.inherit.view.form</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <field name="approval_level_id" invisible="1"/>
+                <field name="is_boolean" invisible="1"/>
+                <button class="oe_highlight" string="Approve" type="object" name="action_approve_order"
+                        invisible="state not in ['waiting_for_approval'] or not is_boolean"/>
+                <button string="Reject" type="action" name="%(account_dynamic_approval.payment_rejection_reason_action)d"
+                        invisible="state not in ['waiting_for_approval'] or not is_boolean"/>
+                <button string="Reset to Draft" type="object" name="action_reset_to_draft"
+                        invisible="state not in ['reject']"/>
+            </xpath>
+
+            <xpath expr="//group[@name='group2']" position="inside">
+                <field name="batch_payment_approval_id" invisible="not batch_payment_approval_id"/>
+            </xpath>
+
+            <xpath expr="//notebook[@name='payment_notebook']" position="inside">
+                <page string="Approval Info" name="approval_info"
+                      invisible="state in ['paid', 'in_process', 'canceled'] or not batch_payment_approval_id">
+                    <group>
+                        <group string="Next Approval">
+                            <field name="level"/>
+                            <field name="user_ids" widget="many2many_tags"/>
+                            <field name="group_ids" widget="many2many_tags"/>
+                        </group>
+                        <group string="Reject Order Info">
+                            <field name="rejection_date"/>
+                            <field name="reject_by"/>
+                            <field name="reject_reason"/>
+                        </group>
+                        <field name="approval_info_line" nolabel="1"
+                               context="{'form_view_ref': 'account_dynamic_approval.payment_approval_info_view_form'}">
+                            <list>
+                                <field name="label_type"/>
+                                <field name="level"/>
+                                <field name="user_ids"/>
+                                <field name="group_ids"/>
+                                <field name="status" widget="boolean_toggle" readonly="1"/>
+                                <field name="approval_date"/>
+                                <field name="approved_by"/>
+                                <field name="payment_id" column_invisible="1"/>
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

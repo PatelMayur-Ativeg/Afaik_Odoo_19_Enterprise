@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_netsuite_import_wizard" model="ir.ui.view">
+        <field name="name">aafaq.import.wizard.form</field>
+        <field name="model">aafaq.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Aafaq Import Wizard">
+                <group>
+                    <field name="record_type"/>
+                    <field name="journal_id" invisible="record_type not in ('journal_entries', 'adj_entries')"/>
+                    <field name="company_id" options="{'no_create': True}"/>
+                    <!-- <field name="user_id" options="{'no_create': True}"/> -->
+                    <field name="file" filename="filename"/>
+                    <field name="filename" invisible="1"/>
+                </group>
+                <footer>
+                    <button string="Import" type="object" name="action_aafaq_import_records" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_aafaq_import_wizard" model="ir.actions.act_window">
+        <field name="name">Aafaq Import</field>
+        <field name="res_model">aafaq.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_netsuite_import_wizard" name="Import Wizard"
+              parent="menu_aafaq_import_root"
+              action="action_aafaq_import_wizard"
+              sequence="20"/>
+</odoo>

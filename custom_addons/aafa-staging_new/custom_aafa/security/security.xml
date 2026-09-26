@@ -1,0 +1,14 @@
+<odoo>
+    <!--Group for CFO Approve Button -->
+    <record id="group_show_cfo_unlock_button_budget" model="res.groups">
+        <field name="name">1st Level of approval :CFO</field>
+    </record> 
+     <!--Group for COO Approve Button -->
+    <record id="group_show_coo_unlock_button_budget" model="res.groups">
+        <field name="name">2nd level of approval: COO</field>
+    </record> 
+     <!--Group for CEO Approve Button -->
+    <record id="group_show_ceo_unlock_button_budget" model="res.groups">
+        <field name="name">3rd level of approval: CEO</field>
+    </record>       
+</odoo>
