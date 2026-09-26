@@ -1,0 +1,36 @@
+name: Odoo Deployment Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deployment-test:
+    runs-on: self-hosted
+
+    steps:
+      - name: Verify runner
+        run: |
+          echo "Runner is working"
+          hostname
+          whoami
+          pwd
+
+      - name: Verify Odoo Docker project
+        run: |
+          echo "Checking Odoo Docker project..."
+          ls -la /home/ubantu/docker_odoo/odoo-docker
+
+      - name: Verify custom addons
+        run: |
+          echo "Checking custom addons..."
+          ls -la /home/ubantu/docker_odoo/odoo-docker/custom_addons/aafa-staging_new
+
+      - name: Verify Docker
+        run: |
+          echo "Docker version:"
+          docker --version
+
+          echo "Docker Compose version:"
+          docker compose version
