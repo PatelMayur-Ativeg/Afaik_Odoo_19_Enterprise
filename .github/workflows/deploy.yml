@@ -1,4 +1,4 @@
-name: Odoo Deployment Test
+name: Deploy Odoo Custom Addons
 
 on:
   push:
@@ -6,31 +6,61 @@ on:
       - main
 
 jobs:
-  deployment-test:
+  deploy:
     runs-on: self-hosted
 
     steps:
-      - name: Verify runner
+
+      - name: Show deployment information
         run: |
-          echo "Runner is working"
+          echo "======================================"
+          echo "Starting Odoo deployment"
+          echo "======================================"
+          echo "Hostname:"
           hostname
+          echo "User:"
           whoami
-          pwd
 
-      - name: Verify Odoo Docker project
+      - name: Sync custom addons
         run: |
-          echo "Checking Odoo Docker project..."
-          ls -la /home/ubantu/docker_odoo/odoo-docker
+          echo "Syncing custom addons..."
 
-      - name: Verify custom addons
+          rsync -av --delete \
+            /home/ubantu/docker_odoo/Odoo_CI_CD/Afaik_Odoo_19_Enterprise/custom_addons/aafa-staging_new/ \
+            /home/ubantu/docker_odoo/odoo-docker/custom_addons/aafa-staging_new/
+
+          echo "Custom addons sync completed."
+
+      - name: Show deployed addons
         run: |
-          echo "Checking custom addons..."
+          echo "Deployed custom addons:"
           ls -la /home/ubantu/docker_odoo/odoo-docker/custom_addons/aafa-staging_new
 
-      - name: Verify Docker
+      - name: Build Odoo Docker image
         run: |
-          echo "Docker version:"
-          docker --version
+          cd /home/ubantu/docker_odoo/odoo-docker
 
-          echo "Docker Compose version:"
-          docker compose version
+          echo "Building Odoo image..."
+
+          docker compose build odoo
+
+      - name: Restart Odoo
+        run: |
+          cd /home/ubantu/docker_odoo/odoo-docker
+
+          echo "Starting Odoo..."
+
+          docker compose up -d odoo
+
+      - name: Check containers
+        run: |
+          cd /home/ubantu/docker_odoo/odoo-docker
+
+          echo "Container status:"
+          docker compose ps
+
+      - name: Deployment completed
+        run: |
+          echo "======================================"
+          echo "Odoo deployment completed successfully"
+          echo "======================================"
